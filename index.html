@@ -1,0 +1,1230 @@
+<!doctype html>
+<html lang="nb">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Verden i dag og verden i morgen</title>
+<link rel="icon" href="logo/favicon.svg">
+<link rel="stylesheet" href="lib/reveal/reset.css">
+<link rel="stylesheet" href="lib/reveal/reveal.css">
+<link rel="stylesheet" href="lib/reveal/theme/white.css" id="theme">
+<style>
+/* ============================================================
+   MishMash 2026 visual identity.
+   Tokens copied from mishmash-web/site/assets/css/brand.css.
+   Rules: flat surfaces, hard edges, 2px ink rules. No gradients,
+   no shadows, no rounded corners. See BRAND.md in mishmash-web.
+   ============================================================ */
+
+@font-face {
+  font-family: 'Roboto Condensed'; font-style: normal; font-weight: 700; font-display: swap;
+  src: url('fonts/roboto-condensed-700-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+2000-206F,U+2074,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;
+}
+@font-face {
+  font-family: 'Roboto Condensed'; font-style: normal; font-weight: 700; font-display: swap;
+  src: url('fonts/roboto-condensed-700-latin-ext.woff2') format('woff2');
+  unicode-range: U+0100-024F,U+0259,U+1E00-1EFF,U+2020,U+20A0-20AB,U+20AD-20CF,U+2113,U+2C60-2C7F,U+A720-A7FF;
+}
+@font-face {
+  font-family: 'Inter'; font-style: normal; font-weight: 400; font-display: swap;
+  src: url('fonts/inter-400-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+2000-206F,U+2074,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;
+}
+@font-face {
+  font-family: 'Inter'; font-style: normal; font-weight: 400; font-display: swap;
+  src: url('fonts/inter-400-latin-ext.woff2') format('woff2');
+  unicode-range: U+0100-024F,U+0259,U+1E00-1EFF,U+2020,U+20A0-20AB,U+20AD-20CF,U+2113,U+2C60-2C7F,U+A720-A7FF;
+}
+@font-face {
+  font-family: 'Inter'; font-style: normal; font-weight: 700; font-display: swap;
+  src: url('fonts/inter-700-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+2000-206F,U+2074,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;
+}
+@font-face {
+  font-family: 'Inter'; font-style: normal; font-weight: 700; font-display: swap;
+  src: url('fonts/inter-700-latin-ext.woff2') format('woff2');
+  unicode-range: U+0100-024F,U+0259,U+1E00-1EFF,U+2020,U+20A0-20AB,U+20AD-20CF,U+2113,U+2C60-2C7F,U+A720-A7FF;
+}
+
+:root {
+  /* Surfaces */
+  --mm-green: #b3e297;
+  --mm-purple: #9a90cf;
+  --mm-blue: #a5cbed;
+  --mm-pink: #efadb2;
+  /* Ink and accents */
+  --mm-ink: #231f20;
+  --mm-yellow: #d1e422;
+  --mm-red: #ee5648;
+  --mm-white: #ffffff;
+  /* Tints (~15 % colour on white) */
+  --mm-green-tint: #f0f8e9;
+  --mm-purple-tint: #f0eef9;
+  --mm-blue-tint: #edf4fb;
+  --mm-pink-tint: #fdf1f1;
+  --mm-yellow-tint: #fbfce6;
+  /* Greys derived from ink */
+  --mm-ink-70: #5c5859;
+  --mm-ink-40: #a7a4a5;
+  --mm-ink-15: #dedcdc;
+  --mm-ink-5: #f4f3f3;
+
+  --mm-font-display: 'Roboto Condensed', 'Acumin Pro Condensed', 'Arial Narrow', Arial, sans-serif;
+  --mm-font-body: 'Inter', Arial, sans-serif;
+
+  /* Reveal overrides */
+  --r-background-color: var(--mm-white);
+  --r-main-font: var(--mm-font-body);
+  --r-heading-font: var(--mm-font-display);
+  --r-main-color: var(--mm-ink);
+  --r-heading-color: var(--mm-ink);
+  --r-link-color: var(--mm-ink);
+  --r-heading-text-transform: none;
+  --r-heading-font-weight: 700;
+  --r-main-font-size: 44px;
+
+  /* The section colour of the current slide; each section resets it. */
+  --slide-colour: var(--mm-green);
+}
+
+/* ---------- Dark mode ----------
+   The identity has no dark palette, so this inverts its two poles: ink becomes
+   the foreground, the page becomes ink. Every rule already speaks in tokens,
+   so swapping the two carries the whole deck.
+
+   The question pages are the exception. They are flat pastel surfaces that
+   want dark text in either mode, so they simply re-declare the light tokens
+   for themselves — custom properties inherit, and everything inside reverts. */
+
+html.dark {
+  --mm-ink: #f2f0f0;
+  --mm-white: #231f20;
+  --mm-ink-70: #b9b4b5;
+  --mm-ink-40: #6d6869;
+  --mm-ink-15: #3a3536;
+  --mm-ink-5: #2b2627;
+  /* the tints, mixed onto ink instead of onto white */
+  --mm-green-tint: #232f1e;
+  --mm-purple-tint: #26232f;
+  --mm-blue-tint: #1e2831;
+  --mm-pink-tint: #2f2325;
+  --mm-yellow-tint: #2b2c1c;
+  --r-background-color: #231f20;
+  color-scheme: dark;
+}
+html.dark body,
+html.dark .reveal-viewport { background: #231f20; }
+
+html.dark .reveal .slides section[data-background-color] {
+  --mm-ink: #231f20;
+  --mm-white: #ffffff;
+  --mm-ink-70: #5c5859;
+  --mm-ink-40: #a7a4a5;
+  --mm-ink-15: #dedcdc;
+}
+
+/* Line drawings are black on white; photographs and screenshots are not. */
+html.dark .reveal img.fig { filter: invert(0.93) hue-rotate(180deg); }
+
+/* The disciplinarity figure is inline SVG with black and white baked into the
+   attributes, so a filter cannot reach it. CSS beats presentation attributes. */
+html.dark .disc svg circle { fill: var(--mm-white); stroke: var(--mm-ink); }
+html.dark .disc svg text   { fill: var(--mm-ink); }
+html.dark .disc svg path   { stroke: var(--mm-ink); }
+html.dark .disc svg polygon { fill: var(--mm-ink); }
+
+/* ---------- Type ---------- */
+
+.reveal { font-family: var(--mm-font-body); color: var(--mm-ink); }
+.reveal h1, .reveal h2, .reveal h3 {
+  font-family: var(--mm-font-display);
+  font-weight: 700;
+  line-height: 0.92;
+  letter-spacing: -0.01em;
+  text-transform: none;
+  margin: 0 0 0.35em 0;
+  color: var(--mm-ink);
+}
+.reveal h1 { font-size: 2.6em; }
+.reveal h2 { font-size: 1.85em; }
+.reveal h3 { font-size: 1.15em; }
+.reveal .slides section { text-align: left; }
+.reveal p, .reveal li { line-height: 1.32; }
+.reveal ul { margin-left: 0.7em; }
+.reveal li { margin: 0.28em 0; }
+.reveal strong { font-weight: 700; }
+.reveal em { font-style: italic; }
+
+/* Flat identity: kill reveal's default image chrome everywhere. */
+.reveal img, .reveal svg, .reveal iframe, .reveal .card, .reveal figure {
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
+.reveal img { border: none; background: none; max-height: 64vh; }
+
+/* Links: ink text with a purple underline, per the identity. */
+.reveal a {
+  color: var(--mm-ink);
+  text-decoration: underline;
+  text-decoration-color: var(--mm-purple);
+  text-decoration-thickness: 3px;
+  text-underline-offset: 4px;
+}
+
+/* ---------- Section cue ----------
+   The question page that heads each stack names the section, so the slides
+   under it carry the colour instead of repeating the word: a short rule in
+   the section's surface colour under every heading. */
+
+.reveal h2::after {
+  content: "";
+  display: block;
+  width: 2.1em;
+  border-bottom: 6px solid var(--slide-colour);
+  margin-top: 0.3em;
+}
+
+/* ---------- Dividers: full-bleed surface colour, wordmark in its pair colour ---------- */
+
+.reveal section.divider { text-align: left; }
+.reveal section.divider .q {
+  font-family: var(--mm-font-display);
+  font-size: 5.6em;
+  line-height: 0.85;
+  letter-spacing: -0.02em;
+  margin: 0;
+  color: var(--mm-ink);
+}
+
+/* ---------- Building blocks ---------- */
+
+.lead { font-size: 1.28em; line-height: 1.28; font-weight: 400; max-width: 22em; }
+.huge { font-family: var(--mm-font-display); font-size: 3.1em; line-height: 0.92; letter-spacing: -0.02em; }
+.muted { color: var(--mm-ink-70); }
+.small { font-size: 0.62em; }
+.caption { font-size: 0.5em; color: var(--mm-ink-70); margin-top: 0.4em; line-height: 1.3; }
+.center { text-align: center !important; }
+.arrow::before { content: "\2192"; margin-right: 0.35em; }
+
+.cols  { display: grid; grid-template-columns: 1fr 1fr; gap: 1.4em; align-items: start; }
+.cols3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.1em; align-items: start; }
+.cols.mid { align-items: center; }
+.wide-left { display: grid; grid-template-columns: 1.15fr 1fr; gap: 1.6em; align-items: center; }
+.reveal .wide-left img { width: 100%; height: auto; max-height: 62vh; object-fit: cover; border: 2px solid var(--mm-ink); display: block; margin: 0; }
+.reveal img.fig[src$='.jpg'] { border: 2px solid var(--mm-ink); }
+
+/* Flat cards: 2px ink outline, tinted fill, square corners. */
+.card {
+  border: 2px solid var(--mm-ink);
+  padding: 0.55em 0.7em;
+  font-size: 0.68em;
+  height: 100%;
+  box-sizing: border-box;
+  background: var(--mm-white);
+}
+.card h3 { font-size: 1.25em; margin: 0 0 0.3em 0; }
+.card p { margin: 0; }
+.card.green  { background: var(--mm-green-tint); }
+.card.purple { background: var(--mm-purple-tint); }
+.card.blue   { background: var(--mm-blue-tint); }
+.card.pink   { background: var(--mm-pink-tint); }
+.card.yellow { background: var(--mm-yellow-tint); }
+
+/* Numbers */
+.nums { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.8em; }
+.nums div { border: 2px solid var(--mm-ink); padding: 0.55em 0.5em; background: var(--mm-white); }
+.nums b {
+  display: block;
+  font-family: var(--mm-font-display);
+  font-size: 2.5em;
+  line-height: 0.95;
+  letter-spacing: -0.02em;
+}
+.nums span { display: block; font-size: 0.5em; line-height: 1.25; margin-top: 0.3em; }
+.nums div:nth-child(4n+1) { background: var(--mm-green-tint); }
+.nums div:nth-child(4n+2) { background: var(--mm-purple-tint); }
+.nums div:nth-child(4n+3) { background: var(--mm-blue-tint); }
+.nums div:nth-child(4n+4) { background: var(--mm-pink-tint); }
+
+
+/* Picture grids */
+.grid4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.6em; }
+.grid7 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.6em; }
+.grid4 figure, .grid7 figure { margin: 0; }
+.grid4 img, .grid7 img { width: 100%; height: 26vh; object-fit: cover; display: block; border: 2px solid var(--mm-ink); max-height: none; }
+.grid7 img { height: 21vh; }
+.grid4 figcaption, .grid7 figcaption { font-size: 0.44em; color: var(--mm-ink-70); margin-top: 0.25em; line-height: 1.25; }
+
+/* Headline collage — flat squares, no rotation, no shadows */
+.collage { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; width: 100%; }
+.collage img { width: 100%; aspect-ratio: 1; height: auto; object-fit: cover; object-position: top; border: 2px solid var(--mm-ink); max-height: none; }
+
+/* Threat / promise */
+.split { display: grid; grid-template-columns: 1fr 1fr; gap: 0; border: 2px solid var(--mm-ink); font-size: 0.92em; min-height: 62vh; }
+.split > div { padding: 0.9em 1.1em; }
+.split > div:first-child { background: var(--mm-pink-tint); border-right: 2px solid var(--mm-ink); }
+.split > div:last-child { background: var(--mm-green-tint); }
+.split h3 { font-size: 1.3em; }
+.split ul { margin: 0 0 0 0.9em; }
+
+/* Organisation map, laid out as a grid rather than drawn: the spine runs down
+   the middle column, advisory bodies sit either side on dashed links, and the
+   work packages hang off a bus at the foot. Solid means answers to, dashed
+   means advises. */
+.org {
+  display: grid;
+  grid-template-columns: 1fr 70px 1.45fr 70px 1fr;
+  align-items: center;
+  justify-items: stretch;
+  font-size: 0.7em;
+}
+.org-box {
+  border: 2px solid var(--mm-ink);
+  background: var(--mm-white);
+  font-family: var(--mm-font-display);
+  font-size: 1.2em;
+  line-height: 1.1;
+  text-align: center;
+  padding: 0.6em 0.5em;
+}
+.org-box.green  { background: var(--mm-green-tint); }
+.org-box.purple { background: var(--mm-purple-tint); }
+.org-box.blue   { background: var(--mm-blue-tint); }
+.org-box.pink   { background: var(--mm-pink-tint); }
+.org-dash { border-top: 3px dashed var(--mm-ink); }
+.org-stem { width: 3px; height: 42px; background: var(--mm-ink); margin: 0 auto; }
+
+.org-wps {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 14px;
+  position: relative;
+  padding-top: 30px;
+}
+.org-wps::before {                       /* the bus the seven hang from */
+  content: "";
+  position: absolute; top: 0;
+  left: calc(100% / 14); right: calc(100% / 14);
+  border-top: 3px solid var(--mm-ink);
+}
+.org-wps .org-box { position: relative; }
+.org-wps .org-box::before {              /* each one's drop to the bus */
+  content: "";
+  position: absolute; top: -30px; left: 50%;
+  width: 3px; height: 30px; margin-left: -1.5px;
+  background: var(--mm-ink);
+}
+
+/* Create, explore, reflect as a cycle. Tokens throughout, so it inverts with
+   the deck; the pastel tints carry the node fills in either mode. */
+.cycle { width: 84%; margin: 0 auto; }
+.cycle svg { display: block; width: 100%; height: auto; max-height: 68vh; }
+.cycle .arc path {
+  fill: none; stroke: var(--mm-ink); stroke-width: 3.5;
+  marker-end: url(#cyc-arrow);
+}
+.cycle #cyc-arrow path { fill: var(--mm-ink); stroke: none; }
+.cycle .node circle { stroke: var(--mm-ink); stroke-width: 3; }
+.cycle .node.green  circle { fill: var(--mm-green-tint); }
+.cycle .node.purple circle { fill: var(--mm-purple-tint); }
+.cycle .node.blue   circle { fill: var(--mm-blue-tint); }
+.cycle .glyph {
+  fill: none; stroke: var(--mm-ink); stroke-width: 2;
+  stroke-linecap: round; stroke-linejoin: round;
+}
+.cycle .lbl {
+  font-family: var(--mm-font-display); font-size: 26px;
+  fill: var(--mm-ink); text-anchor: middle; letter-spacing: 0.03em;
+}
+
+/* The bubbles: pastels stay put in both modes, while the intersection and the
+   labels are tokens, so they invert with everything else. */
+.bubbles { width: 56%; margin: 0 auto; }
+.bubbles svg { display: block; width: 100%; height: auto; max-height: 72vh; }
+.bubbles .c-humans   { fill: var(--mm-purple); stroke: var(--mm-ink-40); stroke-width: 1; }
+.bubbles .c-machines { fill: var(--mm-green);  stroke: var(--mm-ink-40); stroke-width: 1; }
+.bubbles .c-lens     { fill: var(--mm-ink); }
+.bubbles .lbl {
+  font-family: var(--mm-font-body); font-size: 19px;
+  fill: var(--mm-ink); text-anchor: middle;
+}
+.bubbles .lbl.lens { fill: var(--mm-white); }
+/* These two sit on the pastels, which are light surfaces in either mode, so
+   they keep ink rather than following the page. */
+.bubbles .lbl.on-surface { fill: #231f20; }
+
+/* The two circles apart, and moving together. Same viewBox and radius as the
+   bubbles, so the sequence keeps one size throughout and only the overlap
+   changes. Timing follows the GIF this replaces: about 1.8s of travel, then a
+   five-second hold. */
+.bubbles.apart .g-humans   { transform: translateX(-55px); }
+.bubbles.apart .g-machines { transform: translateX(55px); }
+@keyframes mm-join-left  { 0%, 6% { transform: translateX(-55px); } 28%, 100% { transform: translateX(0); } }
+@keyframes mm-join-right { 0%, 6% { transform: translateX(55px);  } 28%, 100% { transform: translateX(0); } }
+.bubbles.joining .g-humans   { animation: mm-join-left  6.8s cubic-bezier(.4, 0, .2, 1) infinite; }
+.bubbles.joining .g-machines { animation: mm-join-right 6.8s cubic-bezier(.4, 0, .2, 1) infinite; }
+/* The intersection travels with the circles, so it grows from nothing as
+   they start to move. Its clip is the humans circle, so the clipped group rides
+   that journey, and the machines circle inside it carries the rest: -55 + 110
+   at the start, 0 + 0 at the end, which is the machines' own path. */
+.bubbles.joining .join-clip  { animation: mm-join-left  6.8s cubic-bezier(.4, 0, .2, 1) infinite; }
+@keyframes mm-join-inner { 0%, 6% { transform: translateX(110px); } 28%, 100% { transform: translateX(0); } }
+.bubbles.joining .join-lens  { animation: mm-join-inner 6.8s cubic-bezier(.4, 0, .2, 1) infinite; }
+/* The label needs the full width of the lens, so it fades in as the circles settle. */
+@keyframes mm-join-label { 0%, 20% { opacity: 0; } 30%, 100% { opacity: 1; } }
+.bubbles.joining .join-label { animation: mm-join-label 6.8s linear infinite; }
+@media (prefers-reduced-motion: reduce) {
+  .bubbles.joining .g-humans,
+  .bubbles.joining .g-machines,
+  .bubbles.joining .join-clip,
+  .bubbles.joining .join-lens,
+  .bubbles.joining .join-label { animation: none; }
+}
+
+/* The disciplinarity figure is inlined rather than linked, so that each of the
+   five bubbles can be a fragment of its own. */
+.disc { width: 88%; margin: 0 auto; }
+/* The figure sets font-family: "Helvetica, Arial, sans-serif" — the whole
+   stack inside one pair of quotes, so it reads as a single family that does
+   not exist and falls back to a serif. Override it with the deck's own. */
+.disc svg text { font-family: var(--mm-font-display); font-weight: 700; }
+/* Reveal sets will-change: opacity on every fragment. On an SVG group that
+   promotes it to its own compositing layer, and Chrome then clips the text to
+   the layer's bounds — "disciplinary" was losing its first letters. */
+.disc svg .fragment { will-change: auto !important; }
+.disc svg { display: block; width: 100%; height: auto; max-height: 56vh; }
+
+/* A figure built up in layers: the first image sets the size, the others sit
+   exactly on top of it and arrive as fragments. */
+.layers { position: relative; margin: 0 auto; }
+.reveal .layers img { display: block; width: 100%; height: auto; max-height: none; margin: 0; }
+.reveal .layers img + img { position: absolute; left: 0; top: 0; }
+
+/* A quotation: a bar in the section's colour rather than quotation marks. */
+.quote {
+  font-size: 1.12em;
+  font-style: italic;
+  line-height: 1.38;
+  border-left: 10px solid var(--slide-colour);
+  padding-left: 0.65em;
+  margin: 0.2em 0;
+  max-width: 24em;
+}
+
+/* The objective in one sentence: the three verbs and the three prepositions
+   stand as vertical columns inside the line, so all nine readings are on the
+   slide at once. Carried over from the DScience deck; the old palette's purple
+   and green text is a highlight behind ink text here instead. */
+.sentence {
+  font-family: var(--mm-font-display);
+  font-size: 1.62em;
+  line-height: 1.5;
+  letter-spacing: -0.01em;
+}
+.sentence .wordstack {
+  display: inline-flex;
+  flex-direction: column;
+  gap: 3px;
+  vertical-align: middle;
+  line-height: 1.05;
+  margin: 0 0.22em;
+  text-align: center;
+}
+.sentence .wordstack .hl { display: block; padding: 0.05em 0.3em; }
+
+/* Highlight behind ink text. The pastels have too little contrast to be a text
+   colour (BRAND.md), but they are made for exactly this. */
+.hl {
+  padding: 0.02em 0.16em;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+}
+.hl.green  { background: var(--mm-green); }
+.hl.purple { background: var(--mm-purple); }
+.hl.blue   { background: var(--mm-blue); }
+.hl.pink   { background: var(--mm-pink); }
+
+/* Definition list: term in the display face, definition beside it. */
+.defs.agenda > div { grid-template-columns: 9em 1fr; }
+.defs { margin: 0; font-size: 0.86em; }
+.defs > div { display: grid; grid-template-columns: 7.5em 1fr; gap: 0 1.1em; align-items: baseline;
+              padding: 0.5em 0; border-top: 2px solid var(--mm-ink-15); }
+.defs > div:last-child { border-bottom: 2px solid var(--mm-ink-15); }
+.defs dt { font-family: var(--mm-font-display); font-size: 1.15em; letter-spacing: -0.01em; }
+.defs dd { margin: 0; }
+
+/* Gantt: a label column and six year columns. Bars are placed by grid-column,
+   so a whole year is the smallest unit — the point is the shape of the five
+   years, not the schedule. Redrawn from the centre's own chart, whose colours
+   are the superseded palette. */
+.gantt {
+  display: grid;
+  grid-template-columns: 13.5em repeat(6, 1fr);
+  align-items: center;
+  row-gap: 0.5em;
+  font-size: 0.62em;
+  position: relative;
+}
+.gantt::before {                       /* the year gridlines, behind the bars */
+  content: "";
+  position: absolute; top: 2.2em; bottom: 0;
+  left: 13.5em; right: 0;
+  background: repeating-linear-gradient(to right,
+      var(--mm-ink-15) 0 2px, transparent 2px calc(100% / 6));
+}
+.g-year {
+  font-family: var(--mm-font-display); font-size: 1.15em;
+  text-align: center; padding-bottom: 0.3em;
+  border-bottom: 2px solid var(--mm-ink);
+}
+.g-lbl {
+  grid-column: 1;              /* without this a label lands after the previous
+                                  bar instead of starting its own row */
+  padding-right: 1em; text-align: right;
+}
+.g-bar {
+  height: 1.5em; border: 2px solid var(--mm-ink); position: relative;
+  background: var(--mm-white);
+}
+.g-bar.green  { background: var(--mm-green-tint); }
+.g-bar.purple { background: var(--mm-purple-tint); }
+.g-bar.blue   { background: var(--mm-blue-tint); }
+.g-bar.pink   { background: var(--mm-pink-tint); }
+.g-bar.yellow { background: var(--mm-yellow-tint); }
+.g-marks { display: flex; justify-content: space-around; position: relative; }
+.g-marks span {
+  width: 0.85em; height: 0.85em; background: var(--mm-ink);
+  transform: rotate(45deg);
+}
+
+/* Timeline */
+.timeline { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0 0; row-gap: 1.1em; margin-top: 0.6em; font-size: 0.62em; }
+.timeline div { border-top: 6px solid var(--mm-blue); padding: 0.6em 0.9em 0 0; }
+.timeline div:nth-child(2) { border-top-color: var(--mm-purple); }
+.timeline div:nth-child(3) { border-top-color: var(--mm-green); }
+.timeline div:nth-child(4) { border-top-color: var(--mm-pink); }
+.timeline b { display: block; font-family: var(--mm-font-display); font-size: 1.5em; letter-spacing: -0.01em; }
+
+/* Map */
+.mapwrap { position: relative; width: 100%; max-width: 620px; margin: 0 auto; }
+.mapwrap img { width: 100%; height: auto; max-height: 76vh; display: block; }
+
+/* Embeds */
+.netwrap { width: 1700px; height: 730px; border: 2px solid var(--mm-ink); margin: 0 auto; overflow: hidden; }
+.netwrap iframe { width: 1700px; max-width: none; height: 1450px; max-height: none; margin-top: -438px; border: 0; display: block; }
+
+/* Title slide: the wordmark on the left, everything else beside it.
+   The mark is the animated (split-flap) SVG from the identity; it runs from
+   CSS keyframes inside the file, so it works as a plain <img> and holds still
+   for anyone who has asked for reduced motion. */
+.title-grid { display: grid; grid-template-columns: auto 1fr; gap: 2.8em; align-items: center; }
+/* The mark takes its colour from CSS (the SVG is fill="currentColor"), which
+   is what lets the hover cycle repaint it. */
+.title-mark { width: 560px; display: block; max-height: none; }
+.mm-wordmark { color: var(--mm-ink); line-height: 0; cursor: pointer; transition: color 420ms ease; }
+.mm-wordmark:focus-visible { outline: 3px solid var(--mm-ink); outline-offset: 8px; }
+.mm-wordmark svg { display: block; width: 100%; height: auto; overflow: hidden; max-height: none; }
+.mm-wordmark .mm-col { will-change: transform; }
+
+/* Funder credit, pinned to the bottom-right corner of the title slide. */
+#funder { position: fixed; right: 26px; bottom: 22px; width: 300px; z-index: 30; }
+.tagline { font-family: var(--mm-font-display); font-size: 2.3em; line-height: 0.95; letter-spacing: -0.01em; margin: 0 0 0.45em 0; }
+.title-rule { border: none; border-top: 4px solid var(--mm-ink); margin: 0 0 0.5em 0; width: 100%; max-width: 13em; }
+.presenter { font-size: 0.72em; line-height: 1.4; margin: 0; }
+
+/* Chrome */
+.reveal .footer {
+  position: fixed; bottom: 16px; left: 24px;
+  font-family: var(--mm-font-display);
+  font-size: 15px; letter-spacing: 0.06em; text-transform: uppercase;
+  color: var(--mm-ink-40); z-index: 10;
+}
+.reveal .progress { color: var(--mm-ink); height: 4px; }
+.reveal .slide-number { font-family: var(--mm-font-display); background: none; color: var(--mm-ink-40); }
+.reveal .controls { color: var(--mm-ink-40); }
+
+/* Which question you are on, and how far down it, top right. Reveal's own
+   slide number is an address; this says how much of this section is left. */
+#position {
+  position: fixed; top: 14px; right: 18px; z-index: 40;
+  font-family: var(--mm-font-display); font-size: 15px;
+  letter-spacing: 0.06em; text-transform: uppercase;
+  color: var(--mm-ink-40); background: var(--mm-white); padding: 4px 9px;
+}
+#position:empty { display: none; }
+#position .depth { color: var(--mm-red); margin-left: 0.4em; }
+/* Auditorium deck: cards a step larger than the template's. */
+.reveal .card { font-size: .9em; padding: .75em .95em; }
+.reveal .card h3 { font-size: 1.15em; }
+.photo-cap { position: absolute; left: 2vw; bottom: 4vh; background: #fff; border: 2px solid var(--mm-ink); padding: .35em .7em; max-width: 46%; text-align: left; }
+.photo-cap p { margin: 0; font-size: .6em; line-height: 1.3; }
+.photo-cap .cap-title { font-family: var(--mm-font-display); font-size: .75em; }
+
+/* ---------- 28 October rebuild ---------- */
+
+/* Three photo strips side by side, one per click. The verb band keeps ink
+   text on a pastel surface in either mode. */
+.strips { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; height: 66vh; }
+.strip { display: flex; flex-direction: column; border: 2px solid var(--mm-ink); min-height: 0; }
+.reveal .strip img { flex: 1 1 auto; min-height: 0; width: 100%; height: 100%; max-width: none; max-height: none; object-fit: cover; display: block; margin: 0; border: none; }
+.strip .verb { font-family: var(--mm-font-display); font-size: 1.7em; line-height: 1; padding: .28em .45em; border-top: 2px solid var(--mm-ink); color: #231f20; }
+.strip.green .verb  { background: var(--mm-green); }
+.strip.purple .verb { background: var(--mm-purple); }
+.strip.blue .verb   { background: var(--mm-blue); }
+
+/* Two columns that fill line by line: what the centre can do, what schools must do. */
+.twocol { display: grid; grid-template-columns: 1fr 1fr; gap: 70px; margin-top: .2em; }
+.twocol .head { font-family: var(--mm-font-display); font-size: 1.45em; line-height: 1; padding: .3em .5em; border: 2px solid var(--mm-ink); color: #231f20; margin: 0 0 .3em 0; }
+.twocol .head.green { background: var(--mm-green); }
+.twocol .head.pink  { background: var(--mm-pink); }
+.reveal .twocol ul { list-style: none; margin: 0; padding: 0; display: block; }
+.reveal .twocol li { font-size: 1.12em; line-height: 1.25; margin: 0; padding: .55em 0; border-bottom: 2px solid var(--mm-ink-15); }
+
+/* The QR slide: the code large on the left, one line on the right. The code
+   keeps its white ground in dark mode, since an inverted code scans badly. */
+.qr-grid { display: grid; grid-template-columns: auto 1fr; gap: 90px; align-items: center; height: 100%; }
+.reveal .qr-grid img.qr { width: 760px; height: 760px; max-height: none; display: block; border: 2px solid #231f20; background: #fff; }
+.qr-url { font-family: var(--mm-font-display); font-size: 1.15em; margin-top: 1em; }
+
+/* Embedded demos: the apps lay themselves out at 1200 by 587 in ?embed mode
+   and are scaled up to fill the slide. */
+.reveal .demo h2 { font-size: 1.5em; margin-bottom: .25em; }
+.reveal .demo h2 a { text-decoration: none; }
+.appwrap { width: 1690px; height: 826px; overflow: hidden; margin: 0 auto; border: 2px solid var(--mm-ink); background: var(--mm-white); }
+.appwrap iframe { width: 1200px; height: 587px; transform: scale(1.4); transform-origin: 0 0; border: 0; max-width: none; max-height: none; }
+
+/* MishMash strip under the group photo: bubbles, the one-sentence objective
+   and the cube, carried over from ~/github/mishmash-presentation (28 Oct 2026). */
+.bubbles { width: 56%; margin: 0 auto; }
+.bubbles svg { display: block; width: 100%; height: auto; max-height: 72vh; }
+.bubbles .c-humans   { fill: var(--mm-purple); stroke: var(--mm-ink-40); stroke-width: 1; }
+.bubbles .c-machines { fill: var(--mm-green);  stroke: var(--mm-ink-40); stroke-width: 1; }
+.bubbles .c-lens     { fill: var(--mm-ink); }
+.bubbles .lbl { font-family: var(--mm-font-body); font-size: 19px; fill: var(--mm-ink); text-anchor: middle; }
+.bubbles .lbl.lens { fill: var(--mm-white); }
+.bubbles .lbl.on-surface { fill: #231f20; }
+.bubbles.apart .g-humans   { transform: translateX(-55px); }
+.bubbles.apart .g-machines { transform: translateX(55px); }
+@keyframes mm-join-left  { 0%, 6% { transform: translateX(-55px); } 28%, 100% { transform: translateX(0); } }
+@keyframes mm-join-right { 0%, 6% { transform: translateX(55px);  } 28%, 100% { transform: translateX(0); } }
+@keyframes mm-join-inner { 0%, 6% { transform: translateX(110px); } 28%, 100% { transform: translateX(0); } }
+@keyframes mm-join-label { 0%, 20% { opacity: 0; } 30%, 100% { opacity: 1; } }
+.bubbles.joining .g-humans   { animation: mm-join-left  6.8s cubic-bezier(.4, 0, .2, 1) infinite; }
+.bubbles.joining .g-machines { animation: mm-join-right 6.8s cubic-bezier(.4, 0, .2, 1) infinite; }
+.bubbles.joining .join-clip  { animation: mm-join-left  6.8s cubic-bezier(.4, 0, .2, 1) infinite; }
+.bubbles.joining .join-lens  { animation: mm-join-inner 6.8s cubic-bezier(.4, 0, .2, 1) infinite; }
+.bubbles.joining .join-label { animation: mm-join-label 6.8s linear infinite; }
+@media (prefers-reduced-motion: reduce) {
+  .bubbles.joining .g-humans, .bubbles.joining .g-machines, .bubbles.joining .join-clip,
+  .bubbles.joining .join-lens, .bubbles.joining .join-label { animation: none; }
+}
+.sentence { font-family: var(--mm-font-display); font-size: 1.5em; line-height: 1.5; letter-spacing: -0.01em; }
+.sentence .wordstack { display: inline-flex; flex-direction: column; gap: 3px; vertical-align: middle;
+                       line-height: 1.05; margin: 0 0.22em; text-align: center; }
+.sentence .wordstack .hl { display: block; padding: 0.05em 0.3em; }
+.hl { padding: 0.02em 0.16em; box-decoration-break: clone; -webkit-box-decoration-break: clone; }
+.hl.green  { background: var(--mm-green); }
+.hl.purple { background: var(--mm-purple); }
+.layers { position: relative; margin: 0 auto; }
+.reveal .layers img { display: block; width: 100%; height: auto; max-height: none; margin: 0; }
+.reveal .layers img + img { position: absolute; left: 0; top: 0; }
+
+/* About-me slide and the work-package grid highlight, from the Fylkesbibliotekene deck (22 Oct 2026). */
+.me { display:grid; grid-template-columns:auto 1fr; gap:2.2em; align-items:center; height:86vh; }
+.me .portrait { height:84vh; max-height:none; width:auto; border:2px solid var(--mm-ink); display:block; }
+.me-list { display:grid; gap:1.1em; }
+.me-list div { display:grid; grid-template-columns:260px 1fr; gap:.8em; align-items:center; }
+.me-list .roles { font-size:2.1em; line-height:1.05; padding-bottom:.35em; margin-bottom:.15em; border-bottom:4px solid var(--mm-ink); }
+.me-list img { max-height:120px; max-width:240px; margin:0 auto; display:block; }
+.me-list p { margin:0; font-family:var(--mm-font-display); font-size:1.5em; line-height:1; }
+.me-list span { display:block; font-family:inherit; font-size:.6em; margin-top:.25em; }
+.grid7.big { row-gap: 0.4em; }
+.grid7.big img { height: 27vh; }
+.grid7.big figcaption { font-size: 0.62em; color: var(--mm-ink); font-family: var(--mm-font-display); }
+.grid7 figure.pick img { border: 8px solid var(--mm-blue); }
+
+/* Circles and definition, from the Fylkesbibliotekene deck (22 Oct 2026). */
+.links { position:relative; width:1500px; height:760px; margin:0 auto; }
+.links .dot { position:absolute; width:300px; height:300px; border-radius:50%; border:5px solid var(--mm-ink); display:flex; align-items:center; justify-content:center; text-align:center; font-family:var(--mm-font-display); font-size:.95em; line-height:1.05; box-sizing:border-box; padding:.4em; }
+.links .open { width:460px; height:460px; flex-direction:column; font-size:1.25em; }
+.reveal p.lead.def { font-family: var(--mm-font-display); font-size: 1.9em; line-height: 1.15; max-width: 82%; margin-top: .8em; }
+.notathing { font-family: var(--mm-font-display); font-size: 2.6em; line-height: 1.25; text-align: left; margin-left: 8%; }
+.notathing p { margin: 0 0 .3em 0; }
+
+.links svg { position:absolute; inset:0; }
+.links .arrow-label { position:absolute; width:400px; text-align:center; font-family:var(--mm-font-display); font-size:1em; }
+.links .open span { display:block; font-family:inherit; font-size:.62em; margin-top:.3em; }
+.equation { display:flex; align-items:center; justify-content:center; gap:.5em; font-family:var(--mm-font-display); font-size:2.4em; margin-top:1.2em; }
+.equation .term { padding:.35em .6em; border:4px solid var(--mm-ink); }
+.equation .term.green { background:var(--mm-green); }
+.equation .term.blue { background:var(--mm-blue); }
+.equation .term.pink { background:var(--mm-pink); }
+.equation .term small { display:block; white-space:nowrap; font-family:var(--mm-font-body, Inter, Arial, sans-serif); font-size:.32em; margin-top:.2em; text-align:center; }
+.equation .eq-arrow { font-size:1.1em; }
+.equation .tools { display:flex; flex-direction:column; gap:.25em; font-size:.45em; align-items:flex-start; }
+.equation .tool { border:3px solid var(--mm-ink); border-radius:2em; padding:.3em .9em; white-space:nowrap; }
+.equation .tool.green { background:var(--mm-green); } .equation .tool.blue { background:var(--mm-blue); }
+.equation .tool.purple { background:var(--mm-purple); } .equation .tool.pink { background:var(--mm-pink); }
+
+/* MishMash facts on the group photo, filled by tools/mishmash_facts.py. */
+.facts { position:fixed; right:40px; top:40px; background:var(--mm-white); border:2px solid var(--mm-ink); padding:.5em .8em; text-align:left; font-size:.62em; color:var(--mm-ink); }
+.facts p { margin:.12em 0; }
+.facts b { font-family:var(--mm-font-display); font-size:1.5em; margin-right:.25em; }
+.facts p.disc { font-family:var(--mm-font-display); font-size:1.25em; margin-bottom:.3em; }
+
+/* The about-me slide: portrait and logos first, then the roles figure (tools/make_roles.py). */
+.me-stack { position: relative; }
+.reveal .roles-fig { position: absolute; left: 0; top: 0; width: 100%; height: 86vh; max-height: none; max-width: none; object-fit: contain; margin: 0; }
+
+/* Closing slide: the skape, utforske, reflektere cycle around the MishMash logo. */
+.closing-cycle { width: 1150px; margin: 0 auto; }
+.reveal .closing-cycle svg { display:block; width:1150px !important; height:767px !important; max-height:none !important; max-width:none !important; }
+.closing-cycle svg .fragment { will-change: auto !important; }
+.cycle #cyc-arrow-end path { fill: var(--mm-ink); stroke: none; }
+.closing-cycle .node circle { fill: #ffffff !important; }
+
+/* Header-free slides: a short line in the middle, figures first (28 Oct 2026). */
+.reveal p.midline { position:absolute; left:0; right:0; bottom:40px; text-align:center; font-family:var(--mm-font-display); font-size:1.3em; margin:0; }
+.bridge { display:grid; grid-template-columns:1fr 1fr; gap:3em; align-items:start; text-align:center; }
+.bridge .big-dot { width:300px; height:300px; border-radius:50%; border:5px solid var(--mm-ink); margin:0 auto .6em; display:flex; align-items:center; justify-content:center; font-family:var(--mm-font-display); font-size:1.4em; line-height:1.05; }
+.bridge p { margin:.25em 0; font-family:var(--mm-font-display); font-size:1.05em; }
+.photo-full { position:relative; width:1700px; margin:0 auto; }
+.reveal .photo-full img { width:100%; max-height:84vh; object-fit:cover; display:block; margin:0; border:2px solid var(--mm-ink); }
+.photo-full .overlay-line { position:absolute; left:40px; bottom:30px; background:var(--mm-white); border:2px solid var(--mm-ink); padding:.3em .6em; font-family:var(--mm-font-display); font-size:1.1em; margin:0; }
+.reveal p.demo-link { position:absolute; left:0; top:-10px; margin:0; font-family:var(--mm-font-display); font-size:.8em; }
+.reveal .layers.full img { max-width: none; }
+</style>
+</head>
+<body>
+
+<div class="reveal">
+<div class="slides">
+
+<!-- ================== Tittel ================== -->
+<section>
+  <section data-background-color="#b3e297" class="nofooter">
+  <div class="title-grid">
+  <div class="title-mark mm-wordmark" role="img" aria-label="MishMash" tabindex="0"><svg class="mm-wordmark-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 347.28785 243.91451" fill="currentColor" aria-hidden="true" focusable="false"><defs><clipPath id="mm-clip"><rect width="347.28785" height="243.91451"/></clipPath></defs><g clip-path="url(#mm-clip)"><path class="mm-col mm-col-m" d="M61.05734,0c-6.09019,64.554-13.35833,137.86991-15.71614,170.99163h-.19664c-2.31752-35.59704-7.66142-103.60861-13.75162-170.99163H0v243.9145h19.17418v-86.71381c0-42.31577-.51127-93.62895-1.21823-122.23219h.66763c3.73335,47.30548,10.45184,135.1193,16.10942,208.946h18.93725c7.66238-79.24855,14.14491-161.79759,18.19193-208.2388h.47099c-.353,27.7783-.70696,75.51592-.70696,117.3209v90.9179h20.07779V0h-30.64666Z"/><g class="mm-col mm-col-ia"><path transform="translate(0 -259.320)" d="M130.13007,0v114.45278h20.98043V0h-20.98043Z"/><path transform="translate(0 -259.320)" d="M154.29324,127.10439h-27.18861l-27.07158,116.8101h20.98139l5.77556-29.27135h27.07062l5.77652,29.27135h22.00201l-27.34592-116.8101ZM130.52239,196.4517c4.28299-21.57036,8.01538-39.13326,9.43026-49.89878h.47099c1.84653,11.15856,5.34391,27.54257,9.7046,49.89878h-19.60584Z"/><path transform="translate(0 0.000)" d="M130.13007,0v114.45278h20.98043V0h-20.98043Z"/><path transform="translate(0 0.000)" d="M154.29324,127.10439h-27.18861l-27.07158,116.8101h20.98139l5.77556-29.27135h27.07062l5.77652,29.27135h22.00201l-27.34592-116.8101ZM130.52239,196.4517c4.28299-21.57036,8.01538-39.13326,9.43026-49.89878h.47099c1.84653,11.15856,5.34391,27.54257,9.7046,49.89878h-19.60584Z"/><path transform="translate(0 259.320)" d="M130.13007,0v114.45278h20.98043V0h-20.98043Z"/><path transform="translate(0 259.320)" d="M154.29324,127.10439h-27.18861l-27.07158,116.8101h20.98139l5.77556-29.27135h27.07062l5.77652,29.27135h22.00201l-27.34592-116.8101ZM130.52239,196.4517c4.28299-21.57036,8.01538-39.13326,9.43026-49.89878h.47099c1.84653,11.15856,5.34391,27.54257,9.7046,49.89878h-19.60584Z"/><path transform="translate(0 518.640)" d="M130.13007,0v114.45278h20.98043V0h-20.98043Z"/></g><g class="mm-col mm-col-s"><path transform="translate(0 -388.980)" d="M232.16696,129.73678c-13.71229-6.36502-17.44468-10.29405-17.44468-18.74157,0-7.93673,3.69306-13.31948,11.98279-13.31948,10.60916,0,12.3377,9.86191,13.00533,16.54132h20.50944c-.353-15.24467-6.83648-33.04307-33.16082-33.04307-21.1387,0-33.20015,12.80845-33.20015,31.58935,0,17.36626,7.85807,25.77445,27.85624,35.32198,14.81253,7.03288,19.52814,12.61229,19.52814,22.23847,0,8.72234-3.81201,15.16601-14.10558,15.16601-10.72619,0-14.61589-8.52618-15.63748-18.23078h-20.82407c.70696,17.52358,8.91898,34.73277,35.83325,34.73277,24.71378,0,36.06826-15.16625,36.06826-33.5541,0-19.56651-9.43026-28.99629-30.41068-38.70089Z"/><path transform="translate(0 -259.320)" d="M232.16696,129.73678c-13.71229-6.36502-17.44468-10.29405-17.44468-18.74157,0-7.93673,3.69306-13.31948,11.98279-13.31948,10.60916,0,12.3377,9.86191,13.00533,16.54132h20.50944c-.353-15.24467-6.83648-33.04307-33.16082-33.04307-21.1387,0-33.20015,12.80845-33.20015,31.58935,0,17.36626,7.85807,25.77445,27.85624,35.32198,14.81253,7.03288,19.52814,12.61229,19.52814,22.23847,0,8.72234-3.81201,15.16601-14.10558,15.16601-10.72619,0-14.61589-8.52618-15.63748-18.23078h-20.82407c.70696,17.52358,8.91898,34.73277,35.83325,34.73277,24.71378,0,36.06826-15.16625,36.06826-33.5541,0-19.56651-9.43026-28.99629-30.41068-38.70089Z"/><path transform="translate(0 -129.660)" d="M232.16696,129.73678c-13.71229-6.36502-17.44468-10.29405-17.44468-18.74157,0-7.93673,3.69306-13.31948,11.98279-13.31948,10.60916,0,12.3377,9.86191,13.00533,16.54132h20.50944c-.353-15.24467-6.83648-33.04307-33.16082-33.04307-21.1387,0-33.20015,12.80845-33.20015,31.58935,0,17.36626,7.85807,25.77445,27.85624,35.32198,14.81253,7.03288,19.52814,12.61229,19.52814,22.23847,0,8.72234-3.81201,15.16601-14.10558,15.16601-10.72619,0-14.61589-8.52618-15.63748-18.23078h-20.82407c.70696,17.52358,8.91898,34.73277,35.83325,34.73277,24.71378,0,36.06826-15.16625,36.06826-33.5541,0-19.56651-9.43026-28.99629-30.41068-38.70089Z"/><path transform="translate(0 0.000)" d="M232.16696,129.73678c-13.71229-6.36502-17.44468-10.29405-17.44468-18.74157,0-7.93673,3.69306-13.31948,11.98279-13.31948,10.60916,0,12.3377,9.86191,13.00533,16.54132h20.50944c-.353-15.24467-6.83648-33.04307-33.16082-33.04307-21.1387,0-33.20015,12.80845-33.20015,31.58935,0,17.36626,7.85807,25.77445,27.85624,35.32198,14.81253,7.03288,19.52814,12.61229,19.52814,22.23847,0,8.72234-3.81201,15.16601-14.10558,15.16601-10.72619,0-14.61589-8.52618-15.63748-18.23078h-20.82407c.70696,17.52358,8.91898,34.73277,35.83325,34.73277,24.71378,0,36.06826-15.16625,36.06826-33.5541,0-19.56651-9.43026-28.99629-30.41068-38.70089Z"/><path transform="translate(0 129.660)" d="M232.16696,129.73678c-13.71229-6.36502-17.44468-10.29405-17.44468-18.74157,0-7.93673,3.69306-13.31948,11.98279-13.31948,10.60916,0,12.3377,9.86191,13.00533,16.54132h20.50944c-.353-15.24467-6.83648-33.04307-33.16082-33.04307-21.1387,0-33.20015,12.80845-33.20015,31.58935,0,17.36626,7.85807,25.77445,27.85624,35.32198,14.81253,7.03288,19.52814,12.61229,19.52814,22.23847,0,8.72234-3.81201,15.16601-14.10558,15.16601-10.72619,0-14.61589-8.52618-15.63748-18.23078h-20.82407c.70696,17.52358,8.91898,34.73277,35.83325,34.73277,24.71378,0,36.06826-15.16625,36.06826-33.5541,0-19.56651-9.43026-28.99629-30.41068-38.70089Z"/><path transform="translate(0 259.320)" d="M232.16696,129.73678c-13.71229-6.36502-17.44468-10.29405-17.44468-18.74157,0-7.93673,3.69306-13.31948,11.98279-13.31948,10.60916,0,12.3377,9.86191,13.00533,16.54132h20.50944c-.353-15.24467-6.83648-33.04307-33.16082-33.04307-21.1387,0-33.20015,12.80845-33.20015,31.58935,0,17.36626,7.85807,25.77445,27.85624,35.32198,14.81253,7.03288,19.52814,12.61229,19.52814,22.23847,0,8.72234-3.81201,15.16601-14.10558,15.16601-10.72619,0-14.61589-8.52618-15.63748-18.23078h-20.82407c.70696,17.52358,8.91898,34.73277,35.83325,34.73277,24.71378,0,36.06826-15.16625,36.06826-33.5541,0-19.56651-9.43026-28.99629-30.41068-38.70089Z"/><path transform="translate(0 388.980)" d="M232.16696,129.73678c-13.71229-6.36502-17.44468-10.29405-17.44468-18.74157,0-7.93673,3.69306-13.31948,11.98279-13.31948,10.60916,0,12.3377,9.86191,13.00533,16.54132h20.50944c-.353-15.24467-6.83648-33.04307-33.16082-33.04307-21.1387,0-33.20015,12.80845-33.20015,31.58935,0,17.36626,7.85807,25.77445,27.85624,35.32198,14.81253,7.03288,19.52814,12.61229,19.52814,22.23847,0,8.72234-3.81201,15.16601-14.10558,15.16601-10.72619,0-14.61589-8.52618-15.63748-18.23078h-20.82407c.70696,17.52358,8.91898,34.73277,35.83325,34.73277,24.71378,0,36.06826-15.16625,36.06826-33.5541,0-19.56651-9.43026-28.99629-30.41068-38.70089Z"/><path transform="translate(0 518.640)" d="M232.16696,129.73678c-13.71229-6.36502-17.44468-10.29405-17.44468-18.74157,0-7.93673,3.69306-13.31948,11.98279-13.31948,10.60916,0,12.3377,9.86191,13.00533,16.54132h20.50944c-.353-15.24467-6.83648-33.04307-33.16082-33.04307-21.1387,0-33.20015,12.80845-33.20015,31.58935,0,17.36626,7.85807,25.77445,27.85624,35.32198,14.81253,7.03288,19.52814,12.61229,19.52814,22.23847,0,8.72234-3.81201,15.16601-14.10558,15.16601-10.72619,0-14.61589-8.52618-15.63748-18.23078h-20.82407c.70696,17.52358,8.91898,34.73277,35.83325,34.73277,24.71378,0,36.06826-15.16625,36.06826-33.5541,0-19.56651-9.43026-28.99629-30.41068-38.70089Z"/></g><g class="mm-col mm-col-h"><path transform="translate(0 -388.980)" d="M326.30646,83.02051v46.24481h-28.2102v-46.24481h-20.98139v116.96742h20.98139v-52.53116h28.2102v52.53116h20.98139v-116.96742h-20.98139Z"/><path transform="translate(0 -259.320)" d="M326.30646,83.02051v46.24481h-28.2102v-46.24481h-20.98139v116.96742h20.98139v-52.53116h28.2102v52.53116h20.98139v-116.96742h-20.98139Z"/><path transform="translate(0 -129.660)" d="M326.30646,83.02051v46.24481h-28.2102v-46.24481h-20.98139v116.96742h20.98139v-52.53116h28.2102v52.53116h20.98139v-116.96742h-20.98139Z"/><path transform="translate(0 0.000)" d="M326.30646,83.02051v46.24481h-28.2102v-46.24481h-20.98139v116.96742h20.98139v-52.53116h28.2102v52.53116h20.98139v-116.96742h-20.98139Z"/><path transform="translate(0 129.660)" d="M326.30646,83.02051v46.24481h-28.2102v-46.24481h-20.98139v116.96742h20.98139v-52.53116h28.2102v52.53116h20.98139v-116.96742h-20.98139Z"/><path transform="translate(0 259.320)" d="M326.30646,83.02051v46.24481h-28.2102v-46.24481h-20.98139v116.96742h20.98139v-52.53116h28.2102v52.53116h20.98139v-116.96742h-20.98139Z"/><path transform="translate(0 388.980)" d="M326.30646,83.02051v46.24481h-28.2102v-46.24481h-20.98139v116.96742h20.98139v-52.53116h28.2102v52.53116h20.98139v-116.96742h-20.98139Z"/><path transform="translate(0 518.640)" d="M326.30646,83.02051v46.24481h-28.2102v-46.24481h-20.98139v116.96742h20.98139v-52.53116h28.2102v52.53116h20.98139v-116.96742h-20.98139Z"/></g></g></svg></div>
+  <div>
+  <p class="tagline">Verden i dag og<br>verden i morgen</p>
+  <hr class="title-rule">
+  <p class="presenter">Menneskets kreative potensiale i lys av KI<br>Kultur- og skolekonferansen, Oslo, 30. oktober 2026<br>
+  <span class="muted">mishmash.no</span></p>
+  </div>
+  </div>
+  <aside class="notes">Tyve minutter, kl. 13.30 til 13.50, rett etter panelet om hjernen, demokrati og mening, og før pausen. Arrangøren ba om blikket fremover og ikke den vanlige elendighetsbeskrivelsen: I hvilken retning vil vi gå? Hvorfor? Hvordan får vi det til? Den øverste raden er de tyve minuttene. Det som ligger under hvert spørsmål, er for å forlenge eller for spørsmål fra salen.</aside>
+  <aside class="notes">Tyve minutter, kl. 13.30 til 13.50, rett etter panelet og før pausen. Kort om MishMash, så musikkering med KI i midten, hva KI er og ikke er, hva som skal til for at det henger sammen, og så skal dere få prøve selv: først på telefonen, så noen små demoer.</aside>
+  </section>
+  <section>
+  <div class="me-stack" style="height:86vh">
+  <img class="roles-fig" src="images/fig-roller-0.svg" alt="Portrett av Alexander i midten, med en ring rundt">
+  <img class="roles-fig fragment" data-fragment-index="1" src="images/fig-roller-1.svg" alt="Forsker">
+  <img class="roles-fig fragment" data-fragment-index="2" src="images/fig-roller-2.svg" alt="Forfatter">
+  <img class="roles-fig fragment" data-fragment-index="3" src="images/fig-roller-3.svg" alt="Skaper">
+  <img class="roles-fig fragment" data-fragment-index="4" src="images/fig-roller-4.svg" alt="Formidler">
+  <img class="roles-fig fragment" data-fragment-index="5" src="images/fig-roller-5.svg" alt="Inspirator">
+  <img class="roles-fig fragment" data-fragment-index="6" src="images/fig-roller-6.svg" alt="Innovatør">
+  <img class="roles-fig fragment" data-fragment-index="7" src="images/fig-roller-7.svg" alt="Entreprenør">
+  <img class="roles-fig fragment" data-fragment-index="8" src="images/fig-roller-8.svg" alt="Leder">
+  <img class="roles-fig fragment" data-fragment-index="9" src="images/fig-roller-9.svg" alt="Veileder">
+  <img class="roles-fig fragment" data-fragment-index="10" src="images/fig-roller-10.svg" alt="Sensor">
+  <img class="roles-fig fragment" data-fragment-index="11" src="images/fig-roller-11.svg" alt="Underviser">
+  </div>
+  <aside class="notes">Jeg heter Alexander Refsum Jensenius, professor ved Universitetet i Oslo, både musikkforsker og forskermusiker. Slik ser en professorhverdag egentlig ut, én rolle for hvert klikk: forsker, forfatter, skaper, formidler, inspirator, innovatør, entreprenør, leder, veileder, sensor og underviser. Det er derfor jeg er så opptatt av at elevene lærer å sjonglere mellom å utforske, reflektere og skape.</aside>
+  </section>
+  <section data-background-image="images/fourms-konsert-i-laben.jpg" data-background-size="cover" data-background-position="center 45%">
+  <div class="photo-cap fragment" style="position:fixed;top:40px;bottom:auto;left:40px;right:auto;margin:0"><p class="cap-title">fourMs-laben</p><p>Musikk og bevegelse, målt. Siden 2004.</p></div>
+  <aside class="notes">Jeg har bygget opp fourMs-laben ved Universitetet i Oslo siden 2004. Her måler vi musikk og bevegelse: bevegelsessporing, øyebevegelser, puls og lyd, både hos utøvere og publikum. Bildet er en konsert i laben, der en strykekvartett spiller mens vi måler både musikerne og publikum.</aside>
+  </section>
+  <section data-background-image="images/ritmo-lydo-2023.jpg" data-background-size="cover" data-background-position="center 55%">
+  <div class="photo-cap fragment" style="position:fixed;top:40px;bottom:auto;left:40px;right:auto;margin:0"><p class="cap-title">RITMO, 2017–2027</p><p>Senter for fremragende forskning om rytme, tid og bevegelse.</p></div>
+  <!-- RITMOFACTS:BEGIN -->
+  <div class="facts fragment" style="top:auto;bottom:40px;right:auto;left:40px"><p class="disc">Musikkvitenskap + psykologi + informatikk</p><p><b>77</b> personer og <b>15</b> gjesteforskere i 2025</p><p><b>72</b> stipendiater og postdoktorer siden 2017</p><p><b>26</b> doktorgrader</p><p><b>40</b> land</p><p><b>354</b> artikler</p></div>
+  <!-- RITMOFACTS:END -->
+  <aside class="notes">Fra 2017 bygget jeg opp og ledet RITMO, et senter for fremragende forskning om rytme, tid og bevegelse, der musikkvitere, psykologer og informatikere jobber sammen. (Klikk.) Tre fag under samme tak: musikkvitenskap, psykologi og informatikk, med felles laber, felles stipendiater og felles spørsmål. Tallene er fra årsrapportene og NVA: personer, også studentassistenter, og gjesteforskere det siste året, stipendiater og postdoktorer siden starten, doktorgrader, hvor mange land de ansatte kommer fra, og artikler. Bildet er fra kontrollrommet under et konserteksperiment med Stavanger Symfoniorkester i 2023, i prosjektet Bodies in Concert: orkesteret på scenen, og bevegelsene deres som figurer på skjermen.</aside>
+  </section>
+  <section data-background-image="images/mm-kristiansand-group.jpg" data-background-size="cover" data-background-position="center">
+  <div class="photo-cap fragment" style="position:fixed;top:40px;bottom:auto;left:40px;right:auto;margin:0"><p class="cap-title">MishMash, Kristiansand, september 2026</p><p>Nasjonalt senter for KI og kreativitet, fra hele landet.</p></div>
+  <!-- FACTS:BEGIN -->
+  <div class="facts fragment"><p><b>257</b> mill. kr fra Forskningsrådet, 2025–2030</p><p><b>23</b> forskningspartnere</p><p><b>33</b> partnere i kulturliv, offentlig sektor og næringsliv</p><p><b>12</b> internasjonale partnere</p><p><b>243</b> personer</p></div>
+  <!-- FACTS:END -->
+  <aside class="notes">Og nå leder jeg MishMash, Senter for KI og kreativitet, fra 2025 til 2030. MishMash er ett av Forskningsrådets seks nasjonale sentre for kunstig intelligens, og det eneste som handler om kreativitet. Dette er oss: deltakerne på åpningskonferansen i Kilden i Kristiansand i september. Universiteter, kunsthøgskoler, kulturinstitusjoner, skolefolk og bedrifter fra Tromsø til Kristiansand. (Klikk for bildeteksten, klikk igjen for tallene: bevilgningen fra Forskningsrådet, partnerne og personene, talt fra mishmash.no.) Foto: Hadle Kloster (UiA).</aside>
+  </section>
+</section>
+
+<!-- ================== MISHMASH ================== -->
+<section>
+  <section data-background-color="#b3e297">
+  <img class="fig" src="logo/mishmash-wordmark-black.svg" alt="MishMash" style="height:58vh;max-height:none;width:auto;display:block;margin:0 auto">
+  <p class="fragment" style="text-align:center;font-family:var(--mm-font-display);font-size:1.1em;margin-top:.6em">Senter for KI og kreativitet, 2025–2030</p>
+  <aside class="notes">MishMash, Senter for KI og kreativitet, 2025 til 2030. Hva er det vi gjør?</aside>
+  </section>
+
+  <section data-depth="more" class="center">
+  <div class="bubbles apart">
+  <svg viewBox="0 0 460 320" role="img" aria-label="To sirkler, mennesker og maskiner, hver for seg">
+  <g class="g-humans"><circle class="c-humans" cx="170" cy="160" r="110"/><text class="lbl on-surface" x="110" y="165">Mennesker</text></g>
+  <g class="g-machines"><circle class="c-machines" cx="290" cy="160" r="110"/><text class="lbl on-surface" x="350" y="165">Maskiner</text></g>
+  </svg>
+  </div>
+  <aside class="notes">To sirkler, hver for seg. Det meste av oppmerksomheten handler om hva maskinene kan. Menneskene blir omtalt som brukere, eller som de som skal erstattes.</aside>
+  </section>
+
+  <section data-depth="more" class="center">
+  <div class="bubbles joining">
+  <svg viewBox="0 0 460 320" role="img" aria-label="Mennesker og maskiner som glir sammen, med MishMash der de møtes">
+  <defs><clipPath id="join-clip-nb" clipPathUnits="userSpaceOnUse"><circle cx="170" cy="160" r="110"/></clipPath></defs>
+  <g class="g-humans"><circle class="c-humans" cx="170" cy="160" r="110"/><text class="lbl on-surface" x="110" y="165">Mennesker</text></g>
+  <g class="g-machines"><circle class="c-machines" cx="290" cy="160" r="110"/><text class="lbl on-surface" x="350" y="165">Maskiner</text></g>
+  <g class="join-clip" clip-path="url(#join-clip-nb)"><circle class="c-lens join-lens" cx="290" cy="160" r="110"/></g>
+  <text class="lbl lens join-label" x="230" y="165">MishMash</text>
+  </svg>
+  </div>
+  <aside class="notes">Og sammen. All teknologi, også KI, er laget av mennesker og for mennesker. Det interessante skjer der sirklene overlapper, og der holder MishMash til.</aside>
+  </section>
+
+  <section data-depth="more" class="center">
+  <div class="bubbles">
+  <svg viewBox="0 0 460 320" role="img" aria-label="Mennesker og maskiner overlapper, vitenskap over og kunst under, med MishMash der de møtes">
+  <defs><clipPath id="bubble-clip-nb" clipPathUnits="userSpaceOnUse"><circle cx="170" cy="160" r="110"/></clipPath></defs>
+  <circle class="c-humans"   cx="170" cy="160" r="110"/>
+  <circle class="c-machines" cx="290" cy="160" r="110"/>
+  <circle class="c-lens"     cx="290" cy="160" r="110" clip-path="url(#bubble-clip-nb)"/>
+  <text class="lbl" x="230" y="35">Vitenskap</text>
+  <text class="lbl" x="230" y="305">Kunst</text>
+  <text class="lbl on-surface" x="110" y="165">Mennesker</text>
+  <text class="lbl on-surface" x="350" y="165">Maskiner</text>
+  <text class="lbl lens" x="230" y="165">MishMash</text>
+  </svg>
+  </div>
+  <aside class="notes">Mennesker og maskiner overlapper, vitenskap og kunst overlapper, og MishMash er der de møtes. Vi er verken læren om maskiner eller læren om kunst, men det som skjer i overlappet.</aside>
+  </section>
+
+  <section data-depth="more">
+  <p class="sentence">MishMash skal
+  <span class="wordstack"><span class="hl green fragment" data-fragment-index="1">skape</span><span class="hl green fragment" data-fragment-index="1">utforske</span><span class="hl green fragment" data-fragment-index="1">reflektere over</span></span>
+  KI
+  <span class="wordstack"><span class="hl purple fragment" data-fragment-index="2">for</span><span class="hl purple fragment" data-fragment-index="2">gjennom</span><span class="hl purple fragment" data-fragment-index="2">i</span></span>
+  kreative praksiser.</p>
+  <aside class="notes">Hele senteret i én setning. Tre verb og tre preposisjoner (klikk for verbene, klikk for preposisjonene). Skape: lage systemer, verktøy og kunstverk. Utforske: bruke KI i kreativ praksis, og ta kreative metoder inn i andre felt. Reflektere: undersøke kritisk hva KI gjør med mennesker, kultur og samfunn. De samme tre verbene kommer igjen om litt, som det barna må lære.</aside>
+  </section>
+
+  <section data-depth="more">
+  <div class="grid7 big" role="img" aria-label="Sju fotografier, ett for hver arbeidspakke, med utdanning uthevet">
+  <figure class="fragment"><img src="images/wp1-erdem-rhyglyph.jpg" alt=""><figcaption>Fremføringer</figcaption></figure>
+  <figure class="fragment"><img src="images/wp2-solbakken-vigeland.jpg" alt=""><figcaption>Kunstneriske prosesser</figcaption></figure>
+  <figure class="fragment"><img src="images/wp3-bergsland-pose.jpg" alt=""><figcaption>Helse og velvære</figcaption></figure>
+  <figure class="pick fragment"><img src="images/wp4-sorbo-teachers.png" alt=""><figcaption>Utdanning</figcaption></figure>
+  <figure class="fragment"><img src="images/wp5-eidsvold-copyright.png" alt=""><figcaption>Kultur- og kreativ næring</figcaption></figure>
+  <figure class="fragment"><img src="images/wp6-lartillot-music-analysis.jpg" alt=""><figcaption>Kulturarv</figcaption></figure>
+  <figure class="fragment"><img src="images/wp7-nordby-openbridge.png" alt=""><figcaption>Kreativ problemløsning</figcaption></figure>
+  </div>
+  <aside class="notes">Senteret har syv arbeidspakker, her med ett bilde fra hver: kunstneriske fremføringer, kunstneriske prosesser, helse og velvære, utdanning, kultur- og kreativ næring, kulturarv og kreativ problemløsning. Utdanning er uthevet, fordi det er der skolen kommer inn: arbeidspakke 4 lager undervisningsmateriell og KI-kompetanse for skole og livslang læring.</aside>
+  </section>
+
+  <section data-depth="more">
+  <div class="layers" style="width:58%">
+  <img class="fig" src="images/mm-cube-notext-nb.svg" alt="En tom kube med syv lag">
+  <img class="fig fragment" src="images/mm-cube-layer-wps-nb.svg" alt="Forsiden med de syv arbeidspakkene">
+  <img class="fig fragment" src="images/mm-cube-layer-approaches-nb.svg" alt="Toppen med skape, utforske og reflektere">
+  <img class="fig fragment" src="images/mm-cube-layer-perspectives-nb.svg" alt="Siden med maskiner, mennesker og samfunn">
+  </div>
+  <aside class="notes">For å forklare hvordan et så stort samarbeid henger sammen, laget vi en kube. Først tom, så én side om gangen (klikk). Forsiden: syv arbeidspakker, fra fremføring og kunstneriske prosesser til helse, utdanning, kulturnæringene, kulturarv og problemløsning. Utdanning er arbeidspakke 4, og det er der skolen kommer inn. Toppen: skape, utforske, reflektere, i alle arbeidspakkene. Siden: maskiner, mennesker og samfunn, de tre perspektivene vi ser alt fra.</aside>
+  </section>
+
+  <section data-depth="more">
+  <div class="netwrap">
+  <iframe data-src="https://mishmash.no/people/network/" data-still="images/still-people-network.jpg" title="Det levende nettverket av personer i MishMash på mishmash.no" allowfullscreen></iframe>
+  </div>
+  <aside class="notes">Dette er det levende nettverket fra mishmash.no: alle personene i senteret, koblet etter institusjon, emne eller arbeidspakke. Det bygges automatisk hver natt fra NVA og ORCID. Senteret har ikke ett bygg; det er et knutepunkt som styrker institusjonene der de er, fra Tromsø til Kristiansand. [Direktekobling, trenger internett. Hopp over hvis nettet er ustabilt.]</aside>
+  </section>
+</section>
+
+<!-- ================== KI? ================== -->
+<section>
+  <section data-background-color="#a5cbed" class="divider">
+  <p class="q">KI?</p>
+  <aside class="notes">Først: hva er egentlig KI?</aside>
+  </section>
+  <section>
+  <div class="notathing">
+  <p>KI er ikke <span class="hl green">én</span> ting.</p>
+  <p class="fragment">Og KI er ikke en <span class="hl purple">ting</span>.</p>
+  </div>
+  <aside class="notes">Før vi snakker om hva skolen skal gjøre, to ting om ordet KI. For det første: KI er ikke én ting. Det er alt fra enkle boter og chatboter til assistenter, agenter og autonome systemer, og fra store språkmodeller til små modeller som lærer av en elevs egen bevegelse. Når vi sier "KI" om alt sammen, blir det umulig å snakke presist. (Klikk.) For det andre: KI er ikke en ting. Det er ikke et objekt som kommer utenfra og lander i klasserommet. Det er noe mennesker lager, av data mennesker har skapt, og som vi bruker på bestemte måter. Da er det også noe vi kan forme, og noe elevene kan lære å forme.</aside>
+  </section>
+  <section>
+  <div class="layers" style="width:90%">
+  <img class="fig" src="images/fig-ki-typer-0.svg" alt="To akser: kompleksitet bortover og autonomi oppover">
+  <img class="fig fragment" src="images/fig-ki-typer-1.svg" alt="Boter">
+  <img class="fig fragment" src="images/fig-ki-typer-2.svg" alt="Chatboter">
+  <img class="fig fragment" src="images/fig-ki-typer-3.svg" alt="Assistenter">
+  <img class="fig fragment" src="images/fig-ki-typer-4.svg" alt="Agenter">
+  <img class="fig fragment" src="images/fig-ki-typer-5.svg" alt="Systemer med mange agenter">
+  <img class="fig fragment" src="images/fig-ki-typer-6.svg" alt="Autonome systemer">
+  </div>
+  <aside class="notes">Figuren viser seks typer systemer, ett for hvert klikk, fra enkle boter via chatboter og assistenter til agenter som utfører oppgaver, systemer med mange agenter og helt autonome systemer. Kompleksiteten og selvstendigheten øker oppover. Det meste av debatten handler om chatbotene i midten. I skolen møter elevene mest de midterste, men de vil vokse opp med alle seks.</aside>
+  </section>
+  <section>
+  <div class="equation" style="font-size:1.85em;gap:.4em">
+  <span class="term green">Data</span>
+  <span class="fragment" data-fragment-index="1">+</span>
+  <span class="term blue fragment" data-fragment-index="1">Algoritme</span>
+  <span class="fragment" data-fragment-index="2">=</span>
+  <span class="term pink fragment" data-fragment-index="2">Modell<small class="fragment" data-fragment-index="3">f.eks. Claude Opus</small></span>
+  <span class="fragment eq-arrow" data-fragment-index="4">→</span>
+  <div class="tools">
+  <span class="tool green fragment" data-fragment-index="5">Claude-appen</span>
+  <span class="tool blue fragment" data-fragment-index="6">Claude Code</span>
+  <span class="tool purple fragment" data-fragment-index="7">GitHub Copilot</span>
+  <span class="tool pink fragment" data-fragment-index="8">Cursor</span>
+  <span class="tool green fragment" data-fragment-index="9">Microsoft 365 Copilot</span>
+  </div>
+  </div>
+  <aside class="notes">Det viktigste elevene må forstå om KI, kan skrives som en enkel formel. Data: lyd, bilder, tekst, bevegelse, laget av mennesker. (Klikk.) Pluss en algoritme: en oppskrift for å lære mønstre fra eksemplene. (Klikk.) Er lik en modell. Den som velger dataene, velger også hva modellen kan, og hva den ikke kan. Det kan elevene prøve selv: trene en liten modell på sine egne lyder eller bevegelser, og se hva som skjer når de bytter ut dataene. (Klikk.) Et eksempel på en modell er Claude Opus, fra Anthropic. (Klikk.) Og den samme modellen kan brukes gjennom mange ulike verktøy (klikk for hvert): Claude-appen for å skrive og snakke med den, Claude Code for programmering, og den finnes også inne i verktøy fra andre selskaper, som GitHub Copilot, Cursor og Microsoft 365 Copilot. Verktøyet er det vi ser; modellen er motoren inni. Derfor er det ikke nok å spørre hvilket verktøy elevene bruker, men også hvilken modell som ligger under.</aside>
+  </section>
+  <section data-depth="more">
+  <img class="fig" src="images/fig-modell-tall.svg" alt="Lyd i treningsdataene til venstre, en tabell med tall til høyre: modellen" style="max-height:66vh;display:block;margin:0 auto">
+  <aside class="notes">En modell er ikke dataene. Det ligger ingen lydfiler inni den. Den består av tall, i de store modellene milliarder av dem, som er justert under treningen slik at modellen blir god til å forutsi hva som kommer etter. Det modellen har lært, er mønstre: hvordan en vise i moll pleier å gå, hvordan en saksofon pleier å klinge.</aside>
+  </section>
+  <section data-depth="more">
+  <div class="links" role="img" aria-label="To store sirkler: Data til venstre og Modell, merket anarkiv, til høyre. En hel pil øverst går fra dataene til modellen, merket lærer av. En stiplet pil nederst går fra modellen tilbake, merket peker tilbake.">
+  <svg viewBox="0 0 1500 760" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="6">
+  <defs><marker id="an-arrow-nb" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="currentColor" stroke="none"/></marker></defs>
+  <path d="M440 200 Q750 20 1060 200" marker-end="url(#an-arrow-nb)"/>
+  <path class="fragment" d="M1060 560 Q750 740 440 560" stroke-dasharray="16 14" marker-end="url(#an-arrow-nb)"/>
+  </svg>
+  <div class="dot" style="left:100px;top:180px;width:400px;height:400px;font-size:1.3em;background:var(--mm-blue)">Data</div>
+  <div class="dot open" style="left:1000px;top:180px;width:400px;height:400px;font-size:1.3em;background:var(--mm-pink)">Modell<span>anarkiv</span></div>
+  <div class="arrow-label" style="left:550px;top:20px">lærer av</div>
+  <div class="arrow-label fragment" style="left:550px;top:680px">peker tilbake?</div>
+  </div>
+  <aside class="notes">Modellen er ikke et arkiv. Et arkiv holder dokumenter med kilde og opphav. En modell er laget av data, men holder ingen dokumenter; den setter sporene sammen på nytt hver gang den svarer. Pierre Cassou-Noguès og Gwenola Wagon kaller det et anarkiv. (Klikk.) Derfor kan modellen ikke selv si hvor noe kommer fra. Skal den peke tilbake til kildene, må vi bygge det inn. Det er det elevene må lære å spørre om: hva er den trent på, og hvem har laget det?</aside>
+  </section>
+  <section data-depth="more">
+  <div class="layers" style="width:90%">
+  <img class="fig" src="images/fig-sma-modeller-1.svg" alt="Eget materiale: du vet hva som er med">
+  <img class="fig fragment" src="images/fig-sma-modeller-2.svg" alt="Liten modell, trent på egen maskin">
+  <img class="fig fragment" src="images/fig-sma-modeller-3.svg" alt="Nytt materiale: data forlater ikke rommet">
+  </div>
+  <aside class="notes">Det finnes et alternativ til de store modellene: små modeller trent på eget materiale. Da vet man hva som er med. (Klikk.) Modellen kan trenes på en vanlig datamaskin, ikke i et datasenter. (Klikk.) Ingen data forlater rommet. Det passer godt i skolen: elevene kan trene en modell på sine egne lyder eller bevegelser i klasserommet, og forstå hele kjeden fra data til modell.</aside>
+  </section>
+  <section data-depth="more">
+  <p class="lead def">Datasystemer som gjør ting vi vanligvis tenker krever menneskelig tenkning, som regel ved å lære av mange eksempler.</p>
+  <aside class="notes">Kunstig intelligens er datasystemer som gjør ting vi vanligvis tenker krever menneskelig tenkning, som å kjenne igjen bilder, skrive tekst eller komponere musikk, som regel ved å lære av mange eksempler. Ordet er fra 1955, så KI er mye eldre enn chatbotene.</aside>
+  </section>
+
+  <section data-depth="more">
+  <div class="links" role="img" aria-label="Tre sirkler: personvern, rettigheter og kreditering">
+  <div class="dot open fragment" style="left:0;top:120px;background:var(--mm-pink)">Personvern<span>Hva skjer med det elevene skriver inn?</span></div>
+  <div class="dot open fragment" style="left:520px;top:120px;background:var(--mm-purple)">Rettigheter<span>Hvem eier det som kommer ut?</span></div>
+  <div class="dot open fragment" style="left:1040px;top:120px;background:var(--mm-blue)">Kreditering<span>Hva er laget av elevene, og hva av maskiner?</span></div>
+  </div>
+  <aside class="notes">Tre spørsmål alle skoler må kunne svare på. Hva skjer med det elevene skriver inn i en chatbot? Hvem eier det som kommer ut? Og hvordan viser elevene hva de har laget selv, og hva de har laget med en maskin? Svaret er sjelden et forbud. Det er å vite hvilke tjenester man bruker, og å lære elevene å dokumentere og kreditere.</aside>
+  </section>
+  <section data-depth="more">
+  <div class="links" role="img" aria-label="Tre store sirkler side om side: språk og kultur, uavhengighet og innsyn.">
+  <div class="dot open fragment" style="left:0;top:120px;background:var(--mm-green)">Språk og kultur</div>
+  <div class="dot open fragment" style="left:520px;top:120px;background:var(--mm-blue)">Uavhengighet</div>
+  <div class="dot open fragment" style="left:1040px;top:120px;background:var(--mm-purple)">Innsyn</div>
+  </div>
+  <p class="midline">Hvorfor en norsk modell?</p>
+  <aside class="notes">Hvorfor trenger skolen en norsk modell? Tre grunner. Språk og kultur: de store modellene er dårlige på nynorsk, hjelpeløse på samisk, og vet lite om norsk musikk og film. Uavhengighet: modellene skolene bruker i dag, eies av selskaper i USA og Kina og kan endre vilkår eller forsvinne i morgen. Innsyn: vi kan ikke åpne dem, og vi vet ikke hva de har lært av. Det er også derfor vi ber regjeringen om en norsk modell trent på norsk innhold, der de som har laget innholdet får betalt.</aside>
+  </section>
+</section>
+
+<!-- ================== MUSIKK? ================== -->
+<section>
+  <section data-background-color="#efadb2" class="divider">
+  <p class="q">Musikk?</p>
+  <aside class="notes">Så: hva er musikk?</aside>
+  </section>
+  <section>
+  <div class="layers" style="width:62%">
+  <img class="fig" src="images/fig-kvadrant-ord.svg" alt="Ordet musikkering i midten" style="visibility:hidden">
+  <img class="fig fragment" data-fragment-index="1" src="images/fig-kvadrant-hjorne-1.svg" alt="Skape">
+  <img class="fig fragment" data-fragment-index="2" src="images/fig-kvadrant-hjorne-2.svg" alt="Utøve, med pil fra skape">
+  <img class="fig fragment" data-fragment-index="3" src="images/fig-kvadrant-hjorne-3.svg" alt="Oppleve, med pil fra utøve">
+  <img class="fig fragment" data-fragment-index="4" src="images/fig-kvadrant-hjorne-4.svg" alt="Forstå, med pil fra oppleve og pil tilbake til skape">
+  <img class="fig fragment fade-in-then-out" data-fragment-index="5" src="images/fig-kvadrant-ord.svg" alt="Ordet musikkering i midten">
+  <img class="fig fragment" data-fragment-index="6" src="images/fig-kvadrant-ki-2.svg" alt="KI i midten, koblet til alle fire hjørner med stiplede linjer">
+  </div>
+  <aside class="notes">Musikk er noe vi gjør, ikke bare noe vi hører. Musikkering, etter Christopher Small, har fire hjørner (klikk for hvert): å skape, å utøve, å oppleve og å forstå, og de henger sammen i en sirkel. (Klikk: musikkering.) I skolen har vi ofte vektlagt ett eller to av hjørnene. (Klikk.) KI kommer inn i midten. Den kan mediere mellom alle fire hjørnene: hjelpe oss å skape, akkompagnere når vi spiller, anbefale hva vi skal høre, og analysere og forklare. Spørsmålet er ikke om KI skal være der, men om den kobler hjørnene sammen eller tar over ett av dem. Hvis maskinen lager alle produktene, mister elevene prosessen.</aside>
+  </section>
+</section>
+
+<!-- ================== SKOLEN? ================== -->
+<section>
+  <section data-background-color="#9a90cf" class="divider">
+  <p class="q">Skolen?</p>
+  <aside class="notes">Så: hva betyr dette for skolen?</aside>
+  </section>
+  <section>
+  <div class="me-stack" style="height:86vh">
+  <img class="roles-fig" src="images/fig-skolefag-0.svg" alt="Musikk i midten">
+  <img class="roles-fig fragment" data-fragment-index="1" src="images/fig-skolefag-1.svg" alt="Matematikk, koblet til musikk">
+  <img class="roles-fig fragment" data-fragment-index="2" src="images/fig-skolefag-2.svg" alt="Naturfag, koblet til musikk">
+  <img class="roles-fig fragment" data-fragment-index="3" src="images/fig-skolefag-3.svg" alt="Programmering, koblet til musikk">
+  <img class="roles-fig fragment" data-fragment-index="4" src="images/fig-skolefag-4.svg" alt="Norsk, koblet til musikk">
+  <img class="roles-fig fragment" data-fragment-index="5" src="images/fig-skolefag-5.svg" alt="Språk, koblet til musikk">
+  <img class="roles-fig fragment" data-fragment-index="6" src="images/fig-skolefag-6.svg" alt="Samfunnsfag, koblet til musikk">
+  <img class="roles-fig fragment" data-fragment-index="7" src="images/fig-skolefag-7.svg" alt="Kunst og håndverk, koblet til musikk">
+  <img class="roles-fig fragment" data-fragment-index="8" src="images/fig-skolefag-8.svg" alt="Kroppsøving, koblet til musikk">
+  </div>
+  <aside class="notes">Musikk er faget som kobler de andre fagene sammen (klikk for hvert fag). Matematikk: rytme er brøker, takter og mønstre. Naturfag: lyd er svingninger og bølger. Programmering: å lage lyd og musikk med kode. Norsk og språk: rytme, rim og melodi i språket, og sanger på andre språk. Samfunnsfag: musikk bærer kultur, historie og identitet. Kunst og håndverk: å bygge instrumenter. Kroppsøving: dans og bevegelse til musikk. Musikk står ikke ved siden av de andre fagene, den står i midten.</aside>
+  </section>
+  <section>
+  <div class="me-stack" style="height:86vh">
+  <img class="roles-fig" src="images/fig-effekter-0.svg" alt="Musikk i midten">
+  <img class="roles-fig fragment" data-fragment-index="1" src="images/fig-effekter-1.svg" alt="Pil fra musikk til sosialt">
+  <img class="roles-fig fragment" data-fragment-index="2" src="images/fig-effekter-2.svg" alt="Pil fra musikk til estetisk">
+  <img class="roles-fig fragment" data-fragment-index="3" src="images/fig-effekter-3.svg" alt="Pil fra musikk til motorisk">
+  <img class="roles-fig fragment" data-fragment-index="4" src="images/fig-effekter-4.svg" alt="Pil fra musikk til kognitivt">
+  <img class="roles-fig fragment" data-fragment-index="5" src="images/fig-effekter-5.svg" alt="Pil fra musikk til emosjonelt">
+  <img class="roles-fig fragment" data-fragment-index="6" src="images/fig-effekter-6.svg" alt="Pil fra musikk til språklig">
+  <img class="roles-fig fragment" data-fragment-index="7" src="images/fig-effekter-7.svg" alt="Pil fra musikk til kulturelt">
+  <img class="roles-fig fragment" data-fragment-index="8" src="images/fig-effekter-8.svg" alt="Pil fra musikk til helse">
+  </div>
+  <aside class="notes">Og musikk virker inn på mye mer enn musikk (klikk for hvert område). Sosialt: å spille og synge sammen bygger fellesskap og samarbeid. Estetisk: å oppleve og lage noe vakkert. Motorisk: finmotorikk og koordinasjon, timing og rytme i kroppen. Kognitivt: oppmerksomhet, hukommelse og mønstergjenkjenning. Emosjonelt: å kjenne og uttrykke følelser. Språklig: lytting, uttale og rytme i språket. Kulturelt: tilhørighet og møte med andre kulturer. Helse: musikk brukes til å regulere stress, pust og bevegelse. [ARJ: nevn gjerne én konkret studie her, for eksempel fra RITMO; anbefaling: en som handler om å spille sammen.]</aside>
+  </section>
+</section>
+
+<!-- ================== FREMTIDEN? ================== -->
+<section>
+  <section data-background-color="#b3e297" class="divider">
+  <p class="q">Fremtiden?</p>
+  <aside class="notes">Og til slutt: hva bør vi gjøre fremover?</aside>
+  </section>
+  <section>
+  <div class="layers" style="width:62%">
+  <img class="fig" src="images/fig-syklus-1.svg" alt="Skape">
+  <img class="fig fragment" src="images/fig-syklus-2.svg" alt="Utforske, med pil fra skape">
+  <img class="fig fragment" src="images/fig-syklus-3.svg" alt="Reflektere, med piler tilbake til skape">
+  </div>
+  <aside class="notes">Tre ting barna må lære, og det er de samme tre som MishMash gjør. Skape: lage noe selv, med kroppen, sammen med andre; musikk er en prosess, ikke et produkt. (Klikk.) Utforske: prøve selv, med og uten maskiner, spille, synge, trykke på knappene og se hva som skjer. (Klikk.) Reflektere: maskinene kan lage noe nytt, men det er mennesker som avgjør om det har verdi; bruk KI, test det ut, men reflekter, dokumenter og krediter. Og det er en sirkel, ikke en rekkefølge. Hovedmålet til MishMash står i én setning: å skape, utforske og reflektere over KI for, gjennom og i kreative praksiser.</aside>
+  </section>
+  <section>
+  <div class="bridge">
+  <div class="side"><div class="big-dot" style="background:var(--mm-green)">MishMash<br>kan</div>
+  <p class="fragment" data-fragment-index="1">forske sammen med skolene</p>
+  <p class="fragment" data-fragment-index="3">lage åpne verktøy og læremidler</p>
+  <p class="fragment" data-fragment-index="5">bidra til etter- og videreutdanning</p></div>
+  <div class="side"><div class="big-dot" style="background:var(--mm-pink)">Skolene<br>må</div>
+  <p class="fragment" data-fragment-index="2">gi elevene tid til å lage selv</p>
+  <p class="fragment" data-fragment-index="4">bruke timen på å skape sammen</p>
+  <p class="fragment" data-fragment-index="6">stille krav til systemene de tar inn</p></div>
+  </div>
+  <aside class="notes">Hva skal til for at dette henger sammen? Det er et ansvar på begge sider, og linjene kommer annenhver gang, venstre og høyre.
+Forskning sammen med skolene, ikke bare om dem; skolene gir elevene tid til å lage selv, med og uten maskiner.
+Åpne verktøy og læremidler som lærerne eier og kan dele, som appene jeg skal vise om litt; skolene bruker maskinene til det som kan gjøres utenfor timen, og timen til det bare mennesker kan gjøre sammen: synge, spille, danse, bygge.
+MishMash har en egen arbeidspakke for KI i utdanning, med mål om åpent materiale, metoder og etter- og videreutdanning for lærere; skolene og skolelederne stiller krav til systemene de kjøper inn: hvor havner elevenes stemmer, bilder og data?
+[Anbefaling: si «bidra til» og ikke «tilby» om etter- og videreutdanning, siden arbeidspakken er i startfasen. Endre hvis det er avtalt noe konkret.]</aside>
+  </section>
+  <section data-depth="more">
+  <div class="photo-full">
+  <img src="images/wp4-sorbo-teachers.png" alt="Lærere som prøver ut KI-verktøy">
+  <p class="overlay-line fragment">MishMash AP4: kreativ bruk av KI i utdanning</p>
+  </div>
+  <aside class="notes">Arbeidspakke 4 i MishMash handler om utdanning. Sektoren er full av lokale initiativ som tar i bruk kommersielle verktøy, mens gode, åpne ressurser om kreativ KI er sjeldne, og nesten ingen finnes på norsk. Målet er å utruste fremtidens lærere og lukke generasjonsgapet i KI-kompetanse. Arbeidspakken ledes av Eirik Sørbø ved UiA, med Sidsel Karlsen ved Norges musikkhøgskole og Fredrik Graver ved Høgskolen i Innlandet. Ta gjerne kontakt med dem.</aside>
+  </section>
+</section>
+
+<!-- ================== EKSEMPLER ================== -->
+<section>
+  <section data-background-color="#a5cbed" class="divider">
+  <p class="q">Eksempler</p>
+  <aside class="notes">Nå noen eksempler dere kan prøve selv.</aside>
+  </section>
+  <section>
+  <div class="qr-grid">
+  <img class="qr" src="images/qr-firefly.svg" alt="QR-kode til Firefly-appen">
+  <div>
+  <h2>Prøv selv</h2>
+  <p class="lead">Skann, skru opp lyden og trykk Start. Telefonene finner takten sammen, som ildfluer.</p>
+  <p class="qr-url">fourms.github.io/omo/apps/firefly</p>
+  </div>
+  </div>
+  <aside class="notes">Nå vil jeg at dere tar frem telefonen. Skann koden, trykk «Start» og tillat mikrofonen når telefonen spør. Hver telefon spiller et jevnt klikk og lytter etter klikkene fra telefonene rundt seg, og justerer tempo og takt litt etter litt, slik ildfluer begynner å blinke i takt. Hold telefonen fremme, med lyden på. Etter et halvt minutt til et minutt skal rommet begynne å klikke sammen.
+Poenget: ingen dirigent og ingen sentral maskin. Hver node følger enkle regler, og samspillet oppstår. Det er en fin inngang til hvordan rytme, samspill og systemer virker, og det kan gjøres i et klasserom.
+Ideen er fra Musical Fireflies, som Kristian Nymoen og kolleger utviklet ved fourMs-laben ved UiO i 2013. Denne nettversjonen ligger i appsamlingen til Oslo Mobile Orchestra (OMO), med mange andre musikkapper for telefonen.
+Praktisk: appen er på engelsk. Publikum trenger mobildata eller nett i salen; selve presentasjonen trenger ikke nett. På iPhone må lyden være på og telefonen ikke i stillemodus. Høyere volum hjelper mikrofonene å finne hverandre. Adressen er https://fourms.github.io/omo/apps/firefly/</aside>
+  </section>
+  <section class="demo">
+  <p class="demo-link"><a href="apps/euclidean-groove/index.html" target="_blank" rel="noopener">Regelbasert: rytme fra regler</a></p>
+  <div class="appwrap"><iframe data-src="apps/euclidean-groove/index.html?embed&amp;light" title="Euklidsk groove: rytmer fra aritmetikk, omskrevet av regler" allow="autoplay"></iframe></div>
+  <aside class="notes">Demo 1, uten nett og uten mikrofon. Klikk «▶ Play». Fire ringer, hver en rytme der slagene fordeles så jevnt som aritmetikken tillater. Hver takt skriver en regel om mønsteret, så grooven utvikler seg av seg selv. Klikk på en celle for å slå et slag av eller på; tallene 1 til 4 velger en ring, og pluss og minus endrer antall slag.
+Hva jeg sier: dette er også KI, den eldste sorten. Ingen data og ingen trening, bare regler. Mye musikk er regelbasert, og mye av det elevene gjør når de lager rytmer, er å finne og bryte regler. Elevene kan utforske ved å endre én ring av gangen og lytte.
+Etter demoen: stopp med «▶ Play» igjen, og klikk utenfor rammen før du blar videre.</aside>
+  </section>
+  <section class="demo">
+  <p class="demo-link"><a href="apps/neste-tone/index.html" target="_blank" rel="noopener">Læringsbasert: neste tone</a></p>
+  <div class="appwrap"><iframe data-src="apps/neste-tone/index.html?embed" title="Neste tone: en modell som lærer melodier av eksempler" allow="autoplay"></iframe></div>
+  <aside class="notes">Demo 2, uten nett. Nå den andre hovedtypen KI: en modell som lærer av eksempler i stedet for å følge regler. Den teller hvilke toner som pleier å følge etter hverandre i noen kjente sanger (Bæ, bæ, lille lam og Fader Jakob), og trekker en ny melodi tone for tone. Klikk «Lag melodi»; den spiller med en gang.
+Vis tre ting. Kontekst: med én tone tilbake vandrer melodien fritt; med fire toner tilbake kopierer den nesten bare sangene (lilla er kopiert, grønt er nye kombinasjoner). Temperatur: lav gir det mest sannsynlige, høy gir mer overraskende valg. Treningsdata: kryss av for Lisa gikk til skolen og hør at modellen endrer seg; den kan bare det den har lært av.
+Hva jeg sier: det er det samme prinsippet som i de store språkmodellene og musikkmodellene, bare med noen få sanger og ikke millioner. Data pluss algoritme blir modell, og modellen kan ikke mer enn dataene. Regelbasert og læringsbasert er to forskjellige måter å lage KI på, og elevene kan prøve begge.
+Klikk utenfor rammen før du blar videre.</aside>
+  </section>
+</section>
+
+<!-- ================== AVSLUTNING ================== -->
+<section>
+  <section data-background-color="#b3e297" class="center">
+  <div class="cycle closing-cycle">
+  <svg viewBox="0 0 900 600" role="img" aria-label="MishMash-logoen i midten av en sirkel med skape, utforske og reflektere">
+  <defs>
+  <marker id="cyc-arrow" viewBox="0 0 10 10" refX="8" refY="5"
+          markerWidth="5.5" markerHeight="5.5" orient="auto-start-reverse">
+  <path d="M0 0 L10 5 L0 10 z"/>
+  </marker>
+  </defs>
+
+  <g class="arc fragment" data-fragment-index="4">
+  <path d="M544.5 149.5 A195 195 0 0 1 645.0 323.4"/>
+  <path d="M550.4 487.1 A195 195 0 0 1 349.6 487.1"/>
+  <path d="M255.0 323.4 A195 195 0 0 1 355.5 149.5"/>
+  </g>
+
+  <g class="node green fragment" data-fragment-index="1" transform="translate(450 125)">
+  <circle r="96"/>
+  <g class="glyph" transform="translate(-22.8 -45.6) scale(1.9)">
+  <path d="M4 20h4l10.5 -10.5a2.83 2.83 0 0 0 -4 -4l-10.5 10.5v4"/>
+  <path d="M13.5 6.5l4 4"/>
+  </g>
+  <text class="lbl" y="34">SKAPE</text>
+  </g>
+
+  <g class="node purple fragment" data-fragment-index="2" transform="translate(618.9 417.5)">
+  <circle r="96"/>
+  <g class="glyph" transform="translate(-22.8 -45.6) scale(1.9)">
+  <circle cx="12" cy="12" r="9"/>
+  <path d="M9 15l2.4 -5.6l5.6 -2.4l-2.4 5.6z"/>
+  </g>
+  <text class="lbl" y="34">UTFORSKE</text>
+  </g>
+
+  <g class="node blue fragment" data-fragment-index="3" transform="translate(281.1 417.5)">
+  <circle r="96"/>
+  <g class="glyph" transform="translate(-22.8 -45.6) scale(1.9)">
+  <path d="M4 18.5l1.1 -3.3a7.5 6.7 0 1 1 2.9 2.4z"/>
+  <path d="M10 9.6a2.1 2.1 0 1 1 2.6 2c-.7 .25 -.85 .8 -.85 1.4"/>
+  <path d="M11.75 15.4h.02"/>
+  </g>
+  <text class="lbl" y="34">REFLEKTERE</text>
+  </g>
+  <image href="logo/mishmash-wordmark-black.svg" x="372" y="262" width="156" height="111"/>
+  </svg>
+  </div>
+  <p style="font-family:var(--mm-font-display);margin:.2em 0;text-align:center">mishmash.no</p>
+  <aside class="notes">(Logoen først, så klikk for skape, utforske og reflektere, og klikk for pilene som binder dem sammen.) For å oppsummere: elevene må få utforske, reflektere og skape, med og uten maskiner. I en verden der maskinene kan lage nesten hvilket som helst produkt, blir det viktigste skolen kan gi elevene, det maskinene ikke kan gi dem: erfaringen av å skape noe selv, med kroppen, sammen med andre, i et rom. Det er det de praktiske og estetiske fagene gjør. Er de pynt eller motor? Mitt svar er motor. Takk for oppmerksomheten.</aside>
+  </section>
+  <section data-depth="more">
+  <div class="layers full" style="width:1600px">
+  <img class="fig" src="images/fig-samskaping-0.svg" alt="Alexander og en KI-agent">
+  <img class="fig fragment" src="images/fig-samskaping-1.svg" alt="Første runde: idé og kilder, første utkast">
+  <img class="fig fragment" src="images/fig-samskaping-2.svg" alt="Andre runde: kommentarer, ny versjon">
+  <img class="fig fragment" src="images/fig-samskaping-3.svg" alt="Tredje runde: flere kommentarer, ny versjon">
+  <img class="fig fragment" src="images/fig-samskaping-4.svg" alt="Lysbildene i midten; ansvaret er mitt">
+  </div>
+  <aside class="notes">Slik ble denne presentasjonen laget, og det er samme samskapingsprosess som elevene bør lære. Jeg ga agenten en idé og kildene mine: invitasjonen, egne tekster, figurer, bilder og apper. (Klikk.) Den laget et første utkast. (Klikk.) Jeg kommenterte, og den laget en ny versjon. (Klikk.) Og så igjen, mange ganger, hver runde litt strammere. (Klikk.) Resultatet er lysbildene, og ansvaret er mitt. Maskinen lager utkast, mennesket leser, retter og forstår. Det er ikke å trykke på én knapp; det er en iterativ prosess, akkurat som å øve inn et stykke musikk.</aside>
+  </section>
+</section>
+
+</div>
+</div>
+
+<div class="footer">mishmash.no</div>
+<img id="funder" src="images/rcn-logo.svg" alt="Funded by the Research Council of Norway" hidden>
+<div id="position" aria-hidden="true"></div>
+
+<script src="lib/reveal/reveal.js"></script>
+<script src="lib/reveal-plugin/notes/notes.js"></script>
+<script>
+(function () {
+  'use strict';
+
+  /* Each question's divider gives its whole stack an accent colour. The
+     custom property is set on the top-level section and inherits into every
+     slide nested inside it, so the kicker rules pick it up for free. */
+  (function () {
+    document.querySelectorAll('.reveal .slides > section').forEach(function (s) {
+      var d = s.hasAttribute('data-background-color')
+        ? s
+        : s.querySelector(':scope > section[data-background-color]');
+      if (d) s.style.setProperty('--slide-colour', d.getAttribute('data-background-color'));
+    });
+  })();
+
+  /* ---- Where am I ----------------------------------------------------
+     Names the question you are on and how far down it you have gone, so you
+     can see at a glance how much of this section is still below you.
+     "WHAT? 2/9" is the second of nine slides under What?.
+  --------------------------------------------------------------------*/
+  var readout = document.getElementById('position');
+
+  function showPosition() {
+    var at = Reveal.getIndices();
+    var stack = document.querySelectorAll('.reveal .slides > section')[at.h];
+    if (!stack) return;
+    var q = stack.querySelector('.q');
+    var depth = stack.querySelectorAll(':scope > section').length;
+    if (!q || !depth) { readout.textContent = ''; return; }
+    readout.innerHTML = q.textContent +
+      (at.v ? ' <span class="depth">' + at.v + '/' + (depth - 1) + '</span>' : '');
+  }
+
+  Reveal.initialize({
+    hash: true,
+    width: 1920, height: 1080, margin: 0.045,
+    minScale: 0.2, maxScale: 2.0,
+    slideNumber: false,
+    transition: 'fade',
+    /* Arrows at the edge midpoints rather than bunched in the corner: it keeps
+       the bottom right free for the funder credit, and the down arrow at the
+       foot of the screen reads as "there is more under this question". */
+    controlsLayout: 'edges',
+    controlsTutorial: false,
+    preloadIframes: true,
+    fragments: !/[?&]fragments=false\b/.test(location.search),
+    plugins: [RevealNotes]
+  });
+
+  /* ---- Dark mode -----------------------------------------------------
+     D toggles it, and the choice is remembered. It starts light whatever
+     the machine prefers: a talk is nearly always projected, and a deck
+     that goes dark because the laptop is in dark mode is a surprise
+     nobody wants in front of a room.
+  --------------------------------------------------------------------*/
+  function setDark(on) {
+    document.documentElement.classList.toggle('dark', on);
+    try { localStorage.setItem('mishmash-deck-dark', on ? '1' : '0'); } catch (e) {}
+  }
+  try { setDark(localStorage.getItem('mishmash-deck-dark') === '1'); } catch (e) {}
+  Reveal.addKeyBinding(
+    { keyCode: 68, key: 'D', description: 'Toggle dark mode' },
+    function () { setDark(!document.documentElement.classList.contains('dark')); syncApps(); }
+  );
+
+  /* The embedded demos take ?light or ?dark when they load, and are told by
+     message once loaded, so they keep their state when the mode changes. */
+  function syncApps() {
+    var dark = document.documentElement.classList.contains('dark');
+    document.querySelectorAll('.appwrap iframe').forEach(function (f) {
+      var v = f.getAttribute('data-src');
+      if (v) f.setAttribute('data-src', v.replace(/&(dark|light)\b/, dark ? '&dark' : '&light'));
+      if (f.getAttribute('src')) { try { f.contentWindow.postMessage({ type: 'theme', dark: dark }, '*'); } catch (e) {} }
+    });
+  }
+  syncApps();
+
+  Reveal.on('ready', showPosition);
+  Reveal.on('slidechanged', showPosition);
+
+  /* The readout is chrome, not content: hide it while printing. */
+  if (/print-pdf|print=1/.test(location.search)) readout.style.display = 'none';
+})();
+</script>
+<script src="js/wordmark.js"></script>
+</body>
+</html>

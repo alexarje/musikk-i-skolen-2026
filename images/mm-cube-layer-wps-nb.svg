@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Label layer only. Transparent, and shares the viewBox of
+     mm-cube-notext.svg so it can be stacked straight on top of it. -->
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="70 210 460 370">
+  <g font-family="'Helvetica Neue', Arial, sans-serif" font-size="14" fill="white">
+    <text x="90" y="328">AP1: KI for kunstneriske fremføringer</text>
+    <text x="90" y="362">AP2: KI i kunstneriske prosesser</text>
+    <text x="90" y="396">AP3: Kreativ bruk av KI for helse og velvære</text>
+    <text x="90" y="432">AP4: Kreativ bruk av KI i utdanning</text>
+    <text x="90" y="465">AP5: KI i de kreative og kulturelle næringene</text>
+    <text x="90" y="499">AP6: KI for kulturarv</text>
+    <text x="90" y="533">AP7: KI for kreativ problemløsning</text>
+  </g>
+</svg>

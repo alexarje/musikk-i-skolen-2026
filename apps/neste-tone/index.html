@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="nb">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Neste tone</title>
+<style>
+  :root { --ink:#231f20; --green:#b3e297; --purple:#9a90cf; --blue:#a5cbed; --pink:#efadb2; --paper:#ffffff; --muted:#6d6869; }
+  * { box-sizing: border-box; }
+  body { margin:0; font-family: Inter, Arial, sans-serif; color:var(--ink); background:var(--paper); }
+  main { max-width: 1180px; margin: 0 auto; padding: 18px 22px; }
+  h1 { font-family: 'Roboto Condensed', Arial, sans-serif; font-weight:700; font-size: 30px; margin: 0 0 6px; }
+  p.intro { margin: 0 0 14px; font-size: 16px; line-height: 1.4; max-width: 60em; }
+  .grid { display:grid; grid-template-columns: 300px 1fr; gap: 20px; align-items:start; }
+  fieldset { border: 2px solid var(--ink); margin: 0 0 12px; padding: 8px 12px; }
+  legend { font-family: 'Roboto Condensed', Arial, sans-serif; font-weight:700; padding: 0 4px; }
+  label { display:block; margin: 4px 0; font-size: 15px; }
+  input[type=range] { width: 100%; }
+  button { font: inherit; font-weight:700; border: 2px solid var(--ink); background: var(--green); padding: 8px 14px; cursor:pointer; margin: 0 6px 6px 0; }
+  button.alt { background: var(--blue); }
+  button.ghost { background: var(--paper); }
+  canvas { width: 100%; height: 260px; border: 2px solid var(--ink); display:block; background:#fff; }
+  .legend { font-size: 13px; color: var(--muted); margin-top: 6px; }
+  .legend span { display:inline-block; width: 14px; height: 10px; margin: 0 4px 0 10px; border:1px solid var(--ink); vertical-align: middle; }
+  .stats { font-size: 14px; margin-top: 8px; }
+  body.embed main { padding: 10px 14px; }
+  body.embed p.intro { display:none; }
+</style>
+</head>
+<body>
+<main>
+<h1>Neste tone: en modell som lærer av eksempler</h1>
+<p class="intro">Modellen har ingen regler for hvordan en melodi skal gå. Den teller hvilke toner som pleier å følge etter hverandre i sangene den er trent på, og trekker så en ny melodi tone for tone. Velg sangene den skal lære av, hvor mange toner den skal se tilbake, og hvor dristig den skal være.</p>
+<div class="grid">
+<div>
+  <fieldset><legend>Treningsdata</legend>
+    <label><input type="checkbox" class="song" value="baa" checked> Bæ, bæ, lille lam</label>
+    <label><input type="checkbox" class="song" value="jakob" checked> Fader Jakob</label>
+    <label><input type="checkbox" class="song" value="lisa"> Lisa gikk til skolen</label>
+  </fieldset>
+  <fieldset><legend>Modell</legend>
+    <label>Kontekst: <b id="kval">2</b> toner tilbake
+      <input id="k" type="range" min="1" max="4" step="1" value="2"></label>
+    <label>Temperatur: <b id="tval">1.0</b>
+      <input id="t" type="range" min="0.2" max="3" step="0.1" value="1"></label>
+  </fieldset>
+  <button id="gen">Lag melodi</button>
+  <button id="play" class="alt">Spill</button>
+  <button id="orig" class="ghost">Spill treningsdata</button>
+  <div class="stats" id="stats"></div>
+</div>
+<div>
+  <canvas id="roll" width="1600" height="520"></canvas>
+  <div class="legend"><span style="background:var(--purple)"></span>kopiert fra en sang <span style="background:var(--green)"></span>ny kombinasjon</div>
+</div>
+</div>
+</main>
+<script>
+// Traditional melodies, as [MIDI pitch, duration in beats]. C4 = 60.
+const SONGS = {
+  baa: [[60,1],[60,1],[67,1],[67,1],[69,1],[69,1],[67,2],[65,1],[65,1],[64,1],[64,1],[62,1],[62,1],[60,2],
+        [67,1],[67,1],[65,1],[65,1],[64,1],[64,1],[62,2],[67,1],[67,1],[65,1],[65,1],[64,1],[64,1],[62,2],
+        [60,1],[60,1],[67,1],[67,1],[69,1],[69,1],[67,2],[65,1],[65,1],[64,1],[64,1],[62,1],[62,1],[60,2]],
+  jakob: [[60,1],[62,1],[64,1],[60,1],[60,1],[62,1],[64,1],[60,1],[64,1],[65,1],[67,2],[64,1],[65,1],[67,2],
+          [67,.5],[69,.5],[67,.5],[65,.5],[64,1],[60,1],[67,.5],[69,.5],[67,.5],[65,.5],[64,1],[60,1],
+          [60,1],[55,1],[60,2],[60,1],[55,1],[60,2]],
+  lisa: [[67,1],[64,1],[64,2],[65,1],[62,1],[62,2],[60,1],[62,1],[64,1],[65,1],[67,1],[67,1],[67,2],
+         [67,1],[64,1],[64,2],[65,1],[62,1],[62,2],[60,1],[64,1],[67,1],[67,1],[60,4]]
+};
+const q = new URLSearchParams(location.search);
+if (q.has('embed')) document.body.classList.add('embed');
+const $ = id => document.getElementById(id);
+const tok = n => n[0] + ':' + n[1];
+const untok = s => s.split(':').map(Number);
+let melody = [], copied = [], ctx = null;
+
+function corpus() {
+  return [...document.querySelectorAll('.song')].filter(c => c.checked).map(c => SONGS[c.value].map(tok));
+}
+
+function train(seqs, k) {
+  // Counts for every context length 1..k, so that the model can back off to a shorter context.
+  const tables = [];
+  for (let n = 1; n <= k; n++) {
+    const t = new Map();
+    for (const s of seqs) for (let i = n; i < s.length; i++) {
+      const key = s.slice(i - n, i).join(' ');
+      if (!t.has(key)) t.set(key, new Map());
+      const m = t.get(key); m.set(s[i], (m.get(s[i]) || 0) + 1);
+    }
+    tables.push(t);
+  }
+  return tables;
+}
+
+function sample(counts, temp) {
+  const items = [...counts.entries()];
+  const w = items.map(([, c]) => Math.pow(c, 1 / temp));
+  let r = Math.random() * w.reduce((a, b) => a + b, 0);
+  for (let i = 0; i < items.length; i++) { r -= w[i]; if (r <= 0) return items[i][0]; }
+  return items[items.length - 1][0];
+}
+
+function generate() {
+  const seqs = corpus();
+  if (!seqs.length) { $('stats').textContent = 'Velg minst én sang.'; return; }
+  const k = +$('k').value, temp = +$('t').value, tables = train(seqs, k);
+  const start = seqs[Math.floor(Math.random() * seqs.length)];
+  const out = start.slice(0, k);
+  let beats = out.reduce((a, s) => a + untok(s)[1], 0);
+  while (beats < 24) {
+    let next = null;
+    for (let n = Math.min(k, out.length); n >= 1 && !next; n--) {
+      const c = tables[n - 1].get(out.slice(-n).join(' '));
+      if (c) next = sample(c, temp);
+    }
+    if (!next) next = start[0];
+    out.push(next); beats += untok(next)[1];
+  }
+  // Mark notes whose k+1-note window occurs verbatim in a training song.
+  const joined = seqs.map(s => ' ' + s.join(' ') + ' ');
+  copied = out.map((_, i) => {
+    if (i < k) return true;
+    const w = ' ' + out.slice(i - k, i + 1).join(' ') + ' ';
+    return joined.some(j => j.includes(w));
+  });
+  melody = out.map(untok);
+  const transitions = tables[0].size;
+  $('stats').textContent = `Lært fra ${seqs.length} ${seqs.length === 1 ? 'sang' : 'sanger'}, ${seqs.reduce((a, s) => a + s.length, 0)} toner, ${transitions} ulike toner å gå videre fra.`;
+  draw();
+}
+
+function draw() {
+  const cv = $('roll'), g = cv.getContext('2d');
+  g.clearRect(0, 0, cv.width, cv.height);
+  if (!melody.length) return;
+  const lo = 53, hi = 72, total = melody.reduce((a, n) => a + n[1], 0);
+  const x0 = 20, W = cv.width - 40, H = cv.height - 40;
+  g.strokeStyle = '#e6e3e4'; g.lineWidth = 1;
+  for (let p = lo; p <= hi; p++) { const y = 20 + H - (p - lo) / (hi - lo) * H; g.beginPath(); g.moveTo(x0, y); g.lineTo(x0 + W, y); g.stroke(); }
+  let t = 0;
+  melody.forEach(([p, d], i) => {
+    const x = x0 + t / total * W, w = d / total * W - 4, y = 20 + H - (p - lo) / (hi - lo) * H - 12;
+    g.fillStyle = copied[i] ? '#9a90cf' : '#b3e297'; g.strokeStyle = '#231f20'; g.lineWidth = 3;
+    g.fillRect(x, y, w, 24); g.strokeRect(x, y, w, 24);
+    t += d;
+  });
+}
+
+function playSeq(seq) {
+  ctx = ctx || new (window.AudioContext || window.webkitAudioContext)();
+  const beat = 0.42; let t = ctx.currentTime + 0.05;
+  for (const [p, d] of seq) {
+    const o = ctx.createOscillator(), a = ctx.createGain();
+    o.type = 'triangle'; o.frequency.value = 440 * Math.pow(2, (p - 69) / 12);
+    a.gain.setValueAtTime(0, t); a.gain.linearRampToValueAtTime(0.35, t + 0.02);
+    a.gain.exponentialRampToValueAtTime(0.001, t + d * beat * 0.95);
+    o.connect(a).connect(ctx.destination); o.start(t); o.stop(t + d * beat);
+    t += d * beat;
+  }
+}
+
+$('k').oninput = () => { $('kval').textContent = $('k').value; };
+$('t').oninput = () => { $('tval').textContent = (+$('t').value).toFixed(1); };
+$('gen').onclick = () => { generate(); playSeq(melody); };
+$('play').onclick = () => { if (!melody.length) generate(); playSeq(melody); };
+$('orig').onclick = () => { const s = corpus()[0]; if (s) { melody = s.map(untok); copied = melody.map(() => true); draw(); playSeq(melody); } };
+generate();
+</script>
+</body>
+</html>

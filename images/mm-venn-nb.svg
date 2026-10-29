@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 620" font-family="Inter, Helvetica, Arial, sans-serif">
+  <circle cx="370" cy="310" r="270" fill="#9a90cf"/>
+  <circle cx="630" cy="310" r="270" fill="#b3e297"/>
+  <path d="M500 73.4 A270 270 0 0 1 500 546.6 A270 270 0 0 1 500 73.4 Z" fill="#231f20"/>
+  <text x="215" y="322" font-size="40" text-anchor="middle" fill="#231f20">Mennesker</text>
+  <text x="785" y="322" font-size="40" text-anchor="middle" fill="#231f20">Maskiner</text>
+  <text x="500" y="322" font-size="40" font-weight="700" text-anchor="middle" fill="#ffffff">MishMash</text>
+</svg>

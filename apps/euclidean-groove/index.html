@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<!--
+  Euclidean groove: rhythm from arithmetic, developed by rewriting rules.
+
+  The Euclidean rhythm generator, the L-system rewriting engine, and the
+  circular sequencer drawing are adapted from the Oslo Laptop Orchestra's
+  "Circular Groove" instrument (https://github.com/fourMs/olo, GPL-3.0,
+  web/shared/euclidean.js, lsystem-groove.js, groove-evolve.js,
+  circular-seq.js, drum-sounds.js). Restyled and simplified for this deck.
+  Single file, no network requests.
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Euclidean groove</title>
+<style>
+  :root {
+    --bg: #fdfdfd; --fg: #363644; --muted: #718096; --panel: #f7fafc; --border: #e2e8f0;
+    --accent: #5a4fcf; --accent-fg: #fff; --machine: #2f855a; --canvas: #ffffff;
+    --ring0: #5a4fcf; --ring1: #2f855a; --ring2: #dd6b20; --ring3: #b83280;
+    --ring0-off: #e9e7fb; --ring1-off: #e3f5e8; --ring2-off: #fdebdd; --ring3-off: #fbe4f0;
+    --play: #48bb78; --grid: #cbd5e0; --grid-strong: #a0aec0;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #14171c; --fg: #e6e9ee; --muted: #a0aec0; --panel: #1a202c; --border: #2d3748;
+      --accent: #b8b3ff; --accent-fg: #14171c; --machine: #9ae6b4; --canvas: #1a202c;
+      --ring0: #b8b3ff; --ring1: #9ae6b4; --ring2: #f6ad55; --ring3: #f687b3;
+      --ring0-off: #2a2846; --ring1-off: #1f3a2a; --ring2-off: #3d2a15; --ring3-off: #3d1f2e;
+      --play: #68d391; --grid: #4a5568; --grid-strong: #718096;
+    }
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0 auto; padding: 16px; max-width: 900px; font-family: Inter, system-ui, -apple-system, "Segoe UI", sans-serif; background: var(--bg); color: var(--fg); line-height: 1.4; }
+  h1 { font-size: 1.4rem; margin: 0 0 6px; }
+  p.intro { margin: 0 0 12px; color: var(--muted); }
+  .layout { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; align-items: start; }
+  .stage { aspect-ratio: 1; background: var(--canvas); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; }
+  canvas { width: 100%; height: 100%; display: block; cursor: pointer; }
+  fieldset { border: 1px solid var(--border); border-radius: 10px; margin: 0 0 10px; padding: 8px 12px; background: var(--panel); }
+  legend { font-weight: 600; font-size: .9rem; padding: 0 6px; }
+  .row { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin: 6px 0; }
+  label { font-size: .85rem; color: var(--muted); }
+  input[type=range] { flex: 1; min-width: 100px; accent-color: var(--accent); }
+  button { font: inherit; font-size: .85rem; font-weight: 600; padding: 5px 12px; border-radius: 999px; border: 1.5px solid var(--accent); background: transparent; color: var(--accent); cursor: pointer; }
+  button.primary, button.active { background: var(--accent); color: var(--accent-fg); }
+  button.ring { border-color: var(--rc); color: var(--rc); }
+  button.ring.active { background: var(--rc); color: #fff; }
+  button:disabled { opacity: .4; cursor: default; }
+  .mono { font-family: "SF Mono", Menlo, Consolas, monospace; font-size: .8rem; }
+  .state { font-family: "SF Mono", Menlo, Consolas, monospace; font-size: .75rem; color: var(--muted); word-break: break-all; max-height: 3.2em; overflow: hidden; }
+  .state b { color: var(--fg); }
+  .rules { font-size: .85rem; }
+  .rules span { display: inline-block; margin-right: .8em; }
+  .hint { font-size: .8rem; color: var(--muted); margin-top: 8px; }
+</style>
+</head>
+<body>
+<h1>Euclidean groove</h1>
+<p class="intro">Four rings, each a Euclidean rhythm E(pulses, 16): the pulses spread as evenly as arithmetic allows. Every bar an L-system rewrites the pattern. No data, no training: rules all the way down.</p>
+<div class="layout">
+  <div class="stage"><canvas id="seq" width="600" height="600"></canvas></div>
+  <div>
+    <fieldset>
+      <legend>Transport</legend>
+      <div class="row">
+        <button id="play" class="primary">▶ Play</button>
+        <label for="bpm">Tempo</label><input type="range" id="bpm" min="60" max="160" value="104"><span id="bpmVal" class="mono">104</span>
+      </div>
+      <div class="row">
+        <button id="evolve" class="active">Rewrite every bar: on</button>
+        <button id="reset">Reset</button>
+      </div>
+    </fieldset>
+    <fieldset>
+      <legend>Selected ring</legend>
+      <div class="row" id="ringPick"></div>
+      <div class="row">
+        <button id="pulseDown">Pulses −</button><span id="pulseVal" class="mono">E(4,16)</span><button id="pulseUp">Pulses +</button>
+        <button id="phaseDown">Rotate −</button><span id="phaseVal" class="mono">0</span><button id="phaseUp">Rotate +</button>
+      </div>
+      <div class="rules" id="rules"></div>
+    </fieldset>
+    <fieldset>
+      <legend>Rewriting rule</legend>
+      <div class="row"><span id="ruleLabel" class="mono">A→AB, B→A</span><span class="mono" id="gen">generation 0</span></div>
+      <div class="state" id="state"><b>A</b></div>
+    </fieldset>
+    <p class="hint">Click a cell to toggle it. Space plays, 1–4 select a ring, − and + change pulses, [ and ] rotate.</p>
+  </div>
+</div>
+
+<script>/* embed-mode: ?embed hides the intro and fits the app into a 16:9 slide */
+if(/[?&]embed\b/.test(location.search)){var st=document.createElement('style');st.textContent='h1,p.intro{display:none!important} body{padding:8px 12px!important;max-width:none!important;width:1170px;height:570px} .layout{grid-template-columns:560px 1fr;gap:20px} .stage{width:560px;height:560px}';document.head.appendChild(st);}
+</script>
+<script type="module">
+/* ---------- Euclidean rhythm (Bjorklund / Bresenham) ---------- */
+function euclideanRhythm(pulses, steps, rotation = 0) {
+  const s = Math.max(1, steps), p = Math.max(0, Math.min(s, pulses));
+  if (p === 0) return Array(s).fill(false);
+  if (p === s) return Array(s).fill(true);
+  const pattern = Array(s).fill(false);
+  let bucket = 0;
+  for (let i = 0; i < s; i++) { bucket -= p; if (bucket < 0) { bucket += s; pattern[i] = true; } }
+  const rot = ((rotation % s) + s) % s;
+  return Array.from({ length: s }, (_, i) => pattern[(i - rot + s) % s]);
+}
+
+/* ---------- L-system: one rewrite per bar ---------- */
+const RULE_SETS = [
+  { A: "AB", B: "A" }, { A: "ABA", B: "AB" }, { A: "AB", B: "ABB" }, { A: "AAB", B: "A" }, { A: "AB", B: "BA" },
+];
+function createLSystem(axiom = "A") {
+  let state = axiom, generation = 0, readOffset = 0, ruleIndex = 0, rules = { ...RULE_SETS[0] };
+  const bits = () => [...state].map(ch => ch === "A");
+  return {
+    rewrite() {
+      generation++;
+      const src = state.length > 192 ? state.slice(-192) : state;
+      let next = ""; for (const ch of src) next += rules[ch] ?? ch;
+      state = next.length > 384 ? next.slice(-384) : next;
+      readOffset = (readOffset + 1 + (generation % 7)) % Math.max(1, state.length);
+      if (generation % 4 === 0) { ruleIndex = (ruleIndex + 1) % RULE_SETS.length; rules = { ...RULE_SETS[ruleIndex] }; }
+    },
+    toPattern(steps, rowOffset = 0) {
+      const b = bits(); if (!b.length) return Array(steps).fill(false);
+      const start = (readOffset + rowOffset) % b.length;
+      return Array.from({ length: steps }, (_, i) => b[(start + i) % b.length]);
+    },
+    get state() { return state; }, get generation() { return generation; },
+    get label() { return `A→${rules.A}, B→${rules.B}`; },
+    reset() { state = axiom; generation = 0; readOffset = 0; ruleIndex = 0; rules = { ...RULE_SETS[0] }; },
+  };
+}
+
+/* ---------- Groove engine ---------- */
+const DEFAULT_RINGS = [{ pulses: 4, phase: 0 }, { pulses: 5, phase: 0 }, { pulses: 7, phase: 0 }, { pulses: 3, phase: 0 }];
+const STEPS = 16;
+const lsys = createLSystem("A");
+let specs = DEFAULT_RINGS.map(r => ({ ...r }));
+let pattern = specs.map(s => euclideanRhythm(s.pulses, STEPS, s.phase));
+const rebuild = () => { pattern = specs.map(s => euclideanRhythm(s.pulses, STEPS, s.phase)); };
+function evolveBar() {
+  lsys.rewrite();
+  const base = specs.map(s => euclideanRhythm(s.pulses, STEPS, s.phase));
+  specs.forEach((s, ri) => {
+    const dev = lsys.toPattern(STEPS, ri * 5);
+    pattern[ri] = base[ri].map((hit, i) => dev[i] ? !hit : hit);
+    s.phase = (s.phase + 1) % STEPS;
+    if (lsys.generation % 3 === 0) s.pulses = Math.max(1, Math.min(STEPS - 1, s.pulses + (dev[0] ? 1 : -1)));
+  });
+}
+
+/* ---------- Drums (synthesised) ---------- */
+function noiseBuf(ctx, dur) { const n = Math.floor(ctx.sampleRate * dur), b = ctx.createBuffer(1, n, ctx.sampleRate), d = b.getChannelData(0); for (let i = 0; i < n; i++) d[i] = Math.random() * 2 - 1; return b; }
+function kick(ctx, out, t) { const o = ctx.createOscillator(), g = ctx.createGain(); o.frequency.setValueAtTime(150, t); o.frequency.exponentialRampToValueAtTime(30, t + .35); g.gain.setValueAtTime(1, t); g.gain.exponentialRampToValueAtTime(.001, t + .4); o.connect(g).connect(out); o.start(t); o.stop(t + .4); }
+function snare(ctx, out, t) { const o = ctx.createOscillator(), g = ctx.createGain(); o.frequency.setValueAtTime(200, t); o.frequency.exponentialRampToValueAtTime(60, t + .15); g.gain.setValueAtTime(.5, t); g.gain.exponentialRampToValueAtTime(.001, t + .15); o.connect(g).connect(out); o.start(t); o.stop(t + .15);
+  const n = ctx.createBufferSource(); n.buffer = noiseBuf(ctx, .2); const hp = ctx.createBiquadFilter(); hp.type = "highpass"; hp.frequency.value = 1000; const e = ctx.createGain(); e.gain.setValueAtTime(1, t); e.gain.exponentialRampToValueAtTime(.001, t + .2); n.connect(hp).connect(e).connect(out); n.start(t); n.stop(t + .2); }
+function hat(ctx, out, t) { const n = ctx.createBufferSource(); n.buffer = noiseBuf(ctx, .06); const hp = ctx.createBiquadFilter(); hp.type = "highpass"; hp.frequency.value = 7000; const e = ctx.createGain(); e.gain.setValueAtTime(.5, t); e.gain.exponentialRampToValueAtTime(.001, t + .06); n.connect(hp).connect(e).connect(out); n.start(t); n.stop(t + .06); }
+function clap(ctx, out, t0) { [0, .01, .02].forEach(off => { const t = t0 + off, n = ctx.createBufferSource(); n.buffer = noiseBuf(ctx, .05); const bp = ctx.createBiquadFilter(); bp.type = "bandpass"; bp.frequency.value = 1200; bp.Q.value = .5; const e = ctx.createGain(); e.gain.setValueAtTime(.8, t); e.gain.exponentialRampToValueAtTime(.001, t + .1); n.connect(bp).connect(e).connect(out); n.start(t); n.stop(t + .1); }); }
+const ROWS = [{ name: "Kick", play: kick }, { name: "Snare", play: snare }, { name: "Hi-hat", play: hat }, { name: "Clap", play: clap }];
+
+/* ---------- Drawing ---------- */
+const css = k => getComputedStyle(document.documentElement).getPropertyValue(k).trim();
+const canvas = document.getElementById("seq"), g = canvas.getContext("2d");
+let playStep = -1, selected = 0;
+function layout() { const w = canvas.width, h = canvas.height, cx = w / 2, cy = h / 2, outer = Math.min(w, h) * .47, inner = outer * .16; return { cx, cy, outer, inner, ringW: (outer - inner) / ROWS.length }; }
+function draw() {
+  const dpr = devicePixelRatio || 1, box = canvas.getBoundingClientRect();
+  canvas.width = Math.max(1, Math.floor(box.width * dpr)); canvas.height = Math.max(1, Math.floor(box.height * dpr));
+  const { cx, cy, outer, inner, ringW } = layout(), TAU = Math.PI * 2, gap = .028;
+  g.fillStyle = css("--canvas"); g.fillRect(0, 0, canvas.width, canvas.height);
+  for (let si = 0; si < STEPS; si++) {
+    const a0 = -Math.PI / 2 + (si / STEPS) * TAU + gap, a1 = -Math.PI / 2 + ((si + 1) / STEPS) * TAU - gap;
+    for (let ri = 0; ri < ROWS.length; ri++) {
+      const rOut = outer - ri * ringW, rIn = rOut - ringW + 1.5 * dpr, on = pattern[ri][si];
+      g.beginPath(); g.arc(cx, cy, rOut, a0, a1); g.arc(cx, cy, rIn, a1, a0, true); g.closePath();
+      g.fillStyle = si === playStep ? (on ? css("--play") : "rgba(72,187,120,.18)") : (on ? css(`--ring${ri}`) : css(`--ring${ri}-off`));
+      g.fill();
+    }
+  }
+  g.strokeStyle = css("--grid"); g.lineWidth = 1 * dpr;
+  for (let ri = 0; ri <= ROWS.length; ri++) { g.beginPath(); g.arc(cx, cy, outer - ri * ringW, 0, TAU); g.stroke(); }
+  for (let si = 0; si < STEPS; si++) { const a = -Math.PI / 2 + (si / STEPS) * TAU; g.beginPath(); g.moveTo(cx + Math.cos(a) * inner, cy + Math.sin(a) * inner); g.lineTo(cx + Math.cos(a) * outer, cy + Math.sin(a) * outer); g.strokeStyle = si % 4 === 0 ? css("--grid-strong") : css("--grid"); g.lineWidth = (si % 4 === 0 ? 1.5 : .7) * dpr; g.stroke(); }
+  if (playStep >= 0) { const a = -Math.PI / 2 + ((playStep + .5) / STEPS) * TAU; g.strokeStyle = css("--play"); g.lineWidth = 3 * dpr; g.lineCap = "round"; g.beginPath(); g.moveTo(cx, cy); g.lineTo(cx + Math.cos(a) * outer * 1.02, cy + Math.sin(a) * outer * 1.02); g.stroke(); }
+  const rSel = outer - selected * ringW; g.strokeStyle = css("--fg"); g.lineWidth = 2.5 * dpr;
+  g.beginPath(); g.arc(cx, cy, rSel, 0, TAU); g.stroke(); g.beginPath(); g.arc(cx, cy, rSel - ringW + 1.5 * dpr, 0, TAU); g.stroke();
+  g.fillStyle = css("--muted"); g.font = `600 ${12 * dpr}px Inter, system-ui, sans-serif`; g.textAlign = "center"; g.textBaseline = "middle"; g.fillText("16", cx, cy - 6 * dpr); g.font = `${9 * dpr}px Inter, system-ui, sans-serif`; g.fillText("steps", cx, cy + 8 * dpr);
+}
+function hit(px, py) { const { cx, cy, outer, inner, ringW } = layout(), dx = px - cx, dy = py - cy, r = Math.hypot(dx, dy); if (r < inner || r > outer) return null; let a = Math.atan2(dy, dx) + Math.PI / 2; if (a < 0) a += Math.PI * 2; return { ring: Math.min(ROWS.length - 1, Math.floor((outer - r) / ringW)), step: Math.min(STEPS - 1, Math.floor(a / (Math.PI * 2) * STEPS)) }; }
+
+/* ---------- UI ---------- */
+const $ = id => document.getElementById(id);
+function updateUI() {
+  $("pulseVal").textContent = `E(${specs[selected].pulses},16)`; $("phaseVal").textContent = specs[selected].phase;
+  $("ruleLabel").textContent = lsys.label; $("gen").textContent = `generation ${lsys.generation}`;
+  const s = lsys.state; $("state").innerHTML = s.length > 120 ? `<b>${s.slice(0, 60)}</b>…${s.slice(-40)}` : `<b>${s}</b>`;
+  $("rules").innerHTML = specs.map((sp, i) => `<span style="color:${css(`--ring${i}`)}">${ROWS[i].name} E(${sp.pulses},16)+${sp.phase}</span>`).join("");
+  document.querySelectorAll("#ringPick button").forEach((b, i) => b.classList.toggle("active", i === selected));
+  draw();
+}
+ROWS.forEach((r, i) => { const b = document.createElement("button"); b.className = "ring"; b.style.setProperty("--rc", css(`--ring${i}`)); b.textContent = r.name; b.onclick = () => { selected = i; updateUI(); }; $("ringPick").appendChild(b); });
+$("pulseDown").onclick = () => { specs[selected].pulses = Math.max(1, specs[selected].pulses - 1); rebuild(); updateUI(); };
+$("pulseUp").onclick = () => { specs[selected].pulses = Math.min(STEPS - 1, specs[selected].pulses + 1); rebuild(); updateUI(); };
+$("phaseDown").onclick = () => { specs[selected].phase = (specs[selected].phase + STEPS - 1) % STEPS; rebuild(); updateUI(); };
+$("phaseUp").onclick = () => { specs[selected].phase = (specs[selected].phase + 1) % STEPS; rebuild(); updateUI(); };
+$("reset").onclick = () => { lsys.reset(); specs = DEFAULT_RINGS.map(r => ({ ...r })); rebuild(); barCount = 0; updateUI(); };
+$("bpm").oninput = e => { $("bpmVal").textContent = e.target.value; };
+let evolving = true;
+$("evolve").onclick = () => { evolving = !evolving; $("evolve").classList.toggle("active", evolving); $("evolve").textContent = `Rewrite every bar: ${evolving ? "on" : "off"}`; };
+canvas.addEventListener("pointerdown", e => { const r = canvas.getBoundingClientRect(), h = hit((e.clientX - r.left) / r.width * canvas.width, (e.clientY - r.top) / r.height * canvas.height); if (!h) return; selected = h.ring; pattern[h.ring][h.step] = !pattern[h.ring][h.step]; updateUI(); });
+
+/* ---------- Transport ---------- */
+let ctx, master, playing = false, stepIndex = 0, nextTime = 0, barCount = 0, raf = 0;
+function ensureAudio() { if (ctx) return ctx.resume(); ctx = new (window.AudioContext || window.webkitAudioContext)(); master = ctx.createGain(); master.gain.value = .7; const comp = ctx.createDynamicsCompressor(); comp.threshold.value = -18; master.connect(comp).connect(ctx.destination); return ctx.resume(); }
+function scheduler() {
+  if (!playing) return;
+  const now = ctx.currentTime, dt = 60 / +$("bpm").value / 4;
+  while (nextTime <= now + .06) {
+    const col = stepIndex;
+    if (col === 0 && barCount > 0 && evolving) { evolveBar(); updateUI(); }
+    playStep = col; draw();
+    ROWS.forEach((r, ri) => { if (pattern[ri][col]) r.play(ctx, master, nextTime); });
+    nextTime += dt; stepIndex = (col + 1) % STEPS; if (stepIndex === 0) barCount++;
+  }
+  raf = requestAnimationFrame(scheduler);
+}
+async function togglePlay() {
+  await ensureAudio(); playing = !playing;
+  $("play").textContent = playing ? "■ Stop" : "▶ Play";
+  if (!playing) { cancelAnimationFrame(raf); playStep = -1; draw(); return; }
+  stepIndex = 0; barCount = 0; nextTime = ctx.currentTime + .05; scheduler();
+}
+$("play").onclick = () => void togglePlay();
+window.addEventListener("keydown", e => {
+  if (e.target.closest("input")) return;
+  if (e.code === "Space") { e.preventDefault(); void togglePlay(); return; }
+  if (e.key === "[") $("phaseDown").click(); if (e.key === "]") $("phaseUp").click();
+  if (e.key === "-" || e.key === "_") $("pulseDown").click(); if (e.key === "=" || e.key === "+") $("pulseUp").click();
+  const d = parseInt(e.key, 10); if (d >= 1 && d <= 4) { selected = d - 1; updateUI(); }
+});
+window.addEventListener("message", e => { if (e.data === "stop" && playing) void togglePlay(); });
+new ResizeObserver(draw).observe(canvas.parentElement);
+matchMedia("(prefers-color-scheme: dark)").addEventListener("change", updateUI);
+document.addEventListener("themechange", updateUI);
+updateUI();
+</script>
+<script>/* theme-sync: ?dark or ?light in the URL, or a {type:'theme',dark} message from the parent, overrides the system colour scheme so the app matches the deck it is embedded in */
+(function(){var saved=null,styleEl=null;
+function grab(){if(saved!==null)return;saved=[];for(var s=0;s<document.styleSheets.length;s++){try{var ss=document.styleSheets[s],rules=ss.cssRules;for(var i=rules.length-1;i>=0;i--){var r=rules[i];if(r.type===CSSRule.MEDIA_RULE&&/prefers-color-scheme:\s*dark/.test(r.conditionText)){for(var k=0;k<r.cssRules.length;k++)saved.push(r.cssRules[k].cssText);ss.deleteRule(i);}}}catch(e){}}styleEl=document.createElement('style');document.head.appendChild(styleEl);}
+function apply(dark){grab();styleEl.textContent=dark?saved.join('\n'):'';window.__deckDark=dark;document.dispatchEvent(new Event('themechange'));}
+var q=location.search;if(/[?&]dark\b/.test(q))apply(true);else if(/[?&]light\b/.test(q))apply(false);
+window.addEventListener('message',function(e){if(e.data&&e.data.type==='theme')apply(!!e.data.dark);});
+})();
+</script>
+</body>
+</html>

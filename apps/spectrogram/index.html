@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<!--
+  Sound as an image: a live spectrogram of a synthesised phrase or the
+  microphone. This is the representation audio models such as Riffusion
+  work on. Single file, no network requests.
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sound as an image</title>
+<style>
+  :root {
+    --bg: #fdfdfd; --fg: #363644; --muted: #718096; --panel: #f7fafc; --border: #e2e8f0;
+    --accent: #5a4fcf; --accent-fg: #fff; --canvas: #ffffff; --wave: #5a4fcf;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg: #14171c; --fg: #e6e9ee; --muted: #a0aec0; --panel: #1a202c; --border: #2d3748; --accent: #b8b3ff; --accent-fg: #14171c; --canvas: #0d1117; --wave: #b8b3ff; }
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0 auto; padding: 16px; max-width: 900px; font-family: Inter, system-ui, -apple-system, "Segoe UI", sans-serif; background: var(--bg); color: var(--fg); line-height: 1.4; }
+  h1 { font-size: 1.4rem; margin: 0 0 6px; }
+  p.intro { margin: 0 0 12px; color: var(--muted); }
+  .row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin: 0 0 10px; }
+  button { font: inherit; font-size: .9rem; font-weight: 600; padding: 6px 14px; border-radius: 999px; border: 1.5px solid var(--accent); background: transparent; color: var(--accent); cursor: pointer; }
+  button.active, button.primary { background: var(--accent); color: var(--accent-fg); }
+  label { font-size: .85rem; color: var(--muted); }
+  select { font: inherit; font-size: .9rem; padding: 4px 8px; border-radius: 8px; border: 1px solid var(--border); background: var(--panel); color: var(--fg); }
+  .stage { border: 1px solid var(--border); border-radius: 12px; overflow: hidden; background: var(--canvas); }
+  canvas { display: block; width: 100%; }
+  #wave { height: 110px; border-bottom: 1px solid var(--border); }
+  #spec { height: 380px; }
+  .axis { display: flex; justify-content: space-between; font-size: .75rem; color: var(--muted); padding: 4px 8px; }
+  .status { font-size: .85rem; color: var(--muted); min-height: 1.3em; margin-top: 6px; }
+</style>
+</head>
+<body>
+<h1>Sound as an image</h1>
+<p class="intro">Audio is 44 100 numbers a second. Drawn as a spectrogram it becomes a picture: time left to right, frequency bottom to top, brightness for loudness. Audio models such as Riffusion generate pictures like this and turn them back into sound.</p>
+<div class="row">
+  <button id="play" class="primary">▶ Play a phrase</button>
+  <label for="src">Source</label>
+  <select id="src">
+    <option value="melody">Piano-like melody</option>
+    <option value="chord">Sustained chord</option>
+    <option value="sweep">Rising sweep</option>
+    <option value="noise">Noise burst</option>
+  </select>
+  <button id="mic">🎤 Microphone</button>
+  <label for="scale">Frequency axis</label>
+  <select id="scale"><option value="log">Logarithmic (like the ear)</option><option value="lin">Linear</option></select>
+</div>
+<div class="stage">
+  <canvas id="wave" width="1200" height="110"></canvas>
+  <canvas id="spec" width="1200" height="380"></canvas>
+  <div class="axis"><span>Waveform above: the numbers themselves. Spectrogram below: the same sound as an image.</span><span id="range">40 Hz – 8 kHz</span></div>
+</div>
+<p class="status" id="status">Click Play. Sound comes from this page's own synthesiser.</p>
+
+<script>/* embed-mode: ?embed hides the intro and fits the app into a 16:9 slide */
+if(/[?&]embed\b/.test(location.search)){var st=document.createElement('style');st.textContent='h1,p.intro{display:none!important} body{padding:8px 12px!important;max-width:none!important;width:1170px;height:570px} #spec{height:360px}';document.head.appendChild(st);}
+</script>
+<script>
+const $ = id => document.getElementById(id);
+const css = k => getComputedStyle(document.documentElement).getPropertyValue(k).trim();
+let ctx, analyser, master, micStream, micSrc, raf, running = false;
+const wave = $("wave"), spec = $("spec"), wg = wave.getContext("2d"), sg = spec.getContext("2d");
+const FMIN = 40, FMAX = 8000;
+
+function ensureAudio() {
+  if (ctx) return ctx.resume();
+  ctx = new (window.AudioContext || window.webkitAudioContext)();
+  analyser = ctx.createAnalyser(); analyser.fftSize = 4096; analyser.smoothingTimeConstant = 0.2;
+  master = ctx.createGain(); master.gain.value = 0.6;
+  // The synth goes to the speakers and to the analyser. The analyser itself feeds a silent gain,
+  // so microphone input is analysed but never played back (no feedback loop).
+  master.connect(ctx.destination); master.connect(analyser);
+  const silent = ctx.createGain(); silent.gain.value = 0; analyser.connect(silent).connect(ctx.destination);
+  return ctx.resume();
+}
+
+/* ---- colour map: dark to purple to green to white ---- */
+const STOPS = [[0, [20, 23, 28]], [0.35, [90, 79, 207]], [0.7, [72, 187, 120]], [1, [255, 255, 255]]];
+function colour(v) {
+  for (let i = 1; i < STOPS.length; i++) if (v <= STOPS[i][0]) { const [a, ca] = STOPS[i - 1], [b, cb] = STOPS[i], t = (v - a) / (b - a); return `rgb(${ca.map((c, k) => Math.round(c + (cb[k] - c) * t)).join(",")})`; }
+  return "rgb(255,255,255)";
+}
+
+/* ---- drawing ---- */
+const freqData = new Uint8Array(2048), timeData = new Uint8Array(2048);
+function drawFrame() {
+  if (!running) return;
+  analyser.getByteTimeDomainData(timeData); analyser.getByteFrequencyData(freqData);
+  const W = wave.width, H = wave.height;
+  wg.fillStyle = css("--canvas"); wg.fillRect(0, 0, W, H);
+  wg.strokeStyle = css("--wave"); wg.lineWidth = 1.5; wg.beginPath();
+  for (let i = 0; i < W; i++) { const v = timeData[Math.floor(i / W * timeData.length)] / 128 - 1; const y = H / 2 - v * H * 0.45; i ? wg.lineTo(i, y) : wg.moveTo(i, y); }
+  wg.stroke();
+  const SW = spec.width, SH = spec.height, col = 3;
+  sg.drawImage(spec, -col, 0);
+  const nyq = ctx.sampleRate / 2, log = $("scale").value === "log";
+  const binOf = f => Math.min(freqData.length - 1, Math.round(f / nyq * freqData.length));
+  for (let y = 0; y < SH; y++) {
+    const p = 1 - y / SH;
+    const f = log ? FMIN * Math.pow(FMAX / FMIN, p) : FMIN + (FMAX - FMIN) * p;
+    const f2 = log ? FMIN * Math.pow(FMAX / FMIN, p + 1 / SH) : f + (FMAX - FMIN) / SH;
+    let b0 = binOf(f), b1 = Math.max(b0, binOf(f2)), m = 0;
+    for (let b = b0; b <= b1; b++) m = Math.max(m, freqData[b]);
+    sg.fillStyle = colour(m / 255); sg.fillRect(SW - col, y, col, 1);
+  }
+  raf = requestAnimationFrame(drawFrame);
+}
+function start() { if (running) return; running = true; sg.fillStyle = "rgb(20,23,28)"; sg.fillRect(0, 0, spec.width, spec.height); drawFrame(); }
+function stopDrawingLater(sec) { setTimeout(() => { if (!micStream) { running = false; cancelAnimationFrame(raf); } }, sec * 1000); }
+
+/* ---- synthesised sources ---- */
+const midi = n => 440 * Math.pow(2, (n - 69) / 12);
+function pianoNote(n, t, dur, vel = 0.5) {
+  const o = ctx.createOscillator(), o2 = ctx.createOscillator(), g = ctx.createGain(), lp = ctx.createBiquadFilter();
+  o.type = "sawtooth"; o2.type = "triangle"; o.frequency.value = midi(n); o2.frequency.value = midi(n) * 2.001;
+  lp.type = "lowpass"; lp.frequency.setValueAtTime(3000, t); lp.frequency.exponentialRampToValueAtTime(600, t + dur);
+  g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(vel, t + 0.01); g.gain.exponentialRampToValueAtTime(0.001, t + dur);
+  o.connect(lp); o2.connect(lp); lp.connect(g).connect(master); o.start(t); o2.start(t); o.stop(t + dur); o2.stop(t + dur);
+}
+const SOURCES = {
+  melody(t) { const notes = [60, 64, 67, 72, 71, 67, 64, 62, 60]; notes.forEach((n, i) => pianoNote(n, t + i * 0.28, 0.6, 0.45)); pianoNote(48, t, 2.6, 0.3); return 3.2; },
+  chord(t) { [48, 55, 60, 64, 67].forEach(n => { const o = ctx.createOscillator(), g = ctx.createGain(); o.type = "sawtooth"; o.frequency.value = midi(n); g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(0.12, t + 0.4); g.gain.setValueAtTime(0.12, t + 2.2); g.gain.linearRampToValueAtTime(0, t + 3); o.connect(g).connect(master); o.start(t); o.stop(t + 3); }); return 3.2; },
+  sweep(t) { const o = ctx.createOscillator(), g = ctx.createGain(); o.type = "sine"; o.frequency.setValueAtTime(80, t); o.frequency.exponentialRampToValueAtTime(4000, t + 2.5); g.gain.setValueAtTime(0.4, t); g.gain.setValueAtTime(0.4, t + 2.3); g.gain.linearRampToValueAtTime(0, t + 2.6); o.connect(g).connect(master); o.start(t); o.stop(t + 2.6); return 2.8; },
+  noise(t) { const n = Math.floor(ctx.sampleRate * 1.2), b = ctx.createBuffer(1, n, ctx.sampleRate), d = b.getChannelData(0); for (let i = 0; i < n; i++) d[i] = Math.random() * 2 - 1; const s = ctx.createBufferSource(); s.buffer = b; const g = ctx.createGain(); g.gain.setValueAtTime(0.5, t); g.gain.exponentialRampToValueAtTime(0.001, t + 1.2); s.connect(g).connect(master); s.start(t); s.stop(t + 1.2); return 1.6; },
+};
+$("play").onclick = async () => { await ensureAudio(); start(); const dur = SOURCES[$("src").value](ctx.currentTime + 0.05); $("status").textContent = "Watch the bright lines: each is a harmonic of a note. Compare a melody with noise."; stopDrawingLater(dur + 0.5); };
+
+/* ---- microphone ---- */
+$("mic").onclick = async () => {
+  await ensureAudio();
+  if (micStream) { micStream.getTracks().forEach(tr => tr.stop()); micStream = null; micSrc?.disconnect(); $("mic").classList.remove("active"); $("status").textContent = "Microphone off."; running = false; cancelAnimationFrame(raf); return; }
+  try {
+    micStream = await navigator.mediaDevices.getUserMedia({ audio: { echoCancellation: false, noiseSuppression: false, autoGainControl: false }, video: false });
+    micSrc = ctx.createMediaStreamSource(micStream); micSrc.connect(analyser);
+    $("mic").classList.add("active"); $("status").textContent = "Sing a note, then whistle, then say a word. The image tells them apart."; start();
+  } catch (e) { $("status").textContent = "Microphone not available: " + e.message; }
+};
+window.addEventListener("message", e => { if (e.data !== "stop") return; if (micStream) $("mic").click(); running = false; cancelAnimationFrame(raf); if (ctx) ctx.suspend(); });
+</script>
+<script>/* theme-sync: ?dark or ?light in the URL, or a {type:'theme',dark} message from the parent, overrides the system colour scheme so the app matches the deck it is embedded in */
+(function(){var saved=null,styleEl=null;
+function grab(){if(saved!==null)return;saved=[];for(var s=0;s<document.styleSheets.length;s++){try{var ss=document.styleSheets[s],rules=ss.cssRules;for(var i=rules.length-1;i>=0;i--){var r=rules[i];if(r.type===CSSRule.MEDIA_RULE&&/prefers-color-scheme:\s*dark/.test(r.conditionText)){for(var k=0;k<r.cssRules.length;k++)saved.push(r.cssRules[k].cssText);ss.deleteRule(i);}}}catch(e){}}styleEl=document.createElement('style');document.head.appendChild(styleEl);}
+function apply(dark){grab();styleEl.textContent=dark?saved.join('\n'):'';window.__deckDark=dark;document.dispatchEvent(new Event('themechange'));}
+var q=location.search;if(/[?&]dark\b/.test(q))apply(true);else if(/[?&]light\b/.test(q))apply(false);
+window.addEventListener('message',function(e){if(e.data&&e.data.type==='theme')apply(!!e.data.dark);});
+})();
+</script>
+</body>
+</html>
