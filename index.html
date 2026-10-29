@@ -667,6 +667,8 @@ html.dark .disc svg polygon { fill: var(--mm-ink); }
 .equation .tool { border:3px solid var(--mm-ink); border-radius:2em; padding:.3em .9em; white-space:nowrap; }
 .equation .tool.green { background:var(--mm-green); } .equation .tool.blue { background:var(--mm-blue); }
 .equation .tool.purple { background:var(--mm-purple); } .equation .tool.pink { background:var(--mm-pink); }
+.equation .algo { position:relative; }
+.equation .algs { position:absolute; top:calc(100% + .4em); left:50%; transform:translateX(-50%); display:flex; flex-direction:column; align-items:center; gap:.25em; font-size:.45em; }
 
 /* MishMash facts on the group photo, filled by tools/mishmash_facts.py. */
 .facts { position:fixed; right:40px; top:40px; background:var(--mm-white); border:2px solid var(--mm-ink); padding:.5em .8em; text-align:left; font-size:.62em; color:var(--mm-ink); }
@@ -868,22 +870,37 @@ html.dark .disc svg polygon { fill: var(--mm-ink); }
   <aside class="notes">Figuren viser seks typer systemer, ett for hvert klikk, fra enkle boter via chatboter og assistenter til agenter som utfører oppgaver, systemer med mange agenter og helt autonome systemer. Kompleksiteten og selvstendigheten øker oppover. Det meste av debatten handler om chatbotene i midten. I skolen møter elevene mest de midterste, men de vil vokse opp med alle seks.</aside>
   </section>
   <section>
-  <div class="equation" style="font-size:1.85em;gap:.4em">
-  <span class="term green">Data</span>
-  <span class="fragment" data-fragment-index="1">+</span>
-  <span class="term blue fragment" data-fragment-index="1">Algoritme</span>
-  <span class="fragment" data-fragment-index="2">=</span>
-  <span class="term pink fragment" data-fragment-index="2">Modell<small class="fragment" data-fragment-index="3">f.eks. Claude Opus</small></span>
-  <span class="fragment eq-arrow" data-fragment-index="4">→</span>
+  <div class="equation" style="font-size:1.55em;gap:.35em">
   <div class="tools">
-  <span class="tool green fragment" data-fragment-index="5">Claude-appen</span>
-  <span class="tool blue fragment" data-fragment-index="6">Claude Code</span>
-  <span class="tool purple fragment" data-fragment-index="7">GitHub Copilot</span>
-  <span class="tool pink fragment" data-fragment-index="8">Cursor</span>
-  <span class="tool green fragment" data-fragment-index="9">Microsoft 365 Copilot</span>
+  <span class="tool green fragment" data-fragment-index="1">Lyd</span>
+  <span class="tool blue fragment" data-fragment-index="2">Noter</span>
+  <span class="tool purple fragment" data-fragment-index="3">Tekst</span>
+  <span class="tool pink fragment" data-fragment-index="4">Bilder</span>
+  <span class="tool green fragment" data-fragment-index="5">Video</span>
+  <span class="tool blue fragment" data-fragment-index="6">Bevegelse</span>
+  </div>
+  <span class="fragment eq-arrow" data-fragment-index="6">→</span>
+  <span class="term green">Data</span>
+  <span class="fragment" data-fragment-index="7">+</span>
+  <span class="term blue fragment algo" data-fragment-index="7">Algoritme<span class="algs">
+  <span class="tool blue fragment" data-fragment-index="8">Regler</span>
+  <span class="tool purple fragment" data-fragment-index="9">Markov-kjeder</span>
+  <span class="tool pink fragment" data-fragment-index="10">Nevrale nett</span>
+  <span class="tool green fragment" data-fragment-index="11">Transformere</span>
+  <span class="tool blue fragment" data-fragment-index="12">Diffusjon</span>
+  </span></span>
+  <span class="fragment" data-fragment-index="13">=</span>
+  <span class="term pink fragment" data-fragment-index="13">Modell<small class="fragment" data-fragment-index="14">f.eks. Claude Opus</small></span>
+  <span class="fragment eq-arrow" data-fragment-index="15">→</span>
+  <div class="tools">
+  <span class="tool green fragment" data-fragment-index="16">Claude-appen</span>
+  <span class="tool blue fragment" data-fragment-index="17">Claude Code</span>
+  <span class="tool purple fragment" data-fragment-index="18">GitHub Copilot</span>
+  <span class="tool pink fragment" data-fragment-index="19">Cursor</span>
+  <span class="tool green fragment" data-fragment-index="20">Microsoft 365 Copilot</span>
   </div>
   </div>
-  <aside class="notes">Det viktigste elevene må forstå om KI, kan skrives som en enkel formel. Data: lyd, bilder, tekst, bevegelse, laget av mennesker. (Klikk.) Pluss en algoritme: en oppskrift for å lære mønstre fra eksemplene. (Klikk.) Er lik en modell. Den som velger dataene, velger også hva modellen kan, og hva den ikke kan. Det kan elevene prøve selv: trene en liten modell på sine egne lyder eller bevegelser, og se hva som skjer når de bytter ut dataene. (Klikk.) Et eksempel på en modell er Claude Opus, fra Anthropic. (Klikk.) Og den samme modellen kan brukes gjennom mange ulike verktøy (klikk for hvert): Claude-appen for å skrive og snakke med den, Claude Code for programmering, og den finnes også inne i verktøy fra andre selskaper, som GitHub Copilot, Cursor og Microsoft 365 Copilot. Verktøyet er det vi ser; modellen er motoren inni. Derfor er det ikke nok å spørre hvilket verktøy elevene bruker, men også hvilken modell som ligger under.</aside>
+  <aside class="notes">Det viktigste elevene må forstå om KI, kan skrives som en enkel formel. Data, hentet fra mange kilder (klikk for hver): lyd, noter, tekst, bilder, video og bevegelse, laget av mennesker. (Klikk.) Pluss en algoritme: en oppskrift for å lære mønstre fra eksemplene. Og det finnes mange slags algoritmer (klikk for hver): regler skrevet av mennesker, Markov-kjeder som teller hva som pleier å komme etter, nevrale nett, transformere, som ligger bak de store språkmodellene, og diffusjon, som brukes til bilder og lyd. (Klikk.) Er lik en modell. Den som velger dataene, velger også hva modellen kan, og hva den ikke kan. Det kan elevene prøve selv: trene en liten modell på sine egne lyder eller bevegelser, og se hva som skjer når de bytter ut dataene. (Klikk.) Et eksempel på en modell er Claude Opus, fra Anthropic. (Klikk.) Og den samme modellen kan brukes gjennom mange ulike verktøy (klikk for hvert): Claude-appen for å skrive og snakke med den, Claude Code for programmering, og den finnes også inne i verktøy fra andre selskaper, som GitHub Copilot, Cursor og Microsoft 365 Copilot. Verktøyet er det vi ser; modellen er motoren inni. Derfor er det ikke nok å spørre hvilket verktøy elevene bruker, men også hvilken modell som ligger under.</aside>
   </section>
   <section data-depth="more">
   <img class="fig" src="images/fig-modell-tall.svg" alt="Lyd i treningsdataene til venstre, en tabell med tall til høyre: modellen" style="max-height:66vh;display:block;margin:0 auto">
@@ -987,7 +1004,7 @@ html.dark .disc svg polygon { fill: var(--mm-ink); }
   <img class="roles-fig fragment" data-fragment-index="7" src="images/fig-effekter-7.svg" alt="Pil fra musikk til kulturelt">
   <img class="roles-fig fragment" data-fragment-index="8" src="images/fig-effekter-8.svg" alt="Pil fra musikk til helse">
   </div>
-  <aside class="notes">Og musikk virker inn på mye mer enn musikk (klikk for hvert område). Sosialt: å spille og synge sammen bygger fellesskap og samarbeid. Estetisk: å oppleve og lage noe vakkert. Motorisk: finmotorikk og koordinasjon, timing og rytme i kroppen. Kognitivt: oppmerksomhet, hukommelse og mønstergjenkjenning. Emosjonelt: å kjenne og uttrykke følelser. Språklig: lytting, uttale og rytme i språket. Kulturelt: tilhørighet og møte med andre kulturer. Helse: musikk brukes til å regulere stress, pust og bevegelse. [ARJ: nevn gjerne én konkret studie her, for eksempel fra RITMO; anbefaling: en som handler om å spille sammen.]</aside>
+  <aside class="notes">Og musikk virker inn på mye mer enn musikk (klikk for hvert område). Sosialt: å spille og synge sammen bygger fellesskap og samarbeid. Estetisk: å oppleve og lage noe vakkert. Motorisk: finmotorikk og koordinasjon, timing og rytme i kroppen. Kognitivt: oppmerksomhet, hukommelse og mønstergjenkjenning. Emosjonelt: å kjenne og uttrykke følelser. Språklig: lytting, uttale og rytme i språket. Kulturelt: tilhørighet og møte med andre kulturer. Helse: musikk brukes til å regulere stress, pust og bevegelse.</aside>
   </section>
 </section>
 
@@ -1020,7 +1037,7 @@ html.dark .disc svg polygon { fill: var(--mm-ink); }
 Forskning sammen med skolene, ikke bare om dem; skolene gir elevene tid til å lage selv, med og uten maskiner.
 Åpne verktøy og læremidler som lærerne eier og kan dele, som appene jeg skal vise om litt; skolene bruker maskinene til det som kan gjøres utenfor timen, og timen til det bare mennesker kan gjøre sammen: synge, spille, danse, bygge.
 MishMash har en egen arbeidspakke for KI i utdanning, med mål om åpent materiale, metoder og etter- og videreutdanning for lærere; skolene og skolelederne stiller krav til systemene de kjøper inn: hvor havner elevenes stemmer, bilder og data?
-[Anbefaling: si «bidra til» og ikke «tilby» om etter- og videreutdanning, siden arbeidspakken er i startfasen. Endre hvis det er avtalt noe konkret.]</aside>
+</aside>
   </section>
   <section data-depth="more">
   <div class="photo-full">
