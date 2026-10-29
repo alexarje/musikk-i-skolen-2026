@@ -656,6 +656,23 @@ html.dark .disc svg polygon { fill: var(--mm-ink); }
 .links svg { position:absolute; inset:0; }
 .links .arrow-label { position:absolute; width:400px; text-align:center; font-family:var(--mm-font-display); font-size:1em; }
 .links .open span { display:block; font-family:inherit; font-size:.62em; margin-top:.3em; }
+.matrix { display:grid; grid-template-columns:380px repeat(3, 330px); gap:.45em .5em; align-items:center; justify-content:center; font-family:var(--mm-font-display); font-size:1.2em; margin-top:1.4em; }
+.matrix .mlabel { border:4px solid var(--mm-ink); padding:.3em .5em; text-align:center; }
+.matrix .mlabel.green { background:var(--mm-green); } .matrix .mlabel.blue { background:var(--mm-blue); } .matrix .mlabel.pink { background:var(--mm-pink); }
+.matrix .mverb { border:3px solid var(--mm-ink); border-radius:2em; padding:.25em .6em; text-align:center; font-size:.85em; background:var(--mm-white); }
+.models-row { display:flex; align-items:center; justify-content:center; gap:2.2em; margin-top:.4em; }
+.mcircle { border:5px solid var(--mm-ink); border-radius:50%; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; font-family:var(--mm-font-display); color:var(--mm-ink); box-sizing:border-box; }
+.mcircle.small { width:330px; height:330px; font-size:.85em; } .mcircle.big { width:560px; height:560px; font-size:1.4em; }
+.mcircle p { margin:.15em 0; line-height:1.05; } .mcircle span { font-size:.7em; }
+.mcircle .mods { display:flex; gap:.35em; margin:.3em 0; }
+.values { display:flex; justify-content:center; gap:1.6em; margin-top:2.2em; }
+.values .vcell { text-align:center; font-family:var(--mm-font-display); font-size:1.05em; }
+.values .vicon { width:280px; height:280px; border-radius:36px; border:4px solid var(--mm-ink); display:flex; align-items:center; justify-content:center; margin:0 auto .3em; }
+.leaders { width:1400px; margin:0 auto; text-align:left; }
+.leaders .lhead { font-family:var(--mm-font-display); font-size:1.5em; margin:0 0 .5em; }
+.leaders .lrow { display:flex; align-items:center; gap:.8em; margin:.45em 0; font-size:1.15em; }
+.leaders .licon { width:150px; height:150px; border-radius:50%; border:4px solid var(--mm-ink); display:flex; align-items:center; justify-content:center; flex:none; }
+.leaders .lrow p { margin:0; } .leaders .lrow b { font-family:var(--mm-font-display); }
 .equation { display:flex; align-items:center; justify-content:center; gap:.5em; font-family:var(--mm-font-display); font-size:2.4em; margin-top:1.2em; }
 .equation .term { padding:.35em .6em; border:4px solid var(--mm-ink); }
 .equation .term.green { background:var(--mm-green); }
@@ -718,8 +735,7 @@ html.dark .disc svg polygon { fill: var(--mm-ink); }
   <span class="muted">mishmash.no</span></p>
   </div>
   </div>
-  <aside class="notes">Tyve minutter, kl. 13.30 til 13.50, rett etter panelet om hjernen, demokrati og mening, og før pausen. Arrangøren ba om blikket fremover og ikke den vanlige elendighetsbeskrivelsen: I hvilken retning vil vi gå? Hvorfor? Hvordan får vi det til? Den øverste raden er de tyve minuttene. Det som ligger under hvert spørsmål, er for å forlenge eller for spørsmål fra salen.</aside>
-  <aside class="notes">Tyve minutter, kl. 13.30 til 13.50, rett etter panelet og før pausen. Kort om MishMash, så musikkering med KI i midten, hva KI er og ikke er, hva som skal til for at det henger sammen, og så skal dere få prøve selv: først på telefonen, så noen små demoer.</aside>
+  <aside class="notes">Tyve minutter, kl. 13.30 til 13.50, rett etter panelet om hjernen, demokrati og mening, og før pausen. Arrangøren ba om blikket fremover og ikke den vanlige elendighetsbeskrivelsen: I hvilken retning vil vi gå? Hvorfor? Hvordan får vi det til? Den øverste raden er de tyve minuttene. Det som ligger under hvert spørsmål, er for å forlenge eller for spørsmål fra salen. Rekkefølgen: om meg og MishMash, så fem spørsmål: KI? Kreativitet? Musikk? Skolen? Fremtiden? Til slutt eksempler dere kan prøve selv.</aside>
   </section>
   <section>
   <div class="me-stack" style="height:86vh">
@@ -813,6 +829,14 @@ html.dark .disc svg polygon { fill: var(--mm-ink); }
   <span class="wordstack"><span class="hl purple fragment" data-fragment-index="2">for</span><span class="hl purple fragment" data-fragment-index="2">gjennom</span><span class="hl purple fragment" data-fragment-index="2">i</span></span>
   kreative praksiser.</p>
   <aside class="notes">Hele senteret i én setning. Tre verb og tre preposisjoner (klikk for verbene, klikk for preposisjonene). Skape: lage systemer, verktøy og kunstverk. Utforske: bruke KI i kreativ praksis, og ta kreative metoder inn i andre felt. Reflektere: undersøke kritisk hva KI gjør med mennesker, kultur og samfunn. De samme tre verbene kommer igjen om litt, som det barna må lære.</aside>
+  </section>
+  <section data-depth="more">
+  <div class="layers" style="width:62%">
+  <img class="fig" src="images/fig-syklus-1.svg" alt="Skape">
+  <img class="fig fragment" src="images/fig-syklus-2.svg" alt="Utforske, med pil fra skape">
+  <img class="fig fragment" src="images/fig-syklus-3.svg" alt="Reflektere, med piler tilbake til skape">
+  </div>
+  <aside class="notes">MishMash arbeider på tre måter, i en sirkel, og det er de samme tre tingene barna må lære. Skape: lage noe selv, med kroppen, sammen med andre; musikk er en prosess, ikke et produkt. (Klikk.) Utforske: prøve selv, med og uten maskiner, spille, synge, trykke på knappene og se hva som skjer. (Klikk.) Reflektere: maskinene kan lage noe nytt, men det er mennesker som avgjør om det har verdi; bruk KI, test det ut, men reflekter, dokumenter og krediter. Og det er en sirkel, ikke en rekkefølge. Hovedmålet til MishMash står i én setning: å skape, utforske og reflektere over KI for, gjennom og i kreative praksiser.</aside>
   </section>
 
   <section data-depth="more">
@@ -936,6 +960,32 @@ html.dark .disc svg polygon { fill: var(--mm-ink); }
 
 </section>
 
+<!-- ================== KREATIVITET? ================== -->
+<section>
+  <section data-background-color="#9a90cf" class="divider">
+  <p class="q">Kreativitet?</p>
+  <aside class="notes">Før musikken: hva mener vi egentlig med kreativitet?</aside>
+  </section>
+  <section>
+  <div class="links" role="img" aria-label="Tre store sirkler side om side: nytt, overraskende og verdifullt.">
+  <div class="dot open fragment" style="left:0;top:100px;background:var(--mm-green)">Nytt</div>
+  <div class="dot open fragment" style="left:520px;top:100px;background:var(--mm-blue)">Overraskende</div>
+  <div class="dot open fragment" style="left:1040px;top:100px;background:var(--mm-pink)">Verdifullt</div>
+  </div>
+  <p class="fragment" style="text-align:center;font-family:var(--mm-font-display);font-size:.9em;margin-top:-1.2em">Margaret Boden</p>
+  <aside class="notes">I MishMash følger vi den britiske kognitivforskeren Margaret Boden. Kreativitet er å komme på ideer eller lage verk som er (klikk) nye, (klikk) overraskende (klikk) og verdifulle. Alle tre må være med. Noe som bare er nytt, er tilfeldig. Noe som bare er verdifullt, kan være en kopi. Det er dette trekket ved mennesker MishMash studerer KI gjennom, ikke intelligens generelt.</aside>
+  </section>
+  <section>
+  <div class="links" role="img" aria-label="En stor sirkel merket nytt for meg, med en mindre sirkel inni merket nytt for alle, og to sirkler på sidene: produkt, det KI lager, og prosess, det elevene gjør.">
+  <div class="dot" style="left:420px;top:40px;width:660px;height:660px;align-items:flex-start;padding-top:1.1em;font-size:1.2em;background:var(--mm-green)">Nytt for meg</div>
+  <div class="dot fragment" style="left:590px;top:330px;width:320px;height:320px;font-size:1em;background:var(--mm-purple)">Nytt for alle</div>
+  <div class="dot open fragment" style="left:0;top:190px;width:380px;height:380px;font-size:1.1em;background:var(--mm-blue)">Produkt<span>det KI lager</span></div>
+  <div class="dot open fragment" style="left:1120px;top:190px;width:380px;height:380px;font-size:1.1em;background:var(--mm-pink)">Prosess<span>det elevene gjør</span></div>
+  </div>
+  <aside class="notes">Boden skiller mellom to slags nytt. Det meste av kreativiteten i verden er nytt for meg: en elev som finner en ny rytme, en ny akkord eller en ny måte å bevege seg på, har vært kreativ, selv om noen andre har gjort det før. (Klikk.) Noen ganger er det nytt for alle, for første gang i historien. Det er sjelden, og det er ikke det skolen skal måles på. I skolen er det den store sirkelen som teller. Dagens KI-modeller er blitt gode til å lage produkter: (klikk) en låt, et bilde, en tekst. Men kreativitet i skolen handler først og fremst om (klikk) prosessen: å prøve, feile, lytte, endre og gjøre det sammen med andre. Den prosessen kan ingen maskin gjennomføre på vegne av elevene. KI kan hjelpe til, men elevene må være i prosessen selv.</aside>
+  </section>
+</section>
+
 <!-- ================== MUSIKK? ================== -->
 <section>
   <section data-background-color="#efadb2" class="divider">
@@ -998,15 +1048,73 @@ html.dark .disc svg polygon { fill: var(--mm-ink); }
   <p class="q">Fremtiden?</p>
   <aside class="notes">Og til slutt: hva bør vi gjøre fremover?</aside>
   </section>
-  <section>
-  <div class="layers" style="width:62%">
-  <img class="fig" src="images/fig-syklus-1.svg" alt="Skape">
-  <img class="fig fragment" src="images/fig-syklus-2.svg" alt="Utforske, med pil fra skape">
-  <img class="fig fragment" src="images/fig-syklus-3.svg" alt="Reflektere, med piler tilbake til skape">
-  </div>
-  <aside class="notes">Tre ting barna må lære, og det er de samme tre som MishMash gjør. Skape: lage noe selv, med kroppen, sammen med andre; musikk er en prosess, ikke et produkt. (Klikk.) Utforske: prøve selv, med og uten maskiner, spille, synge, trykke på knappene og se hva som skjer. (Klikk.) Reflektere: maskinene kan lage noe nytt, men det er mennesker som avgjør om det har verdi; bruk KI, test det ut, men reflekter, dokumenter og krediter. Og det er en sirkel, ikke en rekkefølge. Hovedmålet til MishMash står i én setning: å skape, utforske og reflektere over KI for, gjennom og i kreative praksiser.</aside>
+  <section data-background-image="images/musiclab-workshop.jpg" data-background-size="cover" data-background-position="center">
+  <div class="photo-cap" style="position:fixed;top:40px;bottom:auto;left:40px;right:auto;margin:0"><p class="cap-title" style="font-size:1.3em">Prosess fremfor produkt</p><p class="fragment" style="font-size:.9em">og forståelse</p></div>
+  <aside class="notes">Hva bør vi gjøre fremover? Først: flytte fokus fra produkt til prosess. KI lager produkter raskt og billig. Det skolen kan gi elevene, er prosessen: å prøve, lytte, endre og gjøre det sammen med andre, slik som her på en MusicLab-workshop. (Klikk.) Og forståelse: å skjønne hva som skjer når man bruker en maskin, ikke bare trykke på en knapp.</aside>
   </section>
   <section>
+  <div class="matrix" role="img" aria-label="Tre rader: data, algoritmer og modeller. Data og algoritmer: lage, forstå og bruke. Modeller: bruke, reflektere og kritisere.">
+  <span class="mlabel green">Data</span>
+  <span class="mverb fragment">Lage</span>
+  <span class="mverb fragment">Forstå</span>
+  <span class="mverb fragment">Bruke</span>
+  <span class="mlabel blue">Algoritmer</span>
+  <span class="mverb fragment">Lage</span>
+  <span class="mverb fragment">Forstå</span>
+  <span class="mverb fragment">Bruke</span>
+  <span class="mlabel pink">Modeller</span>
+  <span class="mverb fragment">Bruke</span>
+  <span class="mverb fragment">Reflektere</span>
+  <span class="mverb fragment">Kritisere</span>
+  </div>
+  <aside class="notes">Elevene må lære å jobbe med alle tre leddene i formelen fra i stad. Data: (klikk for hvert verb) lage egne data, forstå hva data er, og bruke dem. Algoritmer: lage, forstå og bruke dem, også enkle regler de skriver selv, som rytmeappen jeg skal vise. Modeller: bruke dem, reflektere over dem og kritisere dem. Hvem har laget modellen, hva er den trent på, og hva gjør den med oss?</aside>
+  </section>
+  <section data-background-image="images/dr-squiggles.jpg" data-background-size="cover" data-background-position="center 40%">
+  <div class="photo-cap fragment" style="position:fixed;top:40px;bottom:auto;left:40px;right:auto;margin:0"><p class="cap-title" style="font-size:1.3em">Samspill mellom mennesker og maskiner</p></div>
+  <aside class="notes">Så: bygge samspill mellom mennesker og maskiner. Dette er Dr. Squiggles-robotene fra RITMO, som lytter, forutsier og slår takten sammen med musikerne. (Klikk.) Ikke maskiner som gjør jobben for oss, men maskiner vi spiller sammen med, som en bandkamerat. Det er kjernen i MishMash: samskapende KI, der begge bidrar.</aside>
+  </section>
+  <section>
+  <p class="lhead" style="text-align:center;font-family:var(--mm-font-display);font-size:1.4em;margin:.2em 0 .3em">MishMash jobber for</p>
+  <div class="models-row">
+  <div class="mcircle small fragment" data-fragment-index="1" style="background:var(--mm-blue)"><svg class="picto " width="110" height="110" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="6" y="3" width="12" height="18" rx="2"/><path d="M11 4h2"/><path d="M12 17v.01"/></svg><p>Små modeller<br><span>på små dingser</span></p></div>
+  <div class="mcircle big fragment" data-fragment-index="2" style="background:var(--mm-green)"><p>Norsk modell</p><div class="mods"><span class="fragment" data-fragment-index="3"><svg class="picto " width="96" height="96" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h16"/><path d="M4 12h16"/><path d="M4 18h10"/></svg></span><span class="fragment" data-fragment-index="3"><svg class="picto " width="96" height="96" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 17a3 3 0 1 0 6 0a3 3 0 0 0 -6 0"/><path d="M13 17a3 3 0 1 0 6 0a3 3 0 0 0 -6 0"/><path d="M9 17v-13h10v13"/><path d="M9 8h10"/></svg></span><span class="fragment" data-fragment-index="3"><svg class="picto " width="96" height="96" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 8h.01"/><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M3 16l5 -5c.928 -.893 2.072 -.893 3 0l5 5"/><path d="M14 14l1 -1c.928 -.893 2.072 -.893 3 0l3 3"/></svg></span><span class="fragment" data-fragment-index="3"><svg class="picto " width="96" height="96" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="6" width="13" height="12" rx="2"/><path d="M16 10l5 -3v10l-5 -3z"/></svg></span></div><p><span class="fragment" data-fragment-index="3">multimodal</span></p></div>
+  </div>
+  <aside class="notes">MishMash jobber for to ting som kan virke motsatte. (Klikk.) Små modeller som kan kjøre på små dingser: en telefon, en bærbar maskin, en mikrokontroller i et instrument, uten nett og uten å sende elevenes data noe sted. (Klikk.) Og en stor, norsk modell, (klikk) multimodal: trent på norsk tekst, musikk, bilder og film, med lisensiert innhold, slik at vi vet hva den har lært av.</aside>
+  </section>
+  <section data-depth="more">
+  <div class="links" role="img" aria-label="Tre store sirkler side om side: språk og kultur, uavhengighet og innsyn.">
+  <div class="dot open fragment" style="left:0;top:120px;background:var(--mm-green)">Språk og kultur</div>
+  <div class="dot open fragment" style="left:520px;top:120px;background:var(--mm-blue)">Uavhengighet</div>
+  <div class="dot open fragment" style="left:1040px;top:120px;background:var(--mm-purple)">Innsyn</div>
+  </div>
+  <p class="midline">Hvorfor en norsk modell?</p>
+  <aside class="notes">Hvorfor trenger skolen en norsk modell? Tre grunner. Språk og kultur: de store modellene er dårlige på nynorsk, hjelpeløse på samisk, og vet lite om norsk musikk og film. Uavhengighet: modellene skolene bruker i dag, eies av selskaper i USA og Kina og kan endre vilkår eller forsvinne i morgen. Innsyn: vi kan ikke åpne dem, og vi vet ikke hva de har lært av. Det er også derfor vi ber regjeringen om en norsk modell trent på norsk innhold, der de som har laget innholdet får betalt.</aside>
+  </section>
+  <section>
+  <div class="values" role="img" aria-label="Fire piktogrammer: hengelås for personvern, opphavsrettstegn for opphavsrett, mennesker for mangfold og et blad for bærekraft."><div class="vcell fragment"><div class="vicon" style="color:var(--mm-ink);background:var(--mm-pink)"><svg class="picto " width="150" height="150" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11v-4a4 4 0 0 1 8 0v4"/><circle cx="12" cy="16" r="1"/></svg></div><p>Personvern</p></div><div class="vcell fragment"><div class="vicon" style="color:var(--mm-ink);background:var(--mm-purple)"><svg class="picto " width="150" height="150" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M14 9.75a3.016 3.016 0 0 0 -4.163 .173a2.993 2.993 0 0 0 0 4.154a3.016 3.016 0 0 0 4.163 .173"/></svg></div><p>Opphavsrett</p></div><div class="vcell fragment"><div class="vicon" style="color:var(--mm-ink);background:var(--mm-green)"><svg class="picto " width="150" height="150" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="5.5" cy="9" r="2"/><circle cx="12" cy="6.5" r="2.5"/><circle cx="18.5" cy="9" r="2"/><path d="M2.5 19v-1.5a3 3 0 0 1 6 0v1.5"/><path d="M8 19v-2.5a4 4 0 0 1 8 0v2.5"/><path d="M15.5 19v-1.5a3 3 0 0 1 6 0v1.5"/></svg></div><p>Mangfold</p></div><div class="vcell fragment"><div class="vicon" style="color:var(--mm-ink);background:var(--mm-blue)"><svg class="picto " width="150" height="150" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 21c.5 -4.5 2.5 -8 7 -10"/><path d="M9 18c6.218 0 10.5 -3.288 11 -12v-2h-4.014c-9 0 -11.986 4 -12 9c0 1 0 3 2 5h3z"/></svg></div><p>Bærekraft</p></div></div>
+  <aside class="notes">Fire ting vi må ha fokus på (klikk for hver). Personvern: elevenes stemmer, bilder og data. Opphavsrett: både vår egen og andres, det elevene lager og det modellene er trent på. Mangfold: modeller som kjenner nynorsk, samisk, dialekter og musikk fra hele verden, ikke bare det som selger mest. Og bærekraft: store modeller bruker mye energi, små modeller lite.</aside>
+  </section>
+  <section data-depth="more">
+  <div class="links" role="img" aria-label="Tre sirkler: personvern, rettigheter og kreditering">
+  <div class="dot open fragment" style="left:0;top:120px;background:var(--mm-pink)">Personvern<span>Hva skjer med det elevene skriver inn?</span></div>
+  <div class="dot open fragment" style="left:520px;top:120px;background:var(--mm-purple)">Rettigheter<span>Hvem eier det som kommer ut?</span></div>
+  <div class="dot open fragment" style="left:1040px;top:120px;background:var(--mm-blue)">Kreditering<span>Hva er laget av elevene, og hva av maskiner?</span></div>
+  </div>
+  <aside class="notes">Tre spørsmål alle skoler må kunne svare på. Hva skjer med det elevene skriver inn i en chatbot? Hvem eier det som kommer ut? Og hvordan viser elevene hva de har laget selv, og hva de har laget med en maskin? Svaret er sjelden et forbud. Det er å vite hvilke tjenester man bruker, og å lære elevene å dokumentere og kreditere.</aside>
+  </section>
+  <section class="center">
+  <p class="huge">Vilje til å<br>tenke annerledes.</p>
+  <aside class="notes">Alt dette krever vilje til å tenke annerledes. Det enkleste er å ta i bruk det de store selskapene tilbyr. Det er ikke alltid det beste for elevene.</aside>
+  </section>
+  <section>
+  <div class="leaders"><p class="lhead">Skoleledere kan</p><div class="lrow fragment"><div class="licon" style="background:var(--mm-green)"><svg class="picto " width="90" height="90" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 19h18"/><rect x="5" y="6" width="14" height="10" rx="1"/></svg></div><p><b>Linux</b> fremfor Mac og Windows</p></div><div class="lrow fragment"><div class="licon" style="background:var(--mm-blue)"><svg class="picto " width="90" height="90" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="8" rx="3"/><rect x="3" y="12" width="18" height="8" rx="3"/><path d="M7 8v.01"/><path d="M7 16v.01"/></svg></div><p><b>Nasjonale modeller</b> som GPT@UiO</p></div><div class="lrow fragment"><div class="licon" style="background:var(--mm-purple)"><svg class="picto " width="90" height="90" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h3a1 1 0 0 0 1 -1v-1a2 2 0 0 1 4 0v1a1 1 0 0 0 1 1h3a1 1 0 0 1 1 1v3a1 1 0 0 0 1 1h1a2 2 0 0 1 0 4h-1a1 1 0 0 0 -1 1v3a1 1 0 0 1 -1 1h-3a1 1 0 0 1 -1 -1v-1a2 2 0 0 0 -4 0v1a1 1 0 0 1 -1 1h-3a1 1 0 0 1 -1 -1v-3a1 1 0 0 1 1 -1h1a2 2 0 0 0 0 -4h-1a1 1 0 0 1 -1 -1v-3a1 1 0 0 1 1 -1"/></svg></div><p><b>Tette hullene</b> mellom tjenestene</p></div></div>
+  <aside class="notes">Skoleledere kan gjøre mye (klikk for hver). Velge bort kommersielle produkter når det finnes gode, åpne alternativer, for eksempel Linux fremfor Mac og Windows. Være med på å utvikle løsninger for å kjøre modeller nasjonalt, slik Universitetet i Oslo gjør med GPT@UiO, der dataene blir værende hos oss. Og tette hullene mellom de ulike tjenestene skolene bruker, slik at elevenes data ikke lekker mellom dem.</aside>
+  </section>
+  <section data-background-image="images/wp4-sorbo-teachers.png" data-background-size="cover" data-background-position="center">
+  <div class="photo-cap" style="position:fixed;top:40px;bottom:auto;left:40px;right:auto;margin:0"><p class="cap-title" style="font-size:1.3em">Lærerne må få faglig påfyll</p><p class="fragment" style="font-size:.9em">MishMash bidrar med etter- og videreutdanning og løsninger</p></div>
+  <aside class="notes">Og til slutt: lærerne må få faglig påfyll. Det er ikke nok å kjøpe inn verktøy. Bildet er fra arbeidspakke 4 i MishMash, som handler om kreativ bruk av KI i utdanning. (Klikk.) Der skal MishMash bidra, med etter- og videreutdanning og med løsninger skolene kan bruke.</aside>
+  </section>
+  <section data-depth="more">
   <div class="bridge">
   <div class="side"><div class="big-dot" style="background:var(--mm-green)">MishMash<br>kan</div>
   <p class="fragment" data-fragment-index="1">forske sammen med skolene</p>
@@ -1023,30 +1131,6 @@ Forskning sammen med skolene, ikke bare om dem; skolene gir elevene tid til å l
 MishMash har en egen arbeidspakke for KI i utdanning, med mål om åpent materiale, metoder og etter- og videreutdanning for lærere; skolene og skolelederne stiller krav til systemene de kjøper inn: hvor havner elevenes stemmer, bilder og data?
 </aside>
   </section>
-  <section data-depth="more">
-  <div class="photo-full">
-  <img src="images/wp4-sorbo-teachers.png" alt="Lærere som prøver ut KI-verktøy">
-  <p class="overlay-line fragment">MishMash AP4: kreativ bruk av KI i utdanning</p>
-  </div>
-  <aside class="notes">Arbeidspakke 4 i MishMash handler om utdanning. Sektoren er full av lokale initiativ som tar i bruk kommersielle verktøy, mens gode, åpne ressurser om kreativ KI er sjeldne, og nesten ingen finnes på norsk. Målet er å utruste fremtidens lærere og lukke generasjonsgapet i KI-kompetanse. Arbeidspakken ledes av Eirik Sørbø ved UiA, med Sidsel Karlsen ved Norges musikkhøgskole og Fredrik Graver ved Høgskolen i Innlandet. Ta gjerne kontakt med dem.</aside>
-  </section>
-  <section data-depth="more">
-  <div class="links" role="img" aria-label="Tre sirkler: personvern, rettigheter og kreditering">
-  <div class="dot open fragment" style="left:0;top:120px;background:var(--mm-pink)">Personvern<span>Hva skjer med det elevene skriver inn?</span></div>
-  <div class="dot open fragment" style="left:520px;top:120px;background:var(--mm-purple)">Rettigheter<span>Hvem eier det som kommer ut?</span></div>
-  <div class="dot open fragment" style="left:1040px;top:120px;background:var(--mm-blue)">Kreditering<span>Hva er laget av elevene, og hva av maskiner?</span></div>
-  </div>
-  <aside class="notes">Tre spørsmål alle skoler må kunne svare på. Hva skjer med det elevene skriver inn i en chatbot? Hvem eier det som kommer ut? Og hvordan viser elevene hva de har laget selv, og hva de har laget med en maskin? Svaret er sjelden et forbud. Det er å vite hvilke tjenester man bruker, og å lære elevene å dokumentere og kreditere.</aside>
-  </section>
-  <section data-depth="more">
-  <div class="links" role="img" aria-label="Tre store sirkler side om side: språk og kultur, uavhengighet og innsyn.">
-  <div class="dot open fragment" style="left:0;top:120px;background:var(--mm-green)">Språk og kultur</div>
-  <div class="dot open fragment" style="left:520px;top:120px;background:var(--mm-blue)">Uavhengighet</div>
-  <div class="dot open fragment" style="left:1040px;top:120px;background:var(--mm-purple)">Innsyn</div>
-  </div>
-  <p class="midline">Hvorfor en norsk modell?</p>
-  <aside class="notes">Hvorfor trenger skolen en norsk modell? Tre grunner. Språk og kultur: de store modellene er dårlige på nynorsk, hjelpeløse på samisk, og vet lite om norsk musikk og film. Uavhengighet: modellene skolene bruker i dag, eies av selskaper i USA og Kina og kan endre vilkår eller forsvinne i morgen. Innsyn: vi kan ikke åpne dem, og vi vet ikke hva de har lært av. Det er også derfor vi ber regjeringen om en norsk modell trent på norsk innhold, der de som har laget innholdet får betalt.</aside>
-  </section>
 </section>
 
 <!-- ================== EKSEMPLER ================== -->
@@ -1054,20 +1138,6 @@ MishMash har en egen arbeidspakke for KI i utdanning, med mål om åpent materia
   <section data-background-color="#a5cbed" class="divider">
   <p class="q">Eksempler</p>
   <aside class="notes">Nå noen eksempler dere kan prøve selv.</aside>
-  </section>
-  <section>
-  <div class="qr-grid">
-  <img class="qr" src="images/qr-firefly.svg" alt="QR-kode til Firefly-appen">
-  <div>
-  <h2>Prøv selv</h2>
-  <p class="lead">Skann, skru opp lyden og trykk Start. Telefonene finner takten sammen, som ildfluer.</p>
-  <p class="qr-url">fourms.github.io/omo/apps/firefly</p>
-  </div>
-  </div>
-  <aside class="notes">Nå vil jeg at dere tar frem telefonen. Skann koden, trykk «Start» og tillat mikrofonen når telefonen spør. Hver telefon spiller et jevnt klikk og lytter etter klikkene fra telefonene rundt seg, og justerer tempo og takt litt etter litt, slik ildfluer begynner å blinke i takt. Hold telefonen fremme, med lyden på. Etter et halvt minutt til et minutt skal rommet begynne å klikke sammen.
-Poenget: ingen dirigent og ingen sentral maskin. Hver node følger enkle regler, og samspillet oppstår. Det er en fin inngang til hvordan rytme, samspill og systemer virker, og det kan gjøres i et klasserom.
-Ideen er fra Musical Fireflies, som Kristian Nymoen og kolleger utviklet ved fourMs-laben ved UiO i 2013. Denne nettversjonen ligger i appsamlingen til Oslo Mobile Orchestra (OMO), med mange andre musikkapper for telefonen.
-Praktisk: appen er på engelsk. Publikum trenger mobildata eller nett i salen; selve presentasjonen trenger ikke nett. På iPhone må lyden være på og telefonen ikke i stillemodus. Høyere volum hjelper mikrofonene å finne hverandre. Adressen er https://fourms.github.io/omo/apps/firefly/</aside>
   </section>
   <section class="demo">
   <p class="demo-link"><a href="apps/euclidean-groove/index.html" target="_blank" rel="noopener">Regelbasert: rytme fra regler</a></p>
@@ -1083,6 +1153,31 @@ Etter demoen: stopp med «▶ Play» igjen, og klikk utenfor rammen før du blar
 Vis tre ting. Kontekst: med én tone tilbake vandrer melodien fritt; med fire toner tilbake kopierer den nesten bare sangene (lilla er kopiert, grønt er nye kombinasjoner). Temperatur: lav gir det mest sannsynlige, høy gir mer overraskende valg. Treningsdata: kryss av for Lisa gikk til skolen og hør at modellen endrer seg; den kan bare det den har lært av.
 Hva jeg sier: det er det samme prinsippet som i de store språkmodellene og musikkmodellene, bare med noen få sanger og ikke millioner. Data pluss algoritme blir modell, og modellen kan ikke mer enn dataene. Regelbasert og læringsbasert er to forskjellige måter å lage KI på, og elevene kan prøve begge.
 Klikk utenfor rammen før du blar videre.</aside>
+  </section>
+  <section>
+  <div class="qr-grid">
+  <img class="qr" src="images/qr-pinch-bass.svg" alt="QR-kode til Pinch Bass-appen">
+  <div>
+  <h2>Prøv selv</h2>
+  <p class="lead">Skann, skru opp lyden og bruk to fingre. Flytt dem rundt for tone og klang, klyp og spre for styrke.</p>
+  <p class="qr-url">fourms.github.io/omo/apps/pinch-bass</p>
+  </div>
+  </div>
+  <aside class="notes">Først en enkel app til telefonen. Skann koden og skru opp lyden. Pinch Bass er en bass dere spiller med to fingre på skjermen: flytter dere fingrene sideveis, endres tonehøyden, opp og ned endres klangen, og når dere klyper eller sprer fingrene, endres styrken og resonansen. Det er et lite instrument der kroppen styrer lyden direkte, uten KI. Appen ligger i appsamlingen til Oslo Mobile Orchestra (OMO). Publikum trenger mobildata eller nett i salen.</aside>
+  </section>
+  <section>
+  <div class="qr-grid">
+  <img class="qr" src="images/qr-firefly.svg" alt="QR-kode til Firefly-appen">
+  <div>
+  <h2>Prøv selv</h2>
+  <p class="lead">Skann, skru opp lyden og trykk Start. Telefonene finner takten sammen, som ildfluer.</p>
+  <p class="qr-url">fourms.github.io/omo/apps/firefly</p>
+  </div>
+  </div>
+  <aside class="notes">Så en app der telefonene spiller sammen. Skann koden, trykk «Start» og tillat mikrofonen når telefonen spør. Hver telefon spiller et jevnt klikk og lytter etter klikkene fra telefonene rundt seg, og justerer tempo og takt litt etter litt, slik ildfluer begynner å blinke i takt. Hold telefonen fremme, med lyden på. Etter et halvt minutt til et minutt skal rommet begynne å klikke sammen.
+Poenget: ingen dirigent og ingen sentral maskin. Hver node følger enkle regler, og samspillet oppstår. Det er en fin inngang til hvordan rytme, samspill og systemer virker, og det kan gjøres i et klasserom.
+Ideen er fra Musical Fireflies, som Kristian Nymoen og kolleger utviklet ved fourMs-laben ved UiO i 2013. Denne nettversjonen ligger i appsamlingen til Oslo Mobile Orchestra (OMO), med mange andre musikkapper for telefonen.
+Praktisk: appen er på engelsk. Publikum trenger mobildata eller nett i salen; selve presentasjonen trenger ikke nett. På iPhone må lyden være på og telefonen ikke i stillemodus. Høyere volum hjelper mikrofonene å finne hverandre. Adressen er https://fourms.github.io/omo/apps/firefly/</aside>
   </section>
 </section>
 

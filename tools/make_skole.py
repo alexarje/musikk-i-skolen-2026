@@ -2,8 +2,9 @@
 
 images/fig-skolefag-0..N.svg: music in the middle, one school subject per layer on a ring around
 it, joined to the middle by a plain line (music connects the subjects).
-images/fig-effekter-0..N.svg: music in the middle, one area music influences per layer, with an
-arrow outwards. No numbers. Run from presentation/.
+images/fig-effekter-0..N.svg: a different look, since it says a different thing: music on the left
+and a fan of arrows out to a column of the areas music influences, one per layer. No numbers.
+Run from presentation/.
 """
 import math
 from pathlib import Path
@@ -58,5 +59,26 @@ def build(name, items, arrows):
     print(f"wrote images/fig-{name}-0..{len(items)}.svg")
 
 
+def build_fan(name, items):
+    mx, my, mr = 470, H / 2, 200
+    px, pw, ph = 1180, 400, 86
+    ys = [H / 2 + (i - (len(items) - 1) / 2) * 112 for i in range(len(items))]
+    centre = (f'<circle cx="{mx}" cy="{my}" r="{mr}" fill="#b3e297" stroke="{INK}" stroke-width="5"/>'
+              + words(mx, my, ["Musikk"], 60))
+    Path(f"images/fig-{name}-0.svg").write_text(svg(centre), encoding="utf-8")
+    for i, (lines, y) in enumerate(zip(items, ys)):
+        a = math.atan2(y - my, px - mx)
+        x0, y0 = mx + (mr + 8) * math.cos(a), my + (mr + 8) * math.sin(a)
+        x1, y1 = px - 18, y
+        cx1 = x0 + (x1 - x0) * 0.55
+        body = (f'<path d="M{x0:.0f} {y0:.0f} C{cx1:.0f} {y0:.0f} {cx1:.0f} {y1:.0f} {x1:.0f} {y1:.0f}" fill="none" '
+                f'stroke="{INK}" stroke-width="5" marker-end="url(#ar)"/>'
+                f'<rect x="{px}" y="{y - ph / 2:.0f}" width="{pw}" height="{ph}" rx="{ph / 2:.0f}" '
+                f'fill="{colours[i % 4]}" stroke="{INK}" stroke-width="4"/>'
+                + words(px + pw / 2, y, lines, 40))
+        Path(f"images/fig-{name}-{i + 1}.svg").write_text(svg(body, ARROW), encoding="utf-8")
+    print(f"wrote images/fig-{name}-0..{len(items)}.svg")
+
+
 build("skolefag", subjects, arrows=False)
-build("effekter", effects, arrows=True)
+build_fan("effekter", effects)

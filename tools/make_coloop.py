@@ -28,6 +28,19 @@ def label(x, y, t, size=26, font=FB, fill=INK, anchor="middle", halo=8):
     return (f'<text x="{x}" y="{y}" text-anchor="{anchor}" font-size="{size}" fill="{fill}" style="{font}" '
             f'stroke="#ffffff" stroke-width="{halo}" paint-order="stroke" stroke-linejoin="round">{t}</text>')
 
+def agent_icon(x, y):
+    """A simple robot head for the agent: antenna, ears, two eyes and a mouth."""
+    return (f'<g stroke="{INK}" stroke-width="5" stroke-linecap="round">'
+            f'<line x1="{x}" y1="{y - 45}" x2="{x}" y2="{y - 68}"/>'
+            f'<circle cx="{x}" cy="{y - 76}" r="9" fill="{INK}"/>'
+            f'<rect x="{x - 74}" y="{y - 18}" width="16" height="36" rx="5" fill="#ffffff"/>'
+            f'<rect x="{x + 58}" y="{y - 18}" width="16" height="36" rx="5" fill="#ffffff"/>'
+            f'<rect x="{x - 60}" y="{y - 45}" width="120" height="90" rx="20" fill="#ffffff"/>'
+            f'<circle cx="{x - 24}" cy="{y - 8}" r="10" fill="{INK}"/>'
+            f'<circle cx="{x + 24}" cy="{y - 8}" r="10" fill="{INK}"/>'
+            f'<line x1="{x - 22}" y1="{y + 22}" x2="{x + 22}" y2="{y + 22}"/></g>')
+
+
 
 def layer0():
     b = (f'<image x="{A[0]-R}" y="{A[1]-R}" width="{2*R}" height="{2*R}" preserveAspectRatio="xMidYMid slice" '
@@ -35,7 +48,7 @@ def layer0():
          f'<circle cx="{A[0]}" cy="{A[1]}" r="{R}" fill="none" stroke="{INK}" stroke-width="5"/>'
          + label(A[0], A[1] + R + 50, "Alexander", 34, FD)
          + f'<circle cx="{B[0]}" cy="{B[1]}" r="{R}" fill="#b3e297" stroke="{INK}" stroke-width="5"/>'
-         + label(B[0], B[1] - 10, "KI-agent", 40, FD)
+         + agent_icon(B[0], B[1] + 12)
          + label(B[0], B[1] + R + 50, "Agenten", 34, FD)
 )
     return svg(b)
