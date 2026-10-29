@@ -668,6 +668,8 @@ html.dark .disc svg polygon { fill: var(--mm-ink); }
 .equation .tool.green { background:var(--mm-green); } .equation .tool.blue { background:var(--mm-blue); }
 .equation .tool.purple { background:var(--mm-purple); } .equation .tool.pink { background:var(--mm-pink); }
 .equation .algo { position:relative; }
+.equation .srcs { position:absolute; bottom:calc(100% + .2em); left:50%; transform:translateX(-50%); display:grid; grid-template-columns:auto auto; justify-items:center; gap:.25em .3em; font-size:.45em; }
+.equation .srcs .src-arrow { font-size:2em; line-height:1; grid-column:1 / span 2; order:99; }
 .equation .algs { position:absolute; top:calc(100% + .4em); left:50%; transform:translateX(-50%); display:flex; flex-direction:column; align-items:center; gap:.25em; font-size:.45em; }
 
 /* MishMash facts on the group photo, filled by tools/mishmash_facts.py. */
@@ -870,17 +872,16 @@ html.dark .disc svg polygon { fill: var(--mm-ink); }
   <aside class="notes">Figuren viser seks typer systemer, ett for hvert klikk, fra enkle boter via chatboter og assistenter til agenter som utfører oppgaver, systemer med mange agenter og helt autonome systemer. Kompleksiteten og selvstendigheten øker oppover. Det meste av debatten handler om chatbotene i midten. I skolen møter elevene mest de midterste, men de vil vokse opp med alle seks.</aside>
   </section>
   <section>
-  <div class="equation" style="font-size:1.55em;gap:.35em">
-  <div class="tools">
+  <div class="equation" style="font-size:1.55em;gap:.35em;margin-top:2.2em">
+  <span class="term green algo">Data<span class="srcs">
   <span class="tool green fragment" data-fragment-index="3">Lyd</span>
   <span class="tool blue fragment" data-fragment-index="4">Noter</span>
   <span class="tool purple fragment" data-fragment-index="5">Tekst</span>
   <span class="tool pink fragment" data-fragment-index="6">Bilder</span>
   <span class="tool green fragment" data-fragment-index="7">Video</span>
   <span class="tool blue fragment" data-fragment-index="8">Bevegelse</span>
-  </div>
-  <span class="fragment eq-arrow" data-fragment-index="8">→</span>
-  <span class="term green">Data</span>
+  <span class="fragment src-arrow" data-fragment-index="3">↓</span>
+  </span></span>
   <span class="fragment" data-fragment-index="1">+</span>
   <span class="term blue fragment algo" data-fragment-index="1">Algoritme<span class="algs">
   <span class="tool blue fragment" data-fragment-index="9">Regler</span>
