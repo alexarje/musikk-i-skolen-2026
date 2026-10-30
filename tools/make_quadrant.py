@@ -2,7 +2,8 @@
 
 Layout follows images/musikkeringskvadranten.png: Forstå and Oppleve on top, Skape and Utøve
 below, arrows Skape -> Utøve -> Oppleve -> Forstå -> Skape. Layer 2 adds KI in the middle with
-dashed links to all four corners; layer 3 adds the label "mellom". Run from presentation/.
+dashed links to all four corners; layer 3 adds the label "mellom". A last layer puts
+Teknologi in the middle instead of KI. Run from presentation/.
 """
 from pathlib import Path
 
@@ -48,13 +49,14 @@ def word():
             f'style="{FONT}">Musikkering</text></svg>')
 
 
-def layer2():
+def layer2(label="KI", size=64):
     s = head()
     m = (W / 2, H / 2)
     for k in C:
         s += edge(m, C[k], pad=(118, R + 6), dashed=True, arrow=False, width=5)
     s += (f'<circle cx="{m[0]}" cy="{m[1]}" r="110" fill="{INK}"/>'
-          f'<text x="{m[0]}" y="{m[1] + 22}" text-anchor="middle" font-size="64" fill="#ffffff" style="{FONT}">KI</text></svg>')
+          f'<text x="{m[0]}" y="{m[1] + size * 0.34:.0f}" text-anchor="middle" font-size="{size}" fill="#ffffff" '
+          f'style="{FONT}">{label}</text></svg>')
     return s
 
 
@@ -78,4 +80,7 @@ for i, (k, prev) in enumerate(order, 1):
 (out / "fig-kvadrant-ki-1.svg").write_text(layer1(), encoding="utf-8")
 (out / "fig-kvadrant-ord.svg").write_text(word(), encoding="utf-8")
 (out / "fig-kvadrant-ki-2.svg").write_text(layer2(), encoding="utf-8")
-print("wrote images/fig-kvadrant-hjorne-1..4.svg, fig-kvadrant-ki-1.svg, fig-kvadrant-ord.svg and fig-kvadrant-ki-2.svg")
+# Last click: the same middle with Teknologi instead of KI; the filled circle covers the KI layer.
+(out / "fig-kvadrant-teknologi.svg").write_text(layer2("Teknologi", 40), encoding="utf-8")
+print("wrote images/fig-kvadrant-hjorne-1..4.svg, fig-kvadrant-ki-1.svg, fig-kvadrant-ord.svg, "
+      "fig-kvadrant-ki-2.svg and fig-kvadrant-teknologi.svg")

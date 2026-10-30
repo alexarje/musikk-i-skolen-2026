@@ -401,6 +401,8 @@ html.dark .disc svg polygon { fill: var(--mm-ink); }
 .layers { position: relative; margin: 0 auto; }
 .reveal .layers img { display: block; width: 100%; height: auto; max-height: none; margin: 0; }
 .reveal .layers img + img { position: absolute; left: 0; top: 0; }
+/* The word in the middle of the musicking quadrant gives way when KI comes in. */
+.reveal .layers:has(.ki-step.visible) img.ord { opacity: 0; }
 
 /* A quotation: a bar in the section's colour rather than quotation marks. */
 .quote {
@@ -965,14 +967,15 @@ html.dark .disc svg polygon { fill: var(--mm-ink); }
   <section>
   <div class="layers" style="width:62%">
   <img class="fig" src="images/fig-kvadrant-ord.svg" alt="Ordet musikkering i midten" style="visibility:hidden">
-  <img class="fig fragment" data-fragment-index="1" src="images/fig-kvadrant-hjorne-1.svg" alt="Skape">
-  <img class="fig fragment" data-fragment-index="2" src="images/fig-kvadrant-hjorne-2.svg" alt="Utøve, med pil fra skape">
-  <img class="fig fragment" data-fragment-index="3" src="images/fig-kvadrant-hjorne-3.svg" alt="Oppleve, med pil fra utøve">
-  <img class="fig fragment" data-fragment-index="4" src="images/fig-kvadrant-hjorne-4.svg" alt="Forstå, med pil fra oppleve og pil tilbake til skape">
-  <img class="fig fragment fade-in-then-out" data-fragment-index="5" src="images/fig-kvadrant-ord.svg" alt="Ordet musikkering i midten">
-  <img class="fig fragment" data-fragment-index="6" src="images/fig-kvadrant-ki-2.svg" alt="KI i midten, koblet til alle fire hjørner med stiplede linjer">
+  <img class="fig fragment ord" data-fragment-index="1" src="images/fig-kvadrant-ord.svg" alt="Ordet musikkering i midten">
+  <img class="fig fragment" data-fragment-index="2" src="images/fig-kvadrant-hjorne-1.svg" alt="Skape">
+  <img class="fig fragment" data-fragment-index="3" src="images/fig-kvadrant-hjorne-2.svg" alt="Utøve, med pil fra skape">
+  <img class="fig fragment" data-fragment-index="4" src="images/fig-kvadrant-hjorne-3.svg" alt="Oppleve, med pil fra utøve">
+  <img class="fig fragment" data-fragment-index="5" src="images/fig-kvadrant-hjorne-4.svg" alt="Forstå, med pil fra oppleve og pil tilbake til skape">
+  <img class="fig fragment ki-step" data-fragment-index="6" src="images/fig-kvadrant-ki-2.svg" alt="KI i midten, koblet til alle fire hjørner med stiplede linjer">
+  <img class="fig fragment" data-fragment-index="7" src="images/fig-kvadrant-teknologi.svg" alt="Teknologi i midten i stedet for KI">
   </div>
-  <aside class="notes">Musikk er noe vi gjør, ikke bare noe vi hører. Musikkering, etter Christopher Small, har fire hjørner (klikk for hvert): å skape, å utøve, å oppleve og å forstå, og de henger sammen i en sirkel. (Klikk: musikkering.) I skolen har vi ofte vektlagt ett eller to av hjørnene. (Klikk.) KI kommer inn i midten. Den kan mediere mellom alle fire hjørnene: hjelpe oss å skape, akkompagnere når vi spiller, anbefale hva vi skal høre, og analysere og forklare. Spørsmålet er ikke om KI skal være der, men om den kobler hjørnene sammen eller tar over ett av dem. Hvis maskinen lager alle produktene, mister elevene prosessen.</aside>
+  <aside class="notes">Musikk er noe vi gjør, ikke bare noe vi hører. (Klikk.) Musikkering, etter Christopher Small. Den har fire hjørner (klikk for hvert): å skape, å utøve, å oppleve og å forstå, og de henger sammen i en sirkel. I skolen har vi ofte vektlagt ett eller to av hjørnene. (Klikk.) KI kommer inn i midten. Den kan mediere mellom alle fire hjørnene: hjelpe oss å skape, akkompagnere når vi spiller, anbefale hva vi skal høre, og analysere og forklare. Spørsmålet er ikke om KI skal være der, men om den kobler hjørnene sammen eller tar over ett av dem. Hvis maskinen lager alle produktene, mister elevene prosessen. (Klikk.) Og egentlig gjelder dette all teknologi, ikke bare KI: instrumentet, notene, opptaket, datamaskinen. Teknologien har alltid vært i midten av musikkeringen.</aside>
   </section>
   <section>
   <div class="layers" style="width:90%" id="fire-e-fig">
