@@ -589,6 +589,9 @@ html.dark .disc svg polygon { fill: var(--mm-ink); }
 .qr-grid { display: grid; grid-template-columns: auto 1fr; gap: 90px; align-items: center; height: 100%; }
 .reveal .qr-grid img.qr { width: 760px; height: 760px; max-height: none; display: block; border: 2px solid #231f20; background: #fff; }
 .qr-url { font-family: var(--mm-font-display); font-size: 1.15em; margin-top: 1em; }
+.qr-solo { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; }
+.reveal .qr-solo img.qr { width: 780px; height: 780px; max-height: none; margin: 0; display: block; border: 2px solid #231f20; background: #fff; }
+.qr-solo .qr-url { margin-top: .5em; }
 
 /* Embedded demos: the apps lay themselves out at 1200 by 587 in ?embed mode
    and are scaled up to fill the slide. */
@@ -1153,24 +1156,16 @@ MishMash har en egen arbeidspakke for KI i utdanning, med mål om åpent materia
   <aside class="notes">Nå over til telefonene, og til det jeg kaller kroppslig og sosial databehandling. (Klikk.) Kroppslig: vi spiller med hendene og kroppen, og bevegelsen blir lyd. (Klikk.) Sosial: vi er mange i samme rom, (klikk) og telefonene og menneskene spiller sammen. Dette er de fire E-ene i praksis, og det er slik teknologi vi trenger å bygge for skolen.</aside>
   </section>
   <section>
-  <div class="qr-grid">
+  <div class="qr-solo">
   <img class="qr" src="images/qr-pinch-bass.svg" alt="QR-kode til Pinch Bass-appen">
-  <div>
-  <h2>Prøv selv</h2>
-  <p class="lead">Skann, skru opp lyden og bruk to fingre. Flytt dem rundt for tone og klang, klyp og spre for styrke.</p>
   <p class="qr-url">fourms.github.io/omo/apps/pinch-bass</p>
-  </div>
   </div>
   <aside class="notes">Først en enkel app til telefonen. Skann koden og skru opp lyden. Pinch Bass er en bass dere spiller med to fingre på skjermen: flytter dere fingrene sideveis, endres tonehøyden, opp og ned endres klangen, og når dere klyper eller sprer fingrene, endres styrken og resonansen. Det er et lite instrument der kroppen styrer lyden direkte, uten KI. Appen ligger i appsamlingen til Oslo Mobile Orchestra (OMO). Publikum trenger mobildata eller nett i salen.</aside>
   </section>
   <section>
-  <div class="qr-grid">
+  <div class="qr-solo">
   <img class="qr" src="images/qr-firefly.svg" alt="QR-kode til Firefly-appen">
-  <div>
-  <h2>Prøv selv</h2>
-  <p class="lead">Skann, skru opp lyden og trykk Start. Telefonene finner takten sammen, som ildfluer.</p>
   <p class="qr-url">fourms.github.io/omo/apps/firefly</p>
-  </div>
   </div>
   <aside class="notes">Så en app der telefonene spiller sammen. Skann koden, trykk «Start» og tillat mikrofonen når telefonen spør. Hver telefon spiller et jevnt klikk og lytter etter klikkene fra telefonene rundt seg, og justerer tempo og takt litt etter litt, slik ildfluer begynner å blinke i takt. Hold telefonen fremme, med lyden på. Etter et halvt minutt til et minutt skal rommet begynne å klikke sammen.
 Poenget: ingen dirigent og ingen sentral maskin. Hver node følger enkle regler, og samspillet oppstår. Det er en fin inngang til hvordan rytme, samspill og systemer virker, og det kan gjøres i et klasserom.
