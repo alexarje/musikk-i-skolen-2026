@@ -1,7 +1,7 @@
 """4E cognition as stacked SVG layers for click builds, redrawn from the Still Standing figure.
 
 Source: writing/1-Still standing/.../figures/theory/4e-cognition/4e-cognition-crop.pdf. Four panels,
-one per layer: kroppsliggjort (arrow through the body), innleiret (a frame round the person),
+one per layer: kroppsliggjort (arrow through the body), situert (a frame round the person),
 enaktiv (an arrow out through the frame), utvidet (an arrow to a thing outside the body). The last
 two layers put music under all four and technology for body and mind over them.
 Writes images/fig-4e-0..6.svg; layer 0 is empty and sets the size.
@@ -13,7 +13,7 @@ W, H = 1920, 960
 INK = "#231f20"
 FONT = "font-family:'Roboto Condensed',Arial,sans-serif;font-weight:700"
 FILL = ["#9a90cf", "#a5cbed", "#efadb2", "#b3e297"]
-LABELS = ["Kroppsliggjort", "Innleiret", "Enaktiv", "Utvidet"]
+LABELS = ["Kroppsliggjort", "Situert", "Enaktiv", "Utvidet"]
 XS = [240 + 480 * i for i in range(4)]
 HEAD_Y, HEAD_R, BODY_TOP, BODY_BOT, BODY_W = 340, 58, 410, 650, 150
 
