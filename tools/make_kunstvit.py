@@ -29,7 +29,7 @@ def write(name, content):
 
 W, H = 1920, 1000
 cy, rf, r_me, r_item = H / 2, 420, 165, 98
-fields = [("Kunst", 650, "#efadb2", ["Musikk", "Fremføring", "Installasjon"]),
+fields = [("Kunst", 650, "#efadb2", ["Musikk", "Performance", "Installasjon"]),
           ("Vitenskap", 1270, "#b3e297", ["Fenomenologi", "Psykologi", "Teknologi"])]
 write("fig-kunstvit-0.svg", svg(W, H, ""))
 n = 1
