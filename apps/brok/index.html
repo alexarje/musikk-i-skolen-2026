@@ -1,0 +1,184 @@
+<!doctype html>
+<html lang="nb">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Brøker du kan høre</title>
+<style>
+  :root { --ink:#231f20; --green:#b3e297; --purple:#9a90cf; --blue:#a5cbed; --pink:#efadb2; --paper:#ffffff; --muted:#6d6869; }
+  * { box-sizing: border-box; }
+  body { margin:0; font-family: Inter, Arial, sans-serif; color:var(--ink); background:var(--paper); }
+  main { max-width: 1180px; margin: 0 auto; padding: 18px 22px; }
+  h1 { font-family: 'Roboto Condensed', Arial, sans-serif; font-weight:700; font-size: 30px; margin: 0 0 6px; }
+  p.intro { margin: 0 0 14px; font-size: 16px; line-height: 1.4; max-width: 60em; }
+  .row { display:flex; flex-wrap:wrap; align-items:center; gap: 6px 8px; margin: 0 0 10px; }
+  button { font: inherit; font-weight:700; border: 2px solid var(--ink); background: var(--paper); padding: 7px 12px; cursor:pointer; }
+  button.ratio { background: var(--green); min-width: 96px; line-height: 1.15; }
+  button.ratio small { display:block; font-weight:400; font-size: 13px; }
+  button.ratio.on { background: var(--purple); }
+  button.play { background: var(--blue); }
+  label { font-size: 15px; display:flex; align-items:center; gap: 8px; }
+  input[type=range] { width: 260px; }
+  canvas { width: 100%; border: 2px solid var(--ink); display:block; background:#fff; }
+  #string { height: 150px; margin-bottom: 8px; }
+  #waves { height: 200px; }
+  .readout { font-size: 17px; margin: 8px 0 0; min-height: 1.4em; }
+  .readout b { font-family: 'Roboto Condensed', Arial, sans-serif; font-size: 20px; }
+  body.embed main { padding: 10px 14px; }
+  body.embed p.intro { display:none; }
+</style>
+</head>
+<body>
+<main>
+<h1>Brøker du kan høre</h1>
+<p class="intro">Pythagoras delte en streng i enkle brøker. Halve strengen gir en oktav, to tredjedeler en kvint. Velg en brøk, hør de to tonene sammen og se bølgene: jo enklere brøk, jo raskere gjentar mønsteret seg.</p>
+<div class="row" id="ratios"></div>
+<div class="row">
+  <label>Fri brøk: <input id="free" type="range" min="0.25" max="1" step="0.001" value="0.6667"></label>
+  <button class="play" id="pFull">Hele strengen</button>
+  <button class="play" id="pPart">Delen</button>
+  <button class="play" id="pBoth">Sammen</button>
+</div>
+<canvas id="string" width="1600" height="300"></canvas>
+<canvas id="waves" width="1600" height="400"></canvas>
+<p class="readout" id="out"></p>
+</main>
+<script>
+// Each interval as the share of the string that sounds, n/d; the frequency ratio is then d/n.
+const RATIOS = [[1, 2, 'Oktav'], [2, 3, 'Kvint'], [3, 4, 'Kvart'], [4, 5, 'Stor ters'],
+                [5, 6, 'Liten ters'], [8, 9, 'Heltone'], [15, 16, 'Halvtone']];
+const BASE = 196;  // G3, the whole string
+const q = new URLSearchParams(location.search);
+if (q.has('embed')) document.body.classList.add('embed');
+const $ = id => document.getElementById(id);
+let share = 2 / 3, frac = [2, 3], ctx = null, pluck = 0;
+
+// The simplest fraction n/d within a small tolerance, or null when there is none with d <= 16.
+function simplest(x) {
+  for (let d = 1; d <= 16; d++) {
+    const n = Math.round(x * d);
+    if (n > 0 && Math.abs(n / d - x) < 0.0025) {
+      const g = gcd(n, d);
+      return [n / g, d / g];
+    }
+  }
+  return null;
+}
+function gcd(a, b) { return b ? gcd(b, a % b) : a; }
+
+function audio() {
+  if (!ctx) ctx = new (window.AudioContext || window.webkitAudioContext)();
+  if (ctx.state === 'suspended') ctx.resume();
+  return ctx;
+}
+// A plucked string: a few harmonics with a fast attack and a slow decay.
+function tone(f, when, dur = 2.2) {
+  const a = audio(), t = a.currentTime + when;
+  const g = a.createGain();
+  g.gain.setValueAtTime(0, t);
+  g.gain.linearRampToValueAtTime(0.22, t + 0.01);
+  g.gain.exponentialRampToValueAtTime(0.001, t + dur);
+  g.connect(a.destination);
+  [1, 0.45, 0.25, 0.12].forEach((amp, i) => {
+    const o = a.createOscillator(), h = a.createGain();
+    o.frequency.value = f * (i + 1);
+    h.gain.value = amp;
+    o.connect(h).connect(g);
+    o.start(t); o.stop(t + dur);
+  });
+}
+function play(which) {
+  const f2 = BASE / share;
+  if (which !== 'part') tone(BASE, 0);
+  if (which !== 'full') tone(f2, 0);
+  pluck = performance.now();
+}
+
+function set(x, fr) {
+  share = x;
+  frac = fr || simplest(x);
+  $('free').value = x;
+  document.querySelectorAll('button.ratio').forEach(b =>
+    b.classList.toggle('on', fr && +b.dataset.n === fr[0] && +b.dataset.d === fr[1]));
+  const f2 = BASE / share;
+  $('out').innerHTML = frac
+    ? `Strengen: <b>${frac[0]}/${frac[1]}</b> &nbsp; Tonene: <b>${BASE} Hz</b> og <b>${Math.round(f2)} Hz</b>, forhold <b>${frac[1]}:${frac[0]}</b>. Mønsteret gjentar seg etter ${frac[0]} svingninger av den dype tonen.`
+    : `Strengen: <b>${share.toFixed(3)}</b> &nbsp; Tonene: <b>${BASE} Hz</b> og <b>${Math.round(f2)} Hz</b>. Ingen enkel brøk: mønsteret gjentar seg nesten aldri.`;
+  drawWaves();
+}
+
+RATIOS.forEach(([n, d, name]) => {
+  const b = document.createElement('button');
+  b.className = 'ratio';
+  b.dataset.n = n; b.dataset.d = d;
+  b.innerHTML = `${n}/${d}<small>${name}</small>`;
+  b.onclick = () => { set(n / d, [n, d]); play('both'); };
+  $('ratios').appendChild(b);
+});
+$('free').oninput = e => set(+e.target.value);
+$('free').onchange = () => play('both');
+$('pFull').onclick = () => play('full');
+$('pPart').onclick = () => play('part');
+$('pBoth').onclick = () => play('both');
+
+function drawString() {
+  const c = $('string'), g = c.getContext('2d'), W = c.width, H = c.height;
+  const x0 = 80, x1 = W - 80, y = H / 2, xb = x0 + share * (x1 - x0);
+  const age = (performance.now() - pluck) / 1000, amp = 38 * Math.exp(-age * 1.6);
+  g.clearRect(0, 0, W, H);
+  g.lineCap = 'round';
+  // the part that does not sound
+  g.strokeStyle = '#c9c5c6'; g.lineWidth = 6;
+  g.beginPath(); g.moveTo(xb, y); g.lineTo(x1, y); g.stroke();
+  // the part that sounds, vibrating after a pluck
+  g.strokeStyle = '#231f20'; g.lineWidth = 7;
+  g.beginPath();
+  for (let i = 0; i <= 120; i++) {
+    const s = i / 120, x = x0 + s * (xb - x0);
+    const yy = y + amp * Math.sin(Math.PI * s) * Math.sin(age * 40);
+    i ? g.lineTo(x, yy) : g.moveTo(x, yy);
+  }
+  g.stroke();
+  // ends and bridge
+  g.fillStyle = '#231f20';
+  [x0, x1].forEach(x => g.fillRect(x - 6, y - 50, 12, 100));
+  g.fillStyle = '#9a90cf';
+  g.beginPath(); g.moveTo(xb, y - 6); g.lineTo(xb - 26, y + 52); g.lineTo(xb + 26, y + 52); g.closePath();
+  g.fill(); g.strokeStyle = '#231f20'; g.lineWidth = 4; g.stroke();
+  g.font = "700 40px 'Roboto Condensed', Arial, sans-serif"; g.textAlign = 'center'; g.fillStyle = '#231f20';
+  g.fillText(frac ? `${frac[0]}/${frac[1]}` : share.toFixed(2), (x0 + xb) / 2, y - 62);
+  requestAnimationFrame(drawString);
+}
+
+function drawWaves() {
+  const c = $('waves'), g = c.getContext('2d'), W = c.width, H = c.height;
+  const r = 1 / share, periods = 6;  // six periods of the low tone
+  const y = (t, k, a) => H / 2 - a * Math.sin(2 * Math.PI * k * t);
+  g.clearRect(0, 0, W, H);
+  // where the pattern repeats
+  if (frac) {
+    g.strokeStyle = '#6d6869'; g.lineWidth = 3; g.setLineDash([12, 10]);
+    for (let p = frac[0]; p <= periods; p += frac[0]) {
+      const x = p / periods * W;
+      g.beginPath(); g.moveTo(x, 10); g.lineTo(x, H - 10); g.stroke();
+    }
+    g.setLineDash([]);
+  }
+  const line = (fn, col, w) => {
+    g.strokeStyle = col; g.lineWidth = w; g.beginPath();
+    for (let i = 0; i <= W; i += 2) {
+      const t = i / W * periods, yy = fn(t);
+      i ? g.lineTo(i, yy) : g.moveTo(i, yy);
+    }
+    g.stroke();
+  };
+  line(t => y(t, 1, 70), '#a5cbed', 5);
+  line(t => y(t, r, 70), '#efadb2', 5);
+  line(t => H / 2 - 70 * (Math.sin(2 * Math.PI * t) + Math.sin(2 * Math.PI * r * t)), '#231f20', 4);
+}
+
+set(2 / 3, [2, 3]);
+requestAnimationFrame(drawString);
+</script>
+</body>
+</html>
