@@ -11,8 +11,9 @@ from pathlib import Path
 
 subjects = [["Matematikk"], ["Naturfag"], ["Programmering"], ["Norsk"], ["Språk"],
             ["Samfunnsfag"], ["Kunst og", "håndverk"], ["Kroppsøving"]]
-effects = [["Sosialt"], ["Estetisk"], ["Motorisk"], ["Kognitivt"], ["Emosjonelt"],
-           ["Språklig"], ["Kulturelt"], ["Helse"]]
+# From the body outwards: body, feelings and thinking, expression, community and culture.
+effects = [["Motorisk"], ["Helse"], ["Emosjonelt"], ["Kognitivt"], ["Språklig"],
+           ["Estetisk"], ["Sosialt"], ["Kulturelt"]]
 colours = ["#9a90cf", "#a5cbed", "#efadb2", "#b3e297"]
 
 W, H = 1920, 1000
